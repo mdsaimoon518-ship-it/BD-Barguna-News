@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-<rect width="512" height="512" rx="112" fill="#18212b"/>
-<rect x="48" y="48" width="416" height="416" rx="82" fill="#b5122b"/>
-<path d="M112 142h288v42H112zm0 82h288v42H112zm0 82h190v42H112z" fill="#fff"/>
-<path d="M330 306l62 62-62 62" fill="none" stroke="#fff" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="256" y="445" text-anchor="middle" font-family="Arial,sans-serif" font-size="55" font-weight="800" fill="#ffccd3">NEWS</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t"><title id="t">BD Barguna News</title>
+<defs><linearGradient id="b" x2="1" y2="1"><stop stop-color="#101e2b"/><stop offset="1" stop-color="#263c50"/></linearGradient><linearGradient id="r" x2="1" y2="1"><stop stop-color="#ef334b"/><stop offset="1" stop-color="#a90e2a"/></linearGradient></defs>
+<rect width="512" height="512" rx="110" fill="url(#b)"/><rect x="42" y="42" width="428" height="428" rx="88" fill="url(#r)"/>
+<path d="M66 340c76-60 139-60 210 0s125 54 170 8v82H66z" fill="#fff"/>
+<path d="M66 380c76-53 139-53 210 0s125 47 170 5" fill="none" stroke="#16a6c4" stroke-width="22" stroke-linecap="round"/>
+<rect x="205" y="100" width="102" height="150" rx="51" fill="#fff"/><path d="M174 198v17a82 82 0 0 0 164 0v-17M256 298v42m-50 0h100" fill="none" stroke="#fff" stroke-width="23" stroke-linecap="round"/>
+<circle cx="370" cy="112" r="24" fill="#ffd166"/>
+<text x="256" y="450" text-anchor="middle" font-family="Arial,sans-serif" font-size="42" font-weight="900" fill="#fff">BD NEWS</text></svg>
