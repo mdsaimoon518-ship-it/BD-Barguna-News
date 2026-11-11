@@ -49,6 +49,9 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 <hr style="margin:28px 0;border:0;border-top:1px solid #ddd">
 <h2>অনলাইন জরিপ তৈরি ও প্রকাশ</h2>
 <form id="pollForm">
+<label>জরিপ প্রকাশের GitHub Token</label>
+<input id="pollToken" type="password" autocomplete="off" required placeholder="এখানে GitHub Token দিন">
+<p style="font-size:13px;color:#667085">এই টোকেন শুধু জরিপ ও জরিপের ছবি প্রকাশে ব্যবহার হবে; কোথাও সংরক্ষণ করা হয় না।</p>
 <label>জরিপের প্রশ্ন</label>
 <input id="pollQuestion" placeholder="আপনি কোন ধরনের খবর বেশি পড়তে চান?" required>
 <label>জরিপের ছবি ১ (ঐচ্ছিক)</label>
@@ -216,7 +219,7 @@ status.textContent="সমস্যা: "+err.message;
 document.getElementById("pollForm").addEventListener("submit",async e=>{
 e.preventDefault();
 const status=document.getElementById("pollStatus");
-const token=document.getElementById("token").value.trim();
+const token=document.getElementById("pollToken").value.trim();
 const question=document.getElementById("pollQuestion").value.trim();
 const options=[...new Set(document.getElementById("pollOptions").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))];
 if(!token){status.textContent="আগে GitHub Token দিন।";return;}
