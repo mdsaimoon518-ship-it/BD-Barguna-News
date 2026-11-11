@@ -1,1 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-labelledby="t d"><title id="t">BD Barguna News</title><desc id="d">BD Barguna News-এর লাল সংবাদমাধ্যম লোগো</desc><rect width="640" height="180" rx="22" fill="#18212b"/><rect x="18" y="18" width="144" height="144" rx="18" fill="#b5122b"/><path d="M43 48h92v15H43zm0 27h92v15H43zm0 27h62v15H43z" fill="#fff"/><path d="M119 104l15 15-15 15" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><text x="184" y="83" font-family="Arial,sans-serif" font-size="48" font-weight="800" fill="#fff">BD Barguna</text><text x="187" y="132" font-family="Arial,sans-serif" font-size="36" font-weight="700" fill="#ff6478">NEWS</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 190" role="img" aria-labelledby="title desc">
+<title id="title">BD Barguna News</title><desc id="desc">বরগুনার উপকূল, ঢেউ ও সংবাদ মাইক্রোফোনের প্রতীকসহ সংবাদমাধ্যমের লোগো</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101e2b"/><stop offset="1" stop-color="#263c50"/></linearGradient><linearGradient id="red" x2="1" y2="1"><stop stop-color="#ef334b"/><stop offset="1" stop-color="#a90e2a"/></linearGradient></defs>
+<rect width="720" height="190" rx="24" fill="url(#bg)"/>
+<rect x="13" y="13" width="164" height="164" rx="22" fill="url(#red)"/>
+<path d="M27 119c28-22 52-22 79 0s47 20 67 3v38H27z" fill="#fff" opacity=".96"/>
+<path d="M27 137c28-20 52-20 79 0s47 18 67 2" fill="none" stroke="#16a6c4" stroke-width="9" stroke-linecap="round"/>
+<path d="M80 39a20 20 0 0 1 40 0v29a20 20 0 0 1-40 0z" fill="#fff"/>
+<path d="M68 65v7a32 32 0 0 0 64 0v-7M100 104v18m-19 0h38" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+<circle cx="147" cy="39" r="10" fill="#ffd166"/>
+<text x="202" y="79" font-family="Arial,sans-serif" font-size="58" font-weight="900" letter-spacing="-2" fill="#fff">BD BARGUNA</text>
+<text x="205" y="132" font-family="Arial,sans-serif" font-size="43" font-weight="900" letter-spacing="8" fill="#ff5368">NEWS</text>
+<path d="M205 149h470" stroke="#16a6c4" stroke-width="4" stroke-linecap="round"/>
+<text x="205" y="174" font-family="sans-serif" font-size="17" font-weight="700" fill="#e7edf4">বরগুনা ও দেশের সর্বশেষ সংবাদ</text>
+</svg>
