@@ -1,17 +1,26 @@
 {
+  "id": "/BD-Barguna-News/",
   "name": "BD Barguna News সম্পাদক",
   "short_name": "BD Barguna",
+  "description": "BD Barguna News সম্পাদক প্যানেল",
   "start_url": "/BD-Barguna-News/admin/",
   "scope": "/BD-Barguna-News/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#b5122b",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/BD-Barguna-News/images/app-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/BD-Barguna-News/images/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }
