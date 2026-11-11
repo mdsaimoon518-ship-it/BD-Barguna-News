@@ -109,7 +109,7 @@ async function showPoll(polls){
 const root=document.getElementById('pollDisplay');
 const p=Array.isArray(polls)?polls.find(x=>x&&x.active!==false&&x.question&&Array.isArray(x.options)&&x.options.length>=2):null;
 if(!p){root.innerHTML='<p>এখনো কোনো জরিপ প্রকাশ করা হয়নি।</p>';return;}
-const pollKey=String(p.id||'').replace(/[.#$\\[\\]\\/]/g,'_');
+const pollKey=String(p.id||'');
 if(!pollKey){root.innerHTML='<p>জরিপের পরিচিতি পাওয়া যায়নি।</p>';return;}
 const images=Array.isArray(p.images)?p.images.filter(x=>typeof x==="string"&&x.trim()):[];
 const imageHtml=images.length?'<div class="poll-images">'+images.slice(0,2).map((src,i)=>'<img src="'+esc(src)+'" alt="জরিপের ছবি '+(i+1)+'" loading="lazy">').join('')+'</div>':'';
