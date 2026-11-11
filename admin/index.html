@@ -60,6 +60,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <option value="প্রযুক্তি">তথ্যপ্রযুক্তি</option>
 <option value="অন্যান্য">অন্যান্য</option>
 </select>
+<label style="display:flex;align-items:center;gap:9px;margin:12px 0"><input id="breaking" type="checkbox" style="width:auto;margin:0"> 🔴 এই সংবাদটি ব্রেকিং নিউজ হিসেবে দেখান</label>
 
 <label>সংবাদের বিবরণ</label>
 <textarea id="body" required></textarea>
@@ -328,7 +329,7 @@ async function loadNews(){
   $("newsList").innerHTML=cachedNews.map((n,i)=>`
    <div class="card">
    <strong>${esc(n.title)}</strong>
-   <p>${esc(n.category)} | ${esc(n.date)}</p>
+   <p>${esc(n.category)} | ${esc(n.date)} ${n.breaking===true?"| 🔴 ব্রেকিং নিউজ":""}</p>
    ${n.image?`<img src="${/^https?:\/\//i.test(n.image)?esc(n.image):"../"+esc(n.image)}" alt="সংবাদ ছবি">`:""}
    <div class="actions">
    <button class="blue" data-a="edit" data-i="${i}">এডিট</button>
@@ -353,6 +354,7 @@ $("newsList").addEventListener("click",async e=>{
    case "edit":
     $("title").value=n.title;
     $("category").value=n.category;
+    $("breaking").checked=n.breaking===true;
     $("body").value=n.body;
     $("image").value=/^https?:\/\//i.test(n.image||"")?n.image:"";
     $("caption").value=n.caption||"";
@@ -390,6 +392,7 @@ $("newsList").addEventListener("click",async e=>{
 $("cancelEdit").onclick=()=>{
  editingSlug=null;
  $("newsForm").reset();
+ $("breaking").checked=false;
  $("publishBtn").textContent="সংবাদ প্রকাশ করুন";
  $("cancelEdit").hidden=true;
 };
@@ -414,6 +417,7 @@ $("newsForm").addEventListener("submit",async e=>{
   const n={
    title,category,body,image,
    caption:$("caption").value.trim(),
+   breaking:$("breaking").checked,
    date:old?.date||new Date().toISOString(),
    slug:old?.slug||makeSlug(title)
   };
@@ -427,6 +431,7 @@ $("newsForm").addEventListener("submit",async e=>{
 
   editingSlug=null;
   $("newsForm").reset();
+  $("breaking").checked=false;
   $("publishBtn").textContent="সংবাদ প্রকাশ করুন";
   $("cancelEdit").hidden=true;
   show("status","সফল! সংবাদ ও HTML পেজ প্রকাশ হয়েছে।");
