@@ -4,10 +4,11 @@
 </style><script type="application/ld+json" id="articleSchema">{}</script></head><body><header class="top"><div class="wrap"><a class="brand" href="./">BD Barguna News</a></div></header><main class="wrap"><a class="back" href="./">← প্রচ্ছদে ফিরে যান</a><article class="article" id="article"><div class="empty">সংবাদ লোড হচ্ছে...</div></article><section class="comments" id="comments"><h2>পাঠকের মন্তব্য</h2><p class="comments-note">সংবাদটি সম্পর্কে আপনার মতামত লিখুন। মন্তব্য করতে GitHub অ্যাকাউন্ট দিয়ে সাইন ইন করতে হবে।</p><div id="utterances-comments"><div class="empty">মন্তব্য ব্যবস্থা লোড হচ্ছে...</div></div></section></main><script>
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>{try{const x=new URL(u,location.href);return ['http:','https:'].includes(x.protocol)?x.href:''}catch(e){return ''}};
+function categoryFallback(category){const c=String(category||'').toLocaleLowerCase();if(c.includes('বরগুনা')||c.includes('স্থানীয়'))return 'images/category-barguna.svg';if(c.includes('জাতীয়')||c.includes('বাংলাদেশ'))return 'images/category-national.svg';if(c.includes('সারাদেশ'))return 'images/category-country.svg';if(c.includes('খেলা'))return 'images/category-sports.svg';if(c.includes('আন্তর্জাতিক'))return 'images/category-world.svg';return 'images/news-placeholder.svg';}
 const index=Number(new URLSearchParams(location.search).get('index'));
 fetch('news.json?v='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error();return r.json()}).then(items=>{
 if(!Array.isArray(items)||!Number.isInteger(index)||index<0||!items[index])throw new Error();
-const n=items[index],img=safeUrl(n.image||n.imageUrl||'');
+const n=items[index],img=safeUrl(n.image||n.imageUrl||'')||new URL(categoryFallback(n.category),location.href).href;
 document.title=(n.title||'সংবাদের বিস্তারিত')+' | BD Barguna News';
 const rawDescription=String(n.summary||n.details||n.body||'বরগুনা ও দেশের সর্বশেষ সংবাদ BD Barguna News-এ পড়ুন.').replace(/\s+/g,' ').trim();
 const pageDescription=rawDescription.slice(0,155);
