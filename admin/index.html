@@ -97,7 +97,8 @@ const urls=[base,base+"news.html"];
 (items||[]).forEach(n=>{if(n&&n.slug)urls.push(base+"articles/"+encodeURIComponent(n.slug)+".html");});
 const unique=[...new Set(urls)];
 const today=new Date().toISOString().slice(0,10);
-const xml='<?xml version="1.0" encoding="UTF-8"?>\\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n'+unique.map(u=>'  <url><loc>'+escXml(u)+'</loc><lastmod>'+today+'</lastmod></url>').join('\\n')+'\\n</urlset>\\n';
+const nl=String.fromCharCode(10);
+const xml='<?xml version="1.0" encoding="UTF-8"?>'+nl+'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+nl+unique.map(u=>'  <url><loc>'+escXml(u)+'</loc><lastmod>'+today+'</lastmod></url>').join(nl)+nl+'</urlset>'+nl;
 const saved=await fetch(url,{method:"PUT",headers,body:JSON.stringify({message:"Update news sitemap",content:btoa(unescape(encodeURIComponent(xml))),sha:file.sha})});
 if(!saved.ok)throw new Error("সাইটম্যাপ আপডেট হয়নি: "+saved.status);
 }
