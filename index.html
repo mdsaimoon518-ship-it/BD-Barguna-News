@@ -32,7 +32,7 @@ main{padding-top:22px;padding-bottom:28px}.ticker{background:#fff;border:1px sol
 .editor-profile{align-items:flex-start}.editor-profile .editor-info{min-width:0}.editor-profile .editor-info h2{font-size:20px;margin:3px 0}.editor-profile .editor-info p{margin:5px 0;color:#596579;font-size:13px}.editor-profile .editor-contact{display:flex;flex-wrap:wrap;gap:5px 16px}.editor-profile .editor-links a,.editor-profile .editor-contact a{color:var(--red);font-weight:700}.editor-profile .editor-links{margin-top:8px!important}@media(max-width:520px){.editor-profile{gap:11px;padding:12px}.editor-profile .editor-contact{display:block}}
 .editor-profile{display:flex;align-items:center;gap:15px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px 18px;margin:0 0 26px;box-shadow:var(--shadow)}.editor-profile img{width:82px;height:82px;object-fit:cover;border-radius:50%;border:3px solid #f3d7dc}.editor-profile h2{font-size:18px;margin:0 0 3px}.editor-profile p{margin:0;color:var(--muted);font-size:13px}@media(max-width:520px){.editor-profile img{width:68px;height:68px}}
 .empty{grid-column:1/-1;background:#fff;border:1px dashed #cbd2dd;border-radius:9px;padding:22px;text-align:center;color:var(--muted)}.empty strong{display:block;color:var(--ink);margin-bottom:4px}
-footer{background:#18212b;color:#fff;margin-top:25px;padding:28px 0;text-align:center}.footer-brand{font-size:23px;font-weight:900}.footer-copy{font-size:13px;color:#cbd5e1;margin:6px 0}
+.resource-hub{margin-top:32px;margin-bottom:28px}.resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.resource-grid a{display:flex;flex-direction:column;justify-content:center;gap:3px;min-height:62px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:9px;font-weight:700;font-size:14px;box-shadow:0 3px 12px rgba(20,30,50,.04)}.resource-grid a:hover{border-color:var(--red);color:var(--red)}.resource-grid small{font-size:11px;color:var(--muted);font-weight:400}.resource-grid a[data-soon]{cursor:pointer}@media(max-width:760px){.resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:420px){.resource-grid{grid-template-columns:1fr}}footer{background:#18212b;color:#fff;margin-top:25px;padding:28px 0;text-align:center}.footer-brand{font-size:23px;font-weight:900}.footer-copy{font-size:13px;color:#cbd5e1;margin:6px 0}
 @media(max-width:760px){.head{align-items:flex-start;flex-direction:column;gap:12px}.search{max-width:none}.lead-grid,.columns{grid-template-columns:1fr}.hero-image{height:220px}.cards,.video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.wrap{padding-left:13px;padding-right:13px}.cards,.video-grid{grid-template-columns:1fr}.card-image{height:190px}.hero-image{height:190px}.nav a{padding:10px 12px}.topbar .wrap{font-size:12px}.section-title{font-size:19px}}
 </style>
@@ -51,6 +51,34 @@ footer{background:#18212b;color:#fff;margin-top:25px;padding:28px 0;text-align:c
 <section class="video-section" id="videos"><div class="section-head"><h2 class="section-title">ভিডিও নিউজ</h2><span class="muted">ভিডিও প্রতিবেদন</span></div><div class="video-grid" id="videoCards"><div class="empty"><strong>ভিডিও নিউজ শিগগিরই</strong>ভিডিও যুক্ত হলে এখানে দেখা যাবে।</div></div></section>
 <div class="columns"><section><div class="section-head"><h2 class="section-title">আরও খবর</h2></div><div id="moreNews"><div class="empty">আরও সংবাদ যুক্ত হলে এখানে দেখা যাবে।</div></div></section><aside class="popular"><h2 class="section-title">জনপ্রিয় বিভাগ</h2><ol><li><a href="#latest" data-category="বরগুনা">বরগুনার খবর</a></li><li><a href="#latest" data-category="জাতীয়">জাতীয় সংবাদ</a></li><li><a href="#latest" data-category="আন্তর্জাতিক">আন্তর্জাতিক</a></li><li><a href="#latest" data-category="খেলাধুলা">খেলাধুলা</a></li><li><a href="#videos">ভিডিও নিউজ</a></li></ol></aside></div>
 </main>
+<section class="resource-hub wrap" id="quick-links" aria-label="প্রয়োজনীয় লিংক">
+  <div class="section-head"><h2 class="section-title">প্রয়োজনীয় লিংক</h2><span class="muted">সেবা ও তথ্য</span></div>
+  <div class="resource-grid">
+    <a href="#" data-soon>📰 ই-পেপার ডিজিটাল প্রিন্ট <small>শিগগিরই চালু হবে</small></a>
+    <a href="#" data-soon>🛍️ ই-কমার্স প্রোডাক্ট <small>শিগগিরই চালু হবে</small></a>
+    <a href="https://www.espncricinfo.com/" target="_blank" rel="noopener">🏏 লাইভ ক্রিকেট ও স্পোর্টস <small>বাহ্যিক সাইট</small></a>
+    <a href="https://www.xe.com/currencyconverter/" target="_blank" rel="noopener">💱 মুদ্রা বিনিময় ও বাজারদর <small>বাহ্যিক সাইট</small></a>
+    <a href="#" data-soon>✍️ মুক্তমত ও সম্পাদকীয় <small>শিগগিরই চালু হবে</small></a>
+    <a href="https://www.windy.com/" target="_blank" rel="noopener">🌊 জোয়ার-ভাটা ও মেরিন রাডার <small>আবহাওয়া ও সমুদ্র মানচিত্র</small></a>
+    <a href="#" data-soon>🎙️ বরগুনা অডিও পডকাস্ট <small>শিগগিরই চালু হবে</small></a>
+    <a href="#" data-soon>📖 আমার নিউজ ও রিডিং মোড <small>শিগগিরই চালু হবে</small></a>
+    <a href="https://bangladesh.gov.bd/" target="_blank" rel="noopener">🏛️ পাবলিক সার্ভিস হাব <small>বাংলাদেশ জাতীয় তথ্য বাতায়ন</small></a>
+    <a href="#" data-soon>📂 বিশেষ সংবাদ দসিয়ার <small>শিগগিরই চালু হবে</small></a>
+    <a href="tel:999">🚨 জরুরি সেবা ও হটলাইন <small>জাতীয় জরুরি সেবা ৯৯৯</small></a>
+    <a href="#" data-soon>🔎 ফ্যাক্ট চেক সেন্টার <small>শিগগিরই চালু হবে</small></a>
+    <a href="about.html">ℹ️ আমাদের সম্পর্কে</a>
+    <a href="#" data-soon>📜 সম্পাদকীয় নীতি <small>শিগগিরই প্রকাশ করা হবে</small></a>
+    <a href="#" data-soon>📢 বিজ্ঞাপন বুকিং পোর্টাল <small>শিগগিরই চালু হবে</small></a>
+    <a href="#" data-soon>🤝 সাংবাদিকতায় পাঠক সহায়তা <small>শিগগিরই চালু হবে</small></a>
+    <a href="#" data-soon>📬 নিউজলেটার ডাইজেস্ট <small>শিগগিরই চালু হবে</small></a>
+    <a href="#" data-soon>💼 বিজ্ঞাপন দর ও নীতিমালা <small>শিগগিরই প্রকাশ করা হবে</small></a>
+    <a href="ads.txt">📄 ads.txt</a>
+    <a href="privacy.html">🔐 গোপনীয়তা নীতি</a>
+    <a href="#" data-soon>⚖️ ব্যবহারের শর্তাবলি <small>শিগগিরই প্রকাশ করা হবে</small></a>
+    <a href="contact.html">✉️ যোগাযোগ ও তথ্য পাঠানো</a>
+    <a href="admin.html">🔑 স্টাফ ও সম্পাদক লগইন</a>
+  </div>
+</section>
 <footer><div class="wrap"><img class="footer-logo" src="images/site-logo.svg?v=5" alt="BD Barguna News লোগো"><div class="footer-brand">BD Barguna News</div><p class="footer-copy">বরগুনা ও দেশের সর্বশেষ সংবাদ</p><div class="footer-copy"><strong>প্রকাশক ও সম্পাদক:</strong> মোঃ সাইমুন মিয়া</div><div class="footer-copy"><strong>অফিস:</strong> শের-ই বাংলা সড়ক, বরগুনা, বাংলাদেশ</div><div class="footer-copy"><strong>মোবাইল:</strong> <a href="tel:+8801609320308">০১৬০৯৩২০৩০৮</a></div><div class="footer-copy"><strong>ইমেইল:</strong> <a href="mailto:mdsaimoon518@gmail.com">mdsaimoon518@gmail.com</a></div><div class="footer-copy" style="margin-top:12px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap"><a href="https://wa.me/8801609320308" target="_blank" rel="noopener" style="display:inline-block;background:#168b49;color:#fff;padding:9px 16px;border-radius:7px;font-weight:700">WhatsApp-এ যোগাযোগ</a> <a href="https://www.facebook.com/share/1DVoeWxfGG/" target="_blank" rel="noopener" style="display:inline-block;background:#1877f2;color:#fff;padding:9px 16px;border-radius:7px;font-weight:700">Facebook পেজ</a> <a href="https://www.youtube.com/@mdSaimoon-e5d" target="_blank" rel="noopener" style="display:inline-block;background:#ff0033;color:#fff;padding:9px 16px;border-radius:7px;font-weight:700">YouTube চ্যানেল</a></div><div class="footer-copy" style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:14px"><a href="about.html">আমাদের সম্পর্কে</a><a href="contact.html">যোগাযোগ</a><a href="privacy.html">গোপনীয়তা নীতি</a></div><p class="footer-copy">© <span id="year">২০২৬</span> BD Barguna News। সর্বস্বত্ব সংরক্ষিত।</p></div></footer>
 <script>
 (function(){
