@@ -80,6 +80,7 @@ const response=await fetch(url,{headers});
 if(!response.ok) throw new Error("GitHub ফাইল পড়া যায়নি: "+response.status);
 const file=await response.json();
 const old=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))));
+const imagePath=await uploadNewsImage(token);
 old.unshift({
 title:document.getElementById("title").value,
 category:document.getElementById("category").value,
