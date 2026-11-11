@@ -198,7 +198,7 @@ function updateFeaturedNews(items){
  if(imageBox){imageBox.innerHTML=image?'<img src="'+esc(image)+'" alt="'+esc(n.title)+'" fetchpriority="high">':'<img src="images/home-news-cover.svg" alt="BD Barguna News প্রধান সংবাদ">';}
  const body=hero.querySelector('.hero-body');
  if(body){
-  const summary=String(n.summary||n.details||n.body||'').replace(/\\s+/g,' ').trim().slice(0,240);
+  const summary=String(n.summary||n.details||n.body||'').replace(/\s+/g,' ').trim().slice(0,240);
   const date=n.date||n.publishedAt||n.createdAt||'';
   body.innerHTML='<span class="category">'+esc(n.category||'সর্বশেষ সংবাদ')+'</span><h1><a href="'+detail+'">'+esc(n.title)+'</a></h1>'+(summary?'<p class="summary">'+esc(summary)+'</p>':'')+'<div class="meta">'+(date?'প্রকাশের তারিখ: '+esc(date)+' · ':'')+'BD Barguna News</div><a class="hero-read" href="'+detail+'">বিস্তারিত পড়ুন →</a>';
  }
