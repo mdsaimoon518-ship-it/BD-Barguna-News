@@ -89,7 +89,7 @@ canvas.toBlob(blob=>{if(!blob){alert('ফটো কার্ড তৈরি হ
 if(photo&&photo.src){const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{ctx.drawImage(im,64,125,952,560);finish()};im.onerror=finish;im.src=photo.src;}else finish();
 };draw();
 }
-<\\/script></body></html>'
+<\/script></body></html>'
 }
 async function saveStaticArticle(token,n){
 const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/articles/'+n.slug+'.html';
