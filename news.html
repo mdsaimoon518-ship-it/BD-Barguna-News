@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#b5122b"><title>সংবাদের বিস্তারিত | BD Barguna News</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f9;color:#17212b;font-family:Arial,"Noto Sans Bengali",sans-serif;line-height:1.8}.wrap{max-width:850px;margin:auto;padding:18px}.top{background:#18212b;color:#fff;padding:14px 0}.brand{font-size:25px;font-weight:900;color:#fff;text-decoration:none}.back{color:#b5122b;font-weight:700;text-decoration:none}.article{background:#fff;border:1px solid #e8eaf0;border-radius:12px;padding:22px;margin-top:18px}.category{color:#b5122b;font-weight:800;font-size:14px}.title{font-size:clamp(25px,5vw,36px);line-height:1.45;margin:8px 0}.meta{color:#667085;font-size:13px}.photo{width:100%;max-height:480px;object-fit:cover;border-radius:9px;margin:18px 0}.body{font-size:18px;white-space:pre-wrap;overflow-wrap:anywhere}.empty{padding:30px;text-align:center;color:#667085}@media(max-width:520px){.article{padding:15px}.body{font-size:16px}}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="./">BD Barguna News</a></div></header><main class="wrap"><a class="back" href="./">← প্রচ্ছদে ফিরে যান</a><article class="article" id="article"><div class="empty">সংবাদ লোড হচ্ছে...</div></article></main><script>
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=u=>{try{const x=new URL(u,location.href);return ['http:','https:'].includes(x.protocol)?x.href:''}catch(e){return ''}};
+const index=Number(new URLSearchParams(location.search).get('index'));
+fetch('news.json?v='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error();return r.json()}).then(items=>{
+if(!Array.isArray(items)||!Number.isInteger(index)||index<0||!items[index])throw new Error();
+const n=items[index],img=safeUrl(n.image||n.imageUrl||'');
+document.title=(n.title||'সংবাদের বিস্তারিত')+' | BD Barguna News';
+document.getElementById('article').innerHTML='<span class="category">'+esc(n.category||'সংবাদ')+'</span><h1 class="title">'+esc(n.title)+'</h1><div class="meta">'+esc(n.date||'BD Barguna News')+'</div>'+(img?'<img class="photo" src="'+esc(img)+'" alt="'+esc(n.title)+'">':'')+'<div class="body">'+esc(n.body||n.details||n.summary||'এই সংবাদের বিস্তারিত দেওয়া হয়নি।')+'</div>';
+}).catch(()=>{document.getElementById('article').innerHTML='<div class="empty">সংবাদটি পাওয়া যায়নি। <a class="back" href="./">প্রচ্ছদে ফিরে যান</a></div>'});
+</script></body></html>
