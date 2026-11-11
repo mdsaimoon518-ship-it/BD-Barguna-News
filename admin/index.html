@@ -52,11 +52,44 @@ const repo="BD-Barguna-News";
 const path="news.json";
 let editingIndex=-1,cachedNews=[];
 const apiHeaders=token=>({"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"});
+
+function articleHtml(n,slug){
+const base="https://"+location.host+"/BD-Barguna-News/";
+const articleUrl=base+"articles/"+slug+".html";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rawImage=String(n.image||"").trim();
+const image=rawImage?(/^https?:\\/\\//i.test(rawImage)?rawImage:base+rawImage.replace(/^\\.\\//,"")):"";
+const pageImage=rawImage?(/^https?:\\/\\//i.test(rawImage)?rawImage:"../"+rawImage.replace(/^\\.\\//,"")):"";
+const description=String(n.summary||n.details||n.body||"বরগুনা ও দেশের সর্বশেষ সংবাদ।").replace(/\\s+/g," ").trim().slice(0,155);
+const date=n.date&&Number.isFinite(Date.parse(n.date))?new Date(n.date).toISOString():"";
+const schema={"@context":"https://schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":articleUrl},"headline":String(n.title||"সংবাদ").slice(0,110),"description":description,"articleSection":n.category||"সংবাদ","inLanguage":"bn-BD","author":{"@type":"Organization","name":"BD Barguna News"},"publisher":{"@type":"Organization","name":"BD Barguna News","url":base}};
+if(date){schema.datePublished=date;schema.dateModified=date;}if(image)schema.image=[image];
+return '<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow,max-image-preview:large"><title>'+esc(n.title)+' | BD Barguna News</title><meta name="description" content="'+esc(description)+'"><link rel="canonical" href="'+esc(articleUrl)+'"><meta property="og:type" content="article"><meta property="og:site_name" content="BD Barguna News"><meta property="og:title" content="'+esc(n.title)+'"><meta property="og:description" content="'+esc(description)+'"><meta property="og:url" content="'+esc(articleUrl)+'">'+(image?'<meta property="og:image" content="'+esc(image)+'">':'')+'<meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">'+JSON.stringify(schema).replace(/</g,'\\\\u003c')+'</script><style>body{margin:0;background:#f4f6f9;color:#17212b;font-family:Arial,"Noto Sans Bengali",sans-serif;line-height:1.8}.wrap{max-width:850px;margin:auto;padding:18px}.top{background:#18212b;color:#fff;padding:14px 0}.brand{font-size:25px;font-weight:900;color:#fff;text-decoration:none}.article{background:#fff;border-radius:12px;padding:22px;margin-top:18px}.category{color:#b5122b;font-weight:800}.title{font-size:clamp(25px,5vw,36px);line-height:1.45}.meta{color:#667085;font-size:13px}.photo{width:100%;max-height:480px;object-fit:cover;border-radius:9px;margin:18px 0}.body{font-size:18px;white-space:pre-wrap;overflow-wrap:anywhere}.share-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.share-btn{display:inline-block;padding:9px 14px;border-radius:7px;color:#fff;background:#1877f2;text-decoration:none}.whatsapp{background:#168b49}</style></head><body><header class="top"><div class="wrap"><a class="brand" href="../">BD Barguna News</a></div></header><main class="wrap"><a href="../">← প্রচ্ছদে ফিরে যান</a><article class="article"><span class="category">'+esc(n.category||"সংবাদ")+'</span><h1 class="title">'+esc(n.title)+'</h1><div class="meta">'+esc(n.date||"")+'</div>'+(pageImage?'<img class="photo" src="'+esc(pageImage)+'" alt="'+esc(n.title)+'">':'')+'<div class="body">'+esc(n.body||n.details||n.summary||"")+'</div><div class="share-row"><a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(articleUrl)+'" target="_blank" rel="noopener">Facebook-এ শেয়ার করুন</a><a class="share-btn whatsapp" href="https://api.whatsapp.com/send?text='+encodeURIComponent(n.title+" "+articleUrl)+'" target="_blank" rel="noopener">WhatsApp-এ শেয়ার করুন</a></div></article></main></body></html>';
+}
+async function saveStaticArticle(token,n){
+const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/articles/'+n.slug+'.html';
+const headers=apiHeaders(token);
+const existing=await fetch(url,{headers});
+let sha;if(existing.ok){sha=(await existing.json()).sha;}else if(existing.status!==404){throw new Error("স্ট্যাটিক সংবাদ পেজ যাচাই হয়নি: "+existing.status);}
+const payload={message:"Generate static SEO article page",content:btoa(unescape(encodeURIComponent(articleHtml(n,n.slug))))};
+if(sha)payload.sha=sha;
+const saved=await fetch(url,{method:"PUT",headers,body:JSON.stringify(payload)});
+if(!saved.ok)throw new Error("স্ট্যাটিক সংবাদ পেজ তৈরি হয়নি: "+saved.status);
+}
+async function deleteStaticArticle(token,slug){
+if(!slug)return;
+const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/articles/'+slug+'.html';
+const headers=apiHeaders(token),r=await fetch(url,{headers});
+if(r.status===404)return;if(!r.ok)throw new Error("সংবাদ পেজ যাচাই হয়নি: "+r.status);
+const file=await r.json();const del=await fetch(url,{method:"DELETE",headers,body:JSON.stringify({message:"Delete static article page",sha:file.sha})});
+if(!del.ok)throw new Error("স্ট্যাটিক পেজ মুছতে সমস্যা: "+del.status);
+}
+
 async function getNewsFile(token){const url=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;const r=await fetch(url,{headers:apiHeaders(token)});if(!r.ok)throw new Error("সংবাদের ফাইল পড়া যায়নি: "+r.status);const file=await r.json();return {url,file,items:JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))))};}
 function renderNewsList(){const box=document.getElementById("newsList");box.innerHTML=cachedNews.length?cachedNews.map((n,i)=>`<div style="border:1px solid #ddd;border-radius:8px;padding:12px;margin:10px 0"><b>${String(n.title||"শিরোনাম নেই").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}</b><p>${String(n.category||"সংবাদ")} · ${String(n.date||"")}</p><button type="button" onclick="editNews(${i})">সম্পাদনা</button><button type="button" style="background:#b42318" onclick="deleteNews(${i})">মুছে ফেলুন</button></div>`).join(""):"<p>এখনো কোনো সংবাদ নেই।</p>";}
 document.getElementById("loadNews").addEventListener("click",async()=>{const st=document.getElementById("manageStatus"),token=document.getElementById("token").value.trim();if(!token){st.textContent="আগে GitHub Token দিন।";return;}st.textContent="তালিকা আনা হচ্ছে...";try{const d=await getNewsFile(token);cachedNews=d.items;renderNewsList();st.textContent="সংবাদ পাওয়া গেছে: "+cachedNews.length+"টি";}catch(e){st.textContent="সমস্যা: "+e.message;}});
 window.editNews=i=>{const n=cachedNews[i];if(!n)return;editingIndex=i;document.getElementById("title").value=n.title||"";document.getElementById("category").value=n.category||"";document.getElementById("body").value=n.body||n.details||n.summary||"";document.getElementById("image").value=n.image||n.imageUrl||"";document.getElementById("imageFile").value="";document.querySelector("#newsForm button[type=submit]").textContent="পরিবর্তন সংরক্ষণ করুন";document.getElementById("status").textContent="ফর্মে সংবাদ সম্পাদনা করুন।";window.scrollTo({top:0,behavior:"smooth"});};
-window.deleteNews=async i=>{if(!confirm("এই সংবাদটি স্থায়ীভাবে মুছে ফেলবেন?"))return;const token=document.getElementById("token").value.trim(),st=document.getElementById("manageStatus");if(!token){st.textContent="আগে GitHub Token দিন।";return;}st.textContent="মুছে ফেলা হচ্ছে...";try{const d=await getNewsFile(token);d.items.splice(i,1);const content=btoa(unescape(encodeURIComponent(JSON.stringify(d.items,null,2))));const r=await fetch(d.url,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({message:"Delete news",content,sha:d.file.sha})});if(!r.ok)throw new Error("মুছে ফেলা যায়নি: "+r.status);cachedNews=d.items;renderNewsList();st.textContent="সংবাদ মুছে ফেলা হয়েছে।";}catch(e){st.textContent="সমস্যা: "+e.message;}};
+window.deleteNews=async i=>{if(!confirm("এই সংবাদটি স্থায়ীভাবে মুছে ফেলবেন?"))return;const token=document.getElementById("token").value.trim(),st=document.getElementById("manageStatus");if(!token){st.textContent="আগে GitHub Token দিন।";return;}st.textContent="মুছে ফেলা হচ্ছে...";try{const d=await getNewsFile(token);await deleteStaticArticle(token,d.items[i]?.slug);d.items.splice(i,1);const content=btoa(unescape(encodeURIComponent(JSON.stringify(d.items,null,2))));const r=await fetch(d.url,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({message:"Delete news",content,sha:d.file.sha})});if(!r.ok)throw new Error("মুছে ফেলা যায়নি: "+r.status);cachedNews=d.items;renderNewsList();st.textContent="সংবাদ মুছে ফেলা হয়েছে।";}catch(e){st.textContent="সমস্যা: "+e.message;}};
 
 async function uploadNewsImage(token){
 const file=document.getElementById("imageFile").files[0];
@@ -89,7 +122,8 @@ if(!response.ok) throw new Error("GitHub ফাইল পড়া যায়নি:
 const file=await response.json();
 const old=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))));
 const imagePath=await uploadNewsImage(token);
-const item={title:document.getElementById("title").value,category:document.getElementById("category").value,body:document.getElementById("body").value,image:imagePath||(editingIndex>=0?(old[editingIndex]?.image||""):""),date:editingIndex>=0?(old[editingIndex]?.date||new Date().toISOString()):new Date().toISOString()};
+const item={title:document.getElementById("title").value,category:document.getElementById("category").value,body:document.getElementById("body").value,image:imagePath||(editingIndex>=0?(old[editingIndex]?.image||""):""),date:editingIndex>=0?(old[editingIndex]?.date||new Date().toISOString()):new Date().toISOString(),slug:editingIndex>=0?(old[editingIndex]?.slug||("news-"+Date.now())):("news-"+Date.now())};
+await saveStaticArticle(token,item);
 if(editingIndex>=0){old[editingIndex]=item;}else{old.unshift(item);}
 const content=btoa(unescape(encodeURIComponent(JSON.stringify(old,null,2))));
 const save=await fetch(url,{
@@ -101,7 +135,7 @@ sha:file.sha
 })
 });
 if(!save.ok) throw new Error("প্রকাশ হয়নি: "+save.status);
-status.textContent=editingIndex>=0?"সংবাদের পরিবর্তন সংরক্ষিত হয়েছে।":"সংবাদ news.json-এ সংরক্ষিত হয়েছে।";
+status.textContent=editingIndex>=0?"সংবাদ ও আলাদা SEO পেজ আপডেট হয়েছে।":"সংবাদ প্রকাশিত হয়েছে; আলাদা SEO পেজও তৈরি হয়েছে।";
 editingIndex=-1;document.querySelector("#newsForm button[type=submit]").textContent="সংবাদ প্রকাশ করুন";
 document.getElementById("newsForm").reset();
 const refreshed=await getNewsFile(token);cachedNews=refreshed.items;renderNewsList();
