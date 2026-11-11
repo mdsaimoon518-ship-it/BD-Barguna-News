@@ -51,6 +51,11 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 <form id="pollForm">
 <label>জরিপের প্রশ্ন</label>
 <input id="pollQuestion" placeholder="আপনি কোন ধরনের খবর বেশি পড়তে চান?" required>
+<label>জরিপের ছবি ১ (ঐচ্ছিক)</label>
+<input id="pollImageFile1" type="file" accept="image/*">
+<label>জরিপের ছবি ২ (ঐচ্ছিক)</label>
+<input id="pollImageFile2" type="file" accept="image/*">
+<p style="font-size:13px;color:#667085">প্রতিটি ছবি সর্বোচ্চ 5 MB। ছবি না দিলেও জরিপ প্রকাশ করা যাবে।</p>
 <label>উত্তরের বিকল্প (প্রতি লাইনে একটি)</label>
 <textarea id="pollOptions" rows="5" placeholder="বরগুনা\nজাতীয়\nআন্তর্জাতিক\nখেলাধুলা" required></textarea>
 <button type="submit">জরিপ প্রকাশ করুন</button>
@@ -219,17 +224,30 @@ if(options.length<2){status.textContent="কমপক্ষে ২টি উত�
 if(options.length>8){status.textContent="সর্বোচ্চ ৮টি বিকল্প দেওয়া যাবে।";return;}
 status.textContent="জরিপ প্রকাশ করা হচ্ছে...";
 try{
+const pollImages=[];
+for(const inputId of ["pollImageFile1","pollImageFile2"]){
+const selected=document.getElementById(inputId).files[0];
+if(!selected)continue;
+if(!selected.type.startsWith("image/"))throw new Error("জরিপের জন্য শুধু ছবির ফাইল দিন।");
+if(selected.size>5*1024*1024)throw new Error("প্রতিটি জরিপের ছবি 5 MB-এর কম হতে হবে।");
+const ext=(selected.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+const filename="poll-"+Date.now()+"-"+(pollImages.length+1)+"."+ext;
+const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(",")[1]);reader.onerror=()=>reject(new Error("জরিপের ছবি পড়া যায়নি।"));reader.readAsDataURL(selected)});
+const uploaded=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/images/"+filename,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({message:"Upload poll image",content:base64})});
+if(!uploaded.ok)throw new Error("জরিপের ছবি আপলোড হয়নি: "+uploaded.status);
+pollImages.push("images/"+filename);
+}
 const headers=apiHeaders(token),url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/poll.json";
 const response=await fetch(url,{headers});
 let polls=[],sha;
 if(response.ok){const file=await response.json();sha=file.sha;polls=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\\n/g,"")))));if(!Array.isArray(polls))polls=[];}
 else if(response.status!==404)throw new Error("জরিপ ফাইল পড়া যায়নি: "+response.status);
-polls.unshift({id:"poll-"+Date.now(),question,options,createdAt:new Date().toISOString(),active:true});
+polls.unshift({id:"poll-"+Date.now(),question,options,images:pollImages,createdAt:new Date().toISOString(),active:true});
 const payload={message:"Create online reader poll",content:btoa(unescape(encodeURIComponent(JSON.stringify(polls,null,2))))};
 if(sha)payload.sha=sha;
 const save=await fetch(url,{method:"PUT",headers,body:JSON.stringify(payload)});
 if(!save.ok)throw new Error("জরিপ প্রকাশ হয়নি: "+save.status);
-status.textContent="জরিপ প্রকাশিত হয়েছে। ওয়েবসাইটে দেখতে ১–৩ মিনিট অপেক্ষা করে রিফ্রেশ করুন।";
+status.textContent="জরিপ ও নির্বাচিত ছবি প্রকাশিত হয়েছে। ওয়েবসাইটে দেখতে ১–৩ মিনিট অপেক্ষা করে রিফ্রেশ করুন।";
 document.getElementById("pollForm").reset();
 }catch(err){status.textContent="সমস্যা: "+err.message;}
 });
