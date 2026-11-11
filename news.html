@@ -9,7 +9,7 @@ fetch('news.json?v='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new 
 if(!Array.isArray(items)||!Number.isInteger(index)||index<0||!items[index])throw new Error();
 const n=items[index],img=safeUrl(n.image||n.imageUrl||'');
 document.title=(n.title||'সংবাদের বিস্তারিত')+' | BD Barguna News';
-const rawDescription=String(n.summary||n.details||n.body||'বরগুনা ও দেশের সর্বশেষ সংবাদ BD Barguna News-এ পড়ুন.').replace(/\\s+/g,' ').trim();
+const rawDescription=String(n.summary||n.details||n.body||'বরগুনা ও দেশের সর্বশেষ সংবাদ BD Barguna News-এ পড়ুন.').replace(/\s+/g,' ').trim();
 const pageDescription=rawDescription.slice(0,155);
 const canonicalUrl='https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/news.html?index='+index;
 const publishedDate=n.date&&Number.isFinite(Date.parse(n.date))?new Date(n.date).toISOString():'';
@@ -23,7 +23,7 @@ document.getElementById('twitter:description').content=pageDescription;
 if(img){document.getElementById('ogImage').content=img;document.getElementById('twitterImage').content=img;}
 if(publishedDate){const published=document.createElement('meta');published.setAttribute('property','article:published_time');published.content=publishedDate;document.head.appendChild(published);}
 const articleSchema={'@context':'https://schema.org','@type':'NewsArticle','mainEntityOfPage':{'@type':'WebPage','@id':canonicalUrl},'headline':String(n.title||'BD Barguna News').slice(0,110),'description':pageDescription,'datePublished':publishedDate||undefined,'dateModified':publishedDate||undefined,'image':img?[img]:undefined,'articleSection':n.category||'সংবাদ','inLanguage':'bn-BD','author':{'@type':'Organization','name':'BD Barguna News'},'publisher':{'@type':'Organization','name':'BD Barguna News','url':'https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/'}};
-document.getElementById('articleSchema').textContent=JSON.stringify(articleSchema).replace(/</g,'\\\\u003c');
+document.getElementById('articleSchema').textContent=JSON.stringify(articleSchema).replace(/</g,'\\u003c');
 document.getElementById('article').innerHTML='<span class="category">'+esc(n.category||'সংবাদ')+'</span><h1 class="title">'+esc(n.title)+'</h1><div class="meta">'+esc(n.date||'BD Barguna News')+'</div>'+(img?'<img class="photo" src="'+esc(img)+'" alt="'+esc(n.title)+'">':'')+'<div class="body">'+esc(n.body||n.details||n.summary||'এই সংবাদের বিস্তারিত দেওয়া হয়নি।')+'</div><div class="share-row"><a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href)+'" target="_blank" rel="noopener">Facebook-এ শেয়ার করুন</a><a class="share-btn whatsapp" href="https://api.whatsapp.com/send?text='+encodeURIComponent((n.title||'BD Barguna News')+' '+location.href)+'" target="_blank" rel="noopener">WhatsApp-এ শেয়ার করুন</a></div>';
 const comments=document.getElementById('utterances-comments');comments.innerHTML='';
 const commentScript=document.createElement('script');
