@@ -118,6 +118,17 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <div id="videoList"></div>
 
 <hr>
+<h3>🔴 সরাসরি লাইভ সম্প্রচার</h3>
+<p class="note">YouTube Live চালু করে লাইভ ভিডিওর লিংক এখানে দিন। সম্প্রচার শুরু হলে “লাইভ চালু” নির্বাচন করে সংরক্ষণ করুন। বন্ধ করতে টিক তুলে আবার সংরক্ষণ করুন।</p>
+<form id="liveForm">
+<label>লাইভের শিরোনাম</label><input id="liveTitleInput" placeholder="যেমন: বরগুনা থেকে সরাসরি সংবাদ">
+<label>YouTube Live URL</label><input id="liveUrlInput" type="url" placeholder="https://www.youtube.com/live/..." required>
+<label style="display:flex;align-items:center;gap:9px"><input id="liveActive" type="checkbox" style="width:auto;margin:0"> 🔴 লাইভ চালু</label>
+<button type="submit">লাইভ সেটিং সংরক্ষণ করুন</button>
+</form>
+<p id="liveStatus" class="status"></p>
+<button id="loadLive" type="button" class="blue">লাইভ সেটিং দেখুন</button>
+<hr>
 <p class="note">BD Barguna News | সত্যের সন্ধানে, মানুষের পাশে।</p>
 </main>
 
@@ -532,6 +543,36 @@ async function loadVideos(){
 }
 
 $("loadVideos").onclick=loadVideos;
+
+/* LIVE STREAM SETTINGS */
+async function loadLive(){
+ try{
+  const file=await readFile("live.json");
+  const live=file.data?JSON.parse(file.data):{active:false,title:"",url:""};
+  $("liveTitleInput").value=live.title||"";
+  $("liveUrlInput").value=live.url||"";
+  $("liveActive").checked=live.active===true;
+  show("liveStatus",live.active?"লাইভ চালু আছে।":"লাইভ বর্তমানে বন্ধ আছে।");
+ }catch(e){show("liveStatus",e.message,true)}
+}
+$("loadLive").onclick=loadLive;
+$("liveForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const btn=e.submitter;btn.disabled=true;
+ try{
+  const title=$("liveTitleInput").value.trim()||"BD Barguna News লাইভ";
+  const url=$("liveUrlInput").value.trim();
+  const u=new URL(url);
+  if(!["youtube.com","www.youtube.com","youtu.be","m.youtube.com","music.youtube.com"].includes(u.hostname.toLowerCase()))throw new Error("সঠিক YouTube Live URL দিন");
+  const id=(u.hostname.replace(/^www\\./,"")==="youtu.be"?u.pathname.split("/").filter(Boolean)[0]:(u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).slice(-1)[0]));
+  if(!id||! /^[A-Za-z0-9_-]{6,}$/.test(id))throw new Error("YouTube ভিডিও/লাইভ আইডি পাওয়া যায়নি");
+  const config={active:$("liveActive").checked,title,url,date:new Date().toISOString()};
+  await saveFile("live.json",JSON.stringify(config,null,2),"Update live stream settings");
+  show("liveStatus",config.active?"সফল! ওয়েবসাইটে লাইভ চালু করার সেটিং সংরক্ষিত হয়েছে।":"লাইভ বন্ধ করার সেটিং সংরক্ষিত হয়েছে।");
+ }catch(err){show("liveStatus",err.message,true)}
+ finally{btn.disabled=false}
+});
+
 
 $("videoForm").addEventListener("submit",async e=>{
  e.preventDefault();
