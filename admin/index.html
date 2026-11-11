@@ -128,13 +128,247 @@ function articleUrl(n){
   return new URL("../articles/"+encodeURIComponent(n.slug)+".html",location.href).href;
 }
 
+
 function articleHtml(n){
   const title=escHtml(n.title||"সংবাদ");
   const category=escHtml(n.category||"সংবাদ");
   const body=escHtml(n.body||n.details||n.summary||"");
-  const image=String(n.image||"").trim();
-  const imageHtml=image?'<img class="photo" src="'+escHtml(image)+'" alt="'+title+'">':"";
-  return '<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+' | BD Barguna News</title><meta name="description" content="'+body.slice(0,150)+'"><style>body{font-family:Arial,sans-serif;line-height:1.8;max-width:850px;margin:24px auto;padding:16px;color:#18212b}.brand{font-size:24px;font-weight:bold;color:#b5122b;text-decoration:none}.photo{width:100%;max-height:480px;object-fit:cover;border-radius:10px;margin:18px 0}.body{white-space:pre-wrap;font-size:18px}.print-btn{display:inline-block;margin:22px 8px 12px 0;padding:10px 18px;background:#087b42;color:#fff;border:0;border-radius:6px;font-size:16px;cursor:pointer}.home-link{display:inline-block;margin:22px 0}@media print{.print-btn,.home-link,.brand{display:none!important}body{max-width:none;margin:0;padding:0;color:#000}.photo{max-height:360px}}</style></head><body><a class="brand" href="../">BD Barguna News</a><p>'+category+'</p><h1>'+title+'</h1><p>'+escHtml(n.date||"")+'</p>'+imageHtml+'<div class="body">'+body+'</div><button class="print-btn" type="button" onclick="window.print()">🖨️ সংবাদটি প্রিন্ট করুন</button><p><a class="home-link" href="../">প্রচ্ছদে ফিরে যান</a></p></body></html>';
+
+  let image=String(n.image||"").trim();
+  if(image && !/^(https?:|data:|\/|\.\.\/)/i.test(image)){
+    image="../"+image;
+  }
+
+  const imageHtml=image
+    ? `<figure class="photo-card">
+         <img src="${escHtml(image)}" alt="${title}">
+         <figcaption>ছবি: BD Barguna News</figcaption>
+       </figure>`
+    : "";
+
+  const d=n.date?new Date(n.date):null;
+  const published=d&&!Number.isNaN(d.getTime())
+    ?d.toLocaleString("bn-BD",{
+       day:"numeric",month:"long",year:"numeric",
+       hour:"numeric",minute:"2-digit"
+     })
+    :escHtml(n.date||"তারিখ উল্লেখ নেই");
+
+  return `<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title} | BD Barguna News</title>
+<style>
+*{box-sizing:border-box}
+body{
+  font-family:Arial,sans-serif;
+  background:#eef1f5;
+  color:#202936;
+  line-height:1.85;
+  margin:0;
+  padding:24px 12px
+}
+.paper{
+  max-width:850px;
+  margin:auto;
+  padding:28px;
+  background:white;
+  border:1px solid #e2e5ea;
+  border-radius:12px;
+  box-shadow:0 5px 25px rgba(0,0,0,.07)
+}
+.masthead{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  border-bottom:4px solid #b5122b;
+  padding-bottom:17px;
+  margin-bottom:22px
+}
+.logo{
+  width:65px;
+  height:65px;
+  object-fit:contain;
+  border-radius:10px
+}
+.brand-name{
+  color:#b5122b;
+  font-size:25px;
+  font-weight:bold;
+  margin:0;
+  line-height:1.4
+}
+.tagline{
+  color:#667085;
+  font-size:13px;
+  margin:2px 0
+}
+.category{
+  display:inline-block;
+  background:#fff0f1;
+  color:#b5122b;
+  padding:5px 13px;
+  border-radius:20px;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:10px
+}
+h1{
+  font-size:30px;
+  line-height:1.5;
+  color:#18212b;
+  margin:5px 0 12px
+}
+.date-row{
+  color:#667085;
+  font-size:14px;
+  border-bottom:1px solid #e5e7eb;
+  padding-bottom:15px
+}
+.photo-card{
+  margin:22px 0;
+  padding:8px;
+  background:#f8f9fb;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  overflow:hidden
+}
+.photo-card img{
+  width:100%;
+  max-height:480px;
+  object-fit:contain;
+  display:block;
+  border-radius:8px
+}
+.photo-card figcaption{
+  font-size:12px;
+  color:#667085;
+  text-align:center;
+  padding:7px
+}
+.article-body{
+  font-size:18px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  color:#303846;
+  text-align:justify
+}
+.print-meta{
+  display:none;
+  border-top:1px solid #ddd;
+  margin-top:25px;
+  padding-top:12px;
+  font-size:12px;
+  color:#555
+}
+.footer{
+  border-top:2px solid #b5122b;
+  margin-top:30px;
+  padding-top:12px;
+  text-align:center;
+  color:#777;
+  font-size:12px
+}
+.print-btn{
+  background:#087b42;
+  color:white;
+  border:0;
+  padding:12px 22px;
+  border-radius:7px;
+  font-size:16px;
+  cursor:pointer;
+  margin:20px 8px 0 0
+}
+.home-link{
+  display:inline-block;
+  color:#175cd3;
+  margin-top:20px
+}
+@media(max-width:500px){
+  .paper{padding:16px}
+  h1{font-size:23px}
+  .brand-name{font-size:20px}
+  .logo{width:52px;height:52px}
+  .article-body{font-size:16px}
+}
+@page{size:A4;margin:15mm}
+@media print{
+  body{background:white;padding:0;color:#000}
+  .paper{
+    max-width:none;
+    padding:0;
+    border:0;
+    border-radius:0;
+    box-shadow:none
+  }
+  .print-btn,.home-link{display:none!important}
+  .print-meta{display:block}
+  .masthead{border-bottom:3px solid #b5122b}
+  h1{font-size:25px}
+  .article-body{font-size:16px;color:#000}
+  .photo-card{
+    box-shadow:none;
+    break-inside:avoid;
+    background:white
+  }
+  .photo-card img{
+    max-height:400px;
+    object-fit:contain
+  }
+  .footer{margin-top:25px}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<main class="paper">
+  <header class="masthead">
+    <img class="logo" src="../images/app-icon.svg" alt="BD Barguna News Logo">
+    <div>
+      <p class="brand-name">BD Barguna News</p>
+      <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
+    </div>
+  </header>
+
+  <div class="category">${category}</div>
+  <h1>${title}</h1>
+
+  <div class="date-row">
+    📅 প্রকাশিত: ${published}
+  </div>
+
+  ${imageHtml}
+
+  <div class="article-body">${body}</div>
+
+  <div class="print-meta">
+    <strong>BD Barguna News</strong><br>
+    প্রকাশিত: ${published}<br>
+    প্রিন্টের তারিখ: <span id="printDate"></span><br>
+    সত্যের সন্ধানে, মানুষের পাশে।
+  </div>
+
+  <div class="footer">
+    BD Barguna News | সত্যের সন্ধানে, মানুষের পাশে।
+  </div>
+
+  <button class="print-btn" type="button"
+    onclick="window.print()">🖨️ সংবাদটি প্রিন্ট করুন</button>
+
+  <p><a class="home-link" href="../">প্রচ্ছদে ফিরে যান</a></p>
+</main>
+
+<script>
+function updatePrintDate(){
+  const el=document.getElementById("printDate");
+  if(el)el.textContent=new Date().toLocaleString("bn-BD");
+}
+window.addEventListener("beforeprint",updatePrintDate);
+</script>
+</body>
+</html>`;
 }
 
 async function saveStaticArticle(token,n){
