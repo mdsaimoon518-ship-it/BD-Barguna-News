@@ -96,7 +96,7 @@ const title=document.getElementById("videoTitle").value.trim();
 const videoUrl=document.getElementById("videoUrl").value.trim();
 const date=document.getElementById("videoDate").value.trim()||new Date().toLocaleDateString("bn-BD");
 if(!token){status.textContent="আগে GitHub Token দিন।";return;}
-if(!/(youtube\\.com\\/watch\\?v=|youtu\\.be\\/)/i.test(videoUrl)){status.textContent="সঠিক YouTube ভিডিও লিংক দিন।";return;}
+if(!/(youtube\.com\/watch\?v=|youtu\.be\/)/i.test(videoUrl)){status.textContent="সঠিক YouTube ভিডিও লিংক দিন।";return;}
 status.textContent="ভিডিও প্রকাশ করা হচ্ছে...";
 try{
 const headers={"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
@@ -104,7 +104,7 @@ const url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/videos.json"
 const response=await fetch(url,{headers});
 if(!response.ok) throw new Error("ভিডিও ফাইল পড়া যায়নি: "+response.status);
 const file=await response.json();
-const decoded=decodeURIComponent(escape(atob(file.content.replace(/\\n/g,""))));
+const decoded=decodeURIComponent(escape(atob(file.content.replace(/\n/g,""))));
 const videos=JSON.parse(decoded);
 videos.unshift({title:title,url:videoUrl,date:date});
 const content=btoa(unescape(encodeURIComponent(JSON.stringify(videos,null,2))));
