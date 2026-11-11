@@ -213,7 +213,7 @@ e.preventDefault();
 const status=document.getElementById("pollStatus");
 const token=document.getElementById("token").value.trim();
 const question=document.getElementById("pollQuestion").value.trim();
-const options=[...new Set(document.getElementById("pollOptions").value.split(/\\r?\\n/).map(x=>x.trim()).filter(Boolean))];
+const options=[...new Set(document.getElementById("pollOptions").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))];
 if(!token){status.textContent="আগে GitHub Token দিন।";return;}
 if(options.length<2){status.textContent="কমপক্ষে ২টি উত্তর বিকল্প দিন।";return;}
 if(options.length>8){status.textContent="সর্বোচ্চ ৮টি বিকল্প দেওয়া যাবে।";return;}
