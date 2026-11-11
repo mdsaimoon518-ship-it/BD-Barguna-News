@@ -130,6 +130,40 @@ button,a{-webkit-tap-highlight-color:transparent}
 @media(max-width:520px){#backToTop{right:13px;bottom:14px;width:44px;height:44px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#backToTop{transition:none}}
 
+
+/* Featured video newsroom layout */
+.video-section{padding:18px;background:linear-gradient(145deg,#fff,#fff8f9);border:1px solid #f0dce0;border-radius:19px;box-shadow:0 10px 28px rgba(15,23,42,.045)}
+.video-section .section-head{margin-bottom:16px}
+.video-channel-link{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;background:#fff0f2;color:#a90e27;font-size:12px;font-weight:900;border:1px solid #f2cbd2}
+.video-channel-link:hover{background:#a90e27;color:#fff}
+.video-section .video-grid{align-items:stretch}
+.video-section .video-card{min-width:0;border:1px solid #e7e9ef}
+.video-section .video-frame{overflow:hidden}
+.video-section .video-thumb{transition:transform .35s ease}
+.video-section .video-card:hover .video-thumb{transform:scale(1.035)}
+.video-section .video-play-btn{width:62px;height:62px;border-radius:50%;background:#d7193f;border:4px solid rgba(255,255,255,.95)}
+.video-section .video-play-btn:focus-visible{outline:3px solid #f7b733;outline-offset:4px}
+.video-section .video-body{padding:15px 16px}
+.video-section .video-body h3{font-size:17px;line-height:1.55;margin:9px 0}
+.video-section .video-body .readmore{display:inline-flex;margin-top:9px;padding:8px 13px;border-radius:999px;background:#a90e27;color:#fff}
+.video-section .video-body .readmore:hover{background:#79091c}
+.video-section .video-card:first-child{grid-column:span 2;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);align-items:stretch}
+.video-section .video-card:first-child .video-frame{height:100%;min-height:220px}
+.video-section .video-card:first-child .video-body{display:flex;flex-direction:column;justify-content:center;padding:20px}
+.video-section .video-card:first-child .video-body h3{font-size:clamp(18px,2.2vw,23px)}
+@media(max-width:760px){
+ .video-section{padding:13px;border-radius:14px}
+ .video-section .video-card:first-child{grid-column:span 2;grid-template-columns:1fr}
+ .video-section .video-card:first-child .video-frame{min-height:0}
+ .video-section .video-card:first-child .video-body{padding:14px}
+}
+@media(max-width:520px){
+ .video-section .section-head{align-items:flex-start;flex-direction:column}
+ .video-section .video-card:first-child{grid-column:span 1}
+ .video-section .video-card:first-child .video-body h3{font-size:17px}
+ .video-channel-link{font-size:11px}
+}
+
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","description":"বরগুনা ও দেশের সর্বশেষ সংবাদ, ছবি ও ভিডিও খবর।","inLanguage":"bn-BD"}</script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -152,7 +186,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 <section id="latest"><div class="section-head"><h2 class="section-title" id="newsHeading">সর্বশেষ সংবাদ</h2><span class="muted" id="newsCount">সংবাদ</span></div><div class="cards" id="newsCards"><div class="empty"><strong>সংবাদ লোড হচ্ছে...</strong>একটু অপেক্ষা করুন</div></div></section>
 <div class="ad-slot ad-inline" aria-label="বিজ্ঞাপনের স্থান"><strong>ADVERTISEMENT</strong><span>সংবাদের মাঝখানে বিজ্ঞাপন</span></div>
 <section class="live-section" id="liveSection" aria-label="সরাসরি সম্প্রচার"><div class="live-head"><span class="live-dot"></span><span class="live-label">🔴 সরাসরি সম্প্রচার</span><span class="live-title" id="liveTitle">BD Barguna News লাইভ</span></div><div class="live-player" id="livePlayer"></div><div class="live-note">লাইভ সম্প্রচার YouTube-এর মাধ্যমে দেখানো হচ্ছে। ভিডিও চালাতে প্লেয়ারের ▶ বোতামে চাপ দিন।</div></section>
-<section class="video-section" id="videos"><div class="section-head"><h2 class="section-title">ভিডিও নিউজ</h2><span class="muted">ভিডিও প্রতিবেদন</span></div><div class="video-grid" id="videoCards"><div class="empty"><strong>ভিডিও নিউজ শিগগিরই</strong>ভিডিও যুক্ত হলে এখানে দেখা যাবে।</div></div></section>
+<section class="video-section" id="videos"><div class="section-head"><h2 class="section-title">ভিডিও নিউজ</h2><a class="video-channel-link" href="https://www.youtube.com/@mdSaimoon-e5d" target="_blank" rel="noopener">YouTube চ্যানেল দেখুন ↗</a></div><div class="video-grid" id="videoCards"><div class="empty"><strong>ভিডিও নিউজ শিগগিরই</strong>ভিডিও যুক্ত হলে এখানে দেখা যাবে।</div></div></section>
 <div class="columns"><section><div class="section-head"><h2 class="section-title">আরও খবর</h2></div><div id="moreNews"><div class="empty">আরও সংবাদ যুক্ত হলে এখানে দেখা যাবে।</div></div></section><aside class="popular"><h2 class="section-title">জনপ্রিয় সংবাদ</h2><ol id="popularNews"><li>পাঠসংখ্যা অনুযায়ী জনপ্রিয় সংবাদ এখানে দেখা যাবে।</li></ol></aside></div>
 </main>
 <div class="wrap"><div class="ad-slot ad-footer" aria-label="বিজ্ঞাপনের স্থান"><strong>ADVERTISEMENT</strong><span>পৃষ্ঠার নিচের বিজ্ঞাপন</span></div></div>
