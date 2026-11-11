@@ -219,6 +219,28 @@ function articleUrl(n){
  return new URL("../articles/"+encodeURIComponent(n.slug)+".html",location.href).href;
 }
 
+async function copyLink(text){
+ try{
+  if(navigator.clipboard && window.isSecureContext){
+   await navigator.clipboard.writeText(text);
+  }else{
+   const field=document.createElement("textarea");
+   field.value=text;
+   field.style.position="fixed";
+   field.style.opacity="0";
+   document.body.appendChild(field);
+   field.focus();
+   field.select();
+   const ok=document.execCommand("copy");
+   field.remove();
+   if(!ok)throw new Error("কপি করা যায়নি");
+  }
+  alert("সংবাদের লিংক কপি হয়েছে");
+ }catch(err){
+  window.prompt("এই লিংকটি কপি করুন:",text);
+ }
+}
+
 async function uploadImage(file){
  if(!file)return "";
  if(!file.type.startsWith("image/"))throw new Error("ছবি নির্বাচন সঠিক নয়");
@@ -314,12 +336,33 @@ ${image}
 </footer>
 <div class="buttons">
 <button onclick="window.print()">🖨️ সংবাদ প্রিন্ট</button>
+<button class="gray" onclick="copyArticleLink()">🔗 লিংক কপি</button>
 <button class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
 <button class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
 </div>
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
 </main>
 <script>
+window.copyArticleLink=async function(){
+ const text=location.href;
+ try{
+  if(navigator.clipboard && window.isSecureContext){
+   await navigator.clipboard.writeText(text);
+  }else{
+   const field=document.createElement("textarea");
+   field.value=text;
+   field.style.position="fixed";
+   field.style.opacity="0";
+   document.body.appendChild(field);
+   field.focus();
+   field.select();
+   const ok=document.execCommand("copy");
+   field.remove();
+   if(!ok)throw new Error("কপি করা যায়নি");
+  }
+  alert("সংবাদের লিংক কপি হয়েছে");
+ }catch(e){window.prompt("এই লিংকটি কপি করুন:",text);}
+};
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
@@ -387,8 +430,7 @@ $("newsList").addEventListener("click",async e=>{
     await loadNews();
     break;
    case "copy":
-    await navigator.clipboard.writeText(url);
-    alert("লিংক কপি হয়েছে");
+    await copyLink(url);
     break;
    case "facebook":
     window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url),"_blank");
