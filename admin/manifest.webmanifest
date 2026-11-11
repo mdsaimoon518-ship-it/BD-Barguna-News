@@ -1,0 +1,26 @@
+{
+  "id": "/BD-Barguna-News/admin/",
+  "name": "BD Barguna News Admin Panel",
+  "short_name": "BD News Admin",
+  "description": "BD Barguna News-এর অ্যাডমিন প্যানেল",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b5122b",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "../images/app-icon.svg?v=6",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "../images/app-icon.svg?v=6",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
