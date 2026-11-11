@@ -18,7 +18,7 @@ const ctx=canvas.getContext('2d');
 const bg=ctx.createLinearGradient(0,0,1080,1080);bg.addColorStop(0,'#18212b');bg.addColorStop(1,'#b5122b');ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1080);
 ctx.fillStyle='#fff';ctx.font='bold 48px Arial';ctx.fillText('BD BARGUNA NEWS',64,82);
 const finish=()=>{
-ctx.fillStyle='#fff';ctx.font='bold 54px Arial';let words=title.split(/\\s+/),lines=[],line='';
+ctx.fillStyle='#fff';ctx.font='bold 54px Arial';let words=title.split(/\s+/),lines=[],line='';
 for(const w of words){const t=line?line+' '+w:w;if(ctx.measureText(t).width>940&&line){lines.push(line);line=w}else line=t}if(line)lines.push(line);
 let y=photo&&photo.complete&&photo.naturalWidth?750:390;lines.slice(0,4).forEach(t=>{ctx.fillText(t,64,y);y+=72});
 ctx.font='30px Arial';ctx.fillStyle='#ffe3e8';ctx.fillText('বরগুনা ও দেশের সর্বশেষ সংবাদ',64,1015);
@@ -26,4 +26,4 @@ canvas.toBlob(blob=>{if(!blob){alert('ফটো কার্ড তৈরি হ
 };
 if(photo&&photo.src){const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{ctx.drawImage(im,64,125,952,560);finish()};im.onerror=finish;im.src=photo.src;}else finish();
 }
-<\\/script></body></html>
+</script></body></html>
