@@ -24,7 +24,9 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 <label>সংবাদের বিবরণ</label>
 <textarea id="body" rows="8" required></textarea>
 <label>ছবির URL (ঐচ্ছিক)</label>
-<input id="image" type="url">
+<input id="image" type="url" placeholder="ছবির সরাসরি লিংক দিন">
+<label>অথবা মোবাইল থেকে ছবি আপলোড করুন (সর্বোচ্চ 5 MB)</label>
+<input id="imageFile" type="file" accept="image/*">
 <label>GitHub Token</label>
 <input id="token" type="password" required>
 <button type="submit">সংবাদ প্রকাশ করুন</button>
@@ -48,6 +50,20 @@ const owner="mdsaimoon518-ship-it";
 const repo="BD-Barguna-News";
 const path="news.json";
 
+async function uploadNewsImage(token){
+const file=document.getElementById("imageFile").files[0];
+if(!file)return document.getElementById("image").value.trim();
+if(!file.type.startsWith("image/"))throw new Error("শুধু ছবির ফাইল নির্বাচন করুন।");
+if(file.size>5*1024*1024)throw new Error("ছবির আকার 5 MB-এর কম হতে হবে।");
+const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+const name="news-"+Date.now()+"."+ext;
+const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(",")[1]);reader.onerror=()=>reject(new Error("ছবি পড়া যায়নি।"));reader.readAsDataURL(file)});
+const headers={"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
+const res=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/images/${name}`,{method:"PUT",headers,body:JSON.stringify({message:"Upload news image",content:base64})});
+if(!res.ok)throw new Error("ছবি আপলোড হয়নি: "+res.status);
+return "images/"+name;
+}
+
 document.getElementById("newsForm").addEventListener("submit",async e=>{
 e.preventDefault();
 const status=document.getElementById("status");
@@ -68,7 +84,7 @@ old.unshift({
 title:document.getElementById("title").value,
 category:document.getElementById("category").value,
 body:document.getElementById("body").value,
-image:document.getElementById("image").value,
+image:imagePath,
 date:new Date().toISOString()
 });
 const content=btoa(unescape(encodeURIComponent(JSON.stringify(old,null,2))));
