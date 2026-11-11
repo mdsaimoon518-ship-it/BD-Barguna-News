@@ -54,14 +54,16 @@ const path="news.json";
 let editingIndex=-1,cachedNews=[];
 const apiHeaders=token=>({"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"});
 
+function categoryImage(category){const c=String(category||'').toLocaleLowerCase();if(c.includes('বরগুনা')||c.includes('স্থানীয়'))return 'category-barguna.svg';if(c.includes('জাতীয়')||c.includes('বাংলাদেশ'))return 'category-national.svg';if(c.includes('সারাদেশ'))return 'category-country.svg';if(c.includes('খেলা'))return 'category-sports.svg';if(c.includes('আন্তর্জাতিক'))return 'category-world.svg';return 'news-placeholder.svg';}
 function articleHtml(n,slug){
 const base="https://"+location.host+"/BD-Barguna-News/";
 const articleUrl=base+"articles/"+slug+".html";
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rawImage=String(n.image||"").trim();
 const absolute=rawImage.startsWith("https://")||rawImage.startsWith("http://");
-const image=rawImage?(absolute?rawImage:base+(rawImage.startsWith("./")?rawImage.slice(2):rawImage)):base+"images/news-placeholder.svg";
-const pageImage=rawImage?(absolute?rawImage:"../"+(rawImage.startsWith("./")?rawImage.slice(2):rawImage)):"../images/news-placeholder.svg";
+const fallback="images/"+categoryImage(n.category);
+const image=rawImage?(absolute?rawImage:base+(rawImage.startsWith("./")?rawImage.slice(2):rawImage)):base+fallback;
+const pageImage=rawImage?(absolute?rawImage:"../"+(rawImage.startsWith("./")?rawImage.slice(2):rawImage)):"../"+fallback;
 const description=String(n.summary||n.details||n.body||"বরগুনা ও দেশের সর্বশেষ সংবাদ।").trim().slice(0,155);
 const date=n.date&&Number.isFinite(Date.parse(n.date))?new Date(n.date).toISOString():"";
 const bodyText=String(n.body||n.details||n.summary||"").trim();
