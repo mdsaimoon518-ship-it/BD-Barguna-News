@@ -32,6 +32,7 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 <button type="submit">সংবাদ প্রকাশ করুন</button>
 </form>
 <p id="status"></p>
+<hr style="margin:28px 0;border:0;border-top:1px solid #ddd"><h2>প্রকাশিত সংবাদ পরিচালনা</h2><button type="button" id="loadNews">সংবাদের তালিকা দেখুন</button><p id="manageStatus"></p><div id="newsList"></div>
 <hr style="margin:28px 0;border:0;border-top:1px solid #ddd">
 <h2>ভিডিও নিউজ প্রকাশ</h2>
 <form id="videoForm">
@@ -49,6 +50,13 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 const owner="mdsaimoon518-ship-it";
 const repo="BD-Barguna-News";
 const path="news.json";
+let editingIndex=-1,cachedNews=[];
+const apiHeaders=token=>({"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"});
+async function getNewsFile(token){const url=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;const r=await fetch(url,{headers:apiHeaders(token)});if(!r.ok)throw new Error("সংবাদের ফাইল পড়া যায়নি: "+r.status);const file=await r.json();return {url,file,items:JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))))};}
+function renderNewsList(){const box=document.getElementById("newsList");box.innerHTML=cachedNews.length?cachedNews.map((n,i)=>`<div style="border:1px solid #ddd;border-radius:8px;padding:12px;margin:10px 0"><b>${String(n.title||"শিরোনাম নেই").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}</b><p>${String(n.category||"সংবাদ")} · ${String(n.date||"")}</p><button type="button" onclick="editNews(${i})">সম্পাদনা</button><button type="button" style="background:#b42318" onclick="deleteNews(${i})">মুছে ফেলুন</button></div>`).join(""):"<p>এখনো কোনো সংবাদ নেই।</p>";}
+document.getElementById("loadNews").addEventListener("click",async()=>{const st=document.getElementById("manageStatus"),token=document.getElementById("token").value.trim();if(!token){st.textContent="আগে GitHub Token দিন।";return;}st.textContent="তালিকা আনা হচ্ছে...";try{const d=await getNewsFile(token);cachedNews=d.items;renderNewsList();st.textContent="সংবাদ পাওয়া গেছে: "+cachedNews.length+"টি";}catch(e){st.textContent="সমস্যা: "+e.message;}});
+window.editNews=i=>{const n=cachedNews[i];if(!n)return;editingIndex=i;document.getElementById("title").value=n.title||"";document.getElementById("category").value=n.category||"";document.getElementById("body").value=n.body||n.details||n.summary||"";document.getElementById("image").value=n.image||n.imageUrl||"";document.getElementById("imageFile").value="";document.querySelector("#newsForm button[type=submit]").textContent="পরিবর্তন সংরক্ষণ করুন";document.getElementById("status").textContent="ফর্মে সংবাদ সম্পাদনা করুন।";window.scrollTo({top:0,behavior:"smooth"});};
+window.deleteNews=async i=>{if(!confirm("এই সংবাদটি স্থায়ীভাবে মুছে ফেলবেন?"))return;const token=document.getElementById("token").value.trim(),st=document.getElementById("manageStatus");if(!token){st.textContent="আগে GitHub Token দিন।";return;}st.textContent="মুছে ফেলা হচ্ছে...";try{const d=await getNewsFile(token);d.items.splice(i,1);const content=btoa(unescape(encodeURIComponent(JSON.stringify(d.items,null,2))));const r=await fetch(d.url,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({message:"Delete news",content,sha:d.file.sha})});if(!r.ok)throw new Error("মুছে ফেলা যায়নি: "+r.status);cachedNews=d.items;renderNewsList();st.textContent="সংবাদ মুছে ফেলা হয়েছে।";}catch(e){st.textContent="সমস্যা: "+e.message;}};
 
 async function uploadNewsImage(token){
 const file=document.getElementById("imageFile").files[0];
@@ -81,13 +89,8 @@ if(!response.ok) throw new Error("GitHub ফাইল পড়া যায়নি:
 const file=await response.json();
 const old=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))));
 const imagePath=await uploadNewsImage(token);
-old.unshift({
-title:document.getElementById("title").value,
-category:document.getElementById("category").value,
-body:document.getElementById("body").value,
-image:imagePath,
-date:new Date().toISOString()
-});
+const item={title:document.getElementById("title").value,category:document.getElementById("category").value,body:document.getElementById("body").value,image:imagePath||(editingIndex>=0?(old[editingIndex]?.image||""):""),date:editingIndex>=0?(old[editingIndex]?.date||new Date().toISOString()):new Date().toISOString()};
+if(editingIndex>=0){old[editingIndex]=item;}else{old.unshift(item);}
 const content=btoa(unescape(encodeURIComponent(JSON.stringify(old,null,2))));
 const save=await fetch(url,{
 method:"PUT",headers,
@@ -98,8 +101,10 @@ sha:file.sha
 })
 });
 if(!save.ok) throw new Error("প্রকাশ হয়নি: "+save.status);
-status.textContent="সংবাদ news.json-এ সংরক্ষিত হয়েছে।";
+status.textContent=editingIndex>=0?"সংবাদের পরিবর্তন সংরক্ষিত হয়েছে।":"সংবাদ news.json-এ সংরক্ষিত হয়েছে।";
+editingIndex=-1;document.querySelector("#newsForm button[type=submit]").textContent="সংবাদ প্রকাশ করুন";
 document.getElementById("newsForm").reset();
+const refreshed=await getNewsFile(token);cachedNews=refreshed.items;renderNewsList();
 }catch(err){
 status.textContent="সমস্যা: "+err.message;
 }
