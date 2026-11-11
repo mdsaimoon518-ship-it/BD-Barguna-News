@@ -564,7 +564,7 @@ $("liveForm").addEventListener("submit",async e=>{
   const url=$("liveUrlInput").value.trim();
   const u=new URL(url);
   if(!["youtube.com","www.youtube.com","youtu.be","m.youtube.com","music.youtube.com"].includes(u.hostname.toLowerCase()))throw new Error("সঠিক YouTube Live URL দিন");
-  const id=(u.hostname.replace(/^www\\./,"")==="youtu.be"?u.pathname.split("/").filter(Boolean)[0]:(u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).slice(-1)[0]));
+    const id=(u.hostname.toLowerCase()==="youtu.be"?u.pathname.split("/").filter(Boolean)[0]:(u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).slice(-1)[0]));
   if(!id||! /^[A-Za-z0-9_-]{6,}$/.test(id))throw new Error("YouTube ভিডিও/লাইভ আইডি পাওয়া যায়নি");
   const config={active:$("liveActive").checked,title,url,date:new Date().toISOString()};
   await saveFile("live.json",JSON.stringify(config,null,2),"Update live stream settings");
