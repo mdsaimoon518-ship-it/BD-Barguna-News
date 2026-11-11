@@ -46,6 +46,17 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 <button type="submit">ভিডিও প্রকাশ করুন</button>
 </form>
 <p style="font-size:13px;color:#667085">উপরের GitHub Token ব্যবহার করেই ভিডিও সংরক্ষিত হবে। টোকেন কোথাও সংরক্ষণ করা হয় না।</p>
+<hr style="margin:28px 0;border:0;border-top:1px solid #ddd">
+<h2>অনলাইন জরিপ তৈরি ও প্রকাশ</h2>
+<form id="pollForm">
+<label>জরিপের প্রশ্ন</label>
+<input id="pollQuestion" placeholder="আপনি কোন ধরনের খবর বেশি পড়তে চান?" required>
+<label>উত্তরের বিকল্প (প্রতি লাইনে একটি)</label>
+<textarea id="pollOptions" rows="5" placeholder="বরগুনা\nজাতীয়\nআন্তর্জাতিক\nখেলাধুলা" required></textarea>
+<button type="submit">জরিপ প্রকাশ করুন</button>
+</form>
+<p id="pollStatus"></p>
+<p style="font-size:13px;color:#667085">জরিপ তৈরি করলে প্রশ্ন ও বিকল্প ওয়েবসাইটে দেখা যাবে। সবার ভোট গণনা করতে আলাদা অনলাইন ভোট-সার্ভার সংযোগ প্রয়োজন।</p>
 </main>
 <script>
 const owner="mdsaimoon518-ship-it";
@@ -195,6 +206,32 @@ const refreshed=await getNewsFile(token);cachedNews=refreshed.items;renderNewsLi
 }catch(err){
 status.textContent="সমস্যা: "+err.message;
 }
+});
+
+document.getElementById("pollForm").addEventListener("submit",async e=>{
+e.preventDefault();
+const status=document.getElementById("pollStatus");
+const token=document.getElementById("token").value.trim();
+const question=document.getElementById("pollQuestion").value.trim();
+const options=[...new Set(document.getElementById("pollOptions").value.split(/\\r?\\n/).map(x=>x.trim()).filter(Boolean))];
+if(!token){status.textContent="আগে GitHub Token দিন।";return;}
+if(options.length<2){status.textContent="কমপক্ষে ২টি উত্তর বিকল্প দিন।";return;}
+if(options.length>8){status.textContent="সর্বোচ্চ ৮টি বিকল্প দেওয়া যাবে।";return;}
+status.textContent="জরিপ প্রকাশ করা হচ্ছে...";
+try{
+const headers=apiHeaders(token),url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/poll.json";
+const response=await fetch(url,{headers});
+let polls=[],sha;
+if(response.ok){const file=await response.json();sha=file.sha;polls=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\\n/g,"")))));if(!Array.isArray(polls))polls=[];}
+else if(response.status!==404)throw new Error("জরিপ ফাইল পড়া যায়নি: "+response.status);
+polls.unshift({id:"poll-"+Date.now(),question,options,createdAt:new Date().toISOString(),active:true});
+const payload={message:"Create online reader poll",content:btoa(unescape(encodeURIComponent(JSON.stringify(polls,null,2))))};
+if(sha)payload.sha=sha;
+const save=await fetch(url,{method:"PUT",headers,body:JSON.stringify(payload)});
+if(!save.ok)throw new Error("জরিপ প্রকাশ হয়নি: "+save.status);
+status.textContent="জরিপ প্রকাশিত হয়েছে। ওয়েবসাইটে দেখতে ১–৩ মিনিট অপেক্ষা করে রিফ্রেশ করুন।";
+document.getElementById("pollForm").reset();
+}catch(err){status.textContent="সমস্যা: "+err.message;}
 });
 
 document.getElementById("videoForm").addEventListener("submit",async e=>{
