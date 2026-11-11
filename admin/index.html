@@ -265,6 +265,9 @@ function articleHTML(n){
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="${esc(n.body.slice(0,150))}">
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 <title>${esc(n.title)} | BD Barguna News</title>
 <style>
 *{box-sizing:border-box}
@@ -301,8 +304,10 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 <div class="category">${esc(n.category)}</div>
 <h1>${esc(n.title)}</h1>
 <div class="date">📅 প্রকাশিত: ${dateText}</div>
+<div id="articleViewCount" class="date" aria-live="polite">👁️ পাঠসংখ্যা লোড হচ্ছে...</div>
 ${image}
 <div class="article">${esc(n.body)}</div>
+<section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
 সত্যের সন্ধানে, মানুষের পাশে।
@@ -314,6 +319,15 @@ ${image}
 </div>
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
 </main>
+<script>
+(function(){
+const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
+if(!firebase.apps.length)firebase.initializeApp(config);
+const count=document.getElementById("articleViewCount");
+firebase.auth().signInAnonymously().then(()=>firebase.database().ref("articleViews/${esc(n.slug)}").transaction(v=>(Number(v)||0)+1)).then(()=>firebase.database().ref("articleViews/${esc(n.slug)}").once("value")).then(s=>{count.textContent="👁️ মোট পাঠ: "+String(s.val()||0).replace(/[0-9]/g,d=>"০১২৩৪৫৬৭৮৯"[Number(d)]);}).catch(()=>{count.textContent="👁️ ভিউ তথ্য এখন পাওয়া যাচ্ছে না";});
+document.getElementById("articleComments").src="https://www.facebook.com/plugins/comments.php?href="+encodeURIComponent(location.href)+"&width=100%25&numposts=10&order_by=reverse_time";
+})();
+</script>
 </body>
 </html>`;
 }
