@@ -30,6 +30,18 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 <button type="submit">সংবাদ প্রকাশ করুন</button>
 </form>
 <p id="status"></p>
+<hr style="margin:28px 0;border:0;border-top:1px solid #ddd">
+<h2>ভিডিও নিউজ প্রকাশ</h2>
+<form id="videoForm">
+<label>ভিডিওর শিরোনাম</label>
+<input id="videoTitle" required>
+<label>YouTube ভিডিও লিংক</label>
+<input id="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." required>
+<label>প্রকাশের তারিখ (ঐচ্ছিক)</label>
+<input id="videoDate" placeholder="আজকের তারিখ স্বয়ংক্রিয় হবে">
+<button type="submit">ভিডিও প্রকাশ করুন</button>
+</form>
+<p style="font-size:13px;color:#667085">উপরের GitHub Token ব্যবহার করেই ভিডিও সংরক্ষিত হবে। টোকেন কোথাও সংরক্ষণ করা হয় না।</p>
 </main>
 <script>
 const owner="mdsaimoon518-ship-it";
@@ -74,6 +86,33 @@ document.getElementById("newsForm").reset();
 }catch(err){
 status.textContent="সমস্যা: "+err.message;
 }
+});
+
+document.getElementById("videoForm").addEventListener("submit",async e=>{
+e.preventDefault();
+const status=document.getElementById("status");
+const token=document.getElementById("token").value.trim();
+const title=document.getElementById("videoTitle").value.trim();
+const videoUrl=document.getElementById("videoUrl").value.trim();
+const date=document.getElementById("videoDate").value.trim()||new Date().toLocaleDateString("bn-BD");
+if(!token){status.textContent="আগে GitHub Token দিন।";return;}
+if(!/(youtube\\.com\\/watch\\?v=|youtu\\.be\\/)/i.test(videoUrl)){status.textContent="সঠিক YouTube ভিডিও লিংক দিন।";return;}
+status.textContent="ভিডিও প্রকাশ করা হচ্ছে...";
+try{
+const headers={"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
+const url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/videos.json";
+const response=await fetch(url,{headers});
+if(!response.ok) throw new Error("ভিডিও ফাইল পড়া যায়নি: "+response.status);
+const file=await response.json();
+const decoded=decodeURIComponent(escape(atob(file.content.replace(/\\n/g,""))));
+const videos=JSON.parse(decoded);
+videos.unshift({title:title,url:videoUrl,date:date});
+const content=btoa(unescape(encodeURIComponent(JSON.stringify(videos,null,2))));
+const save=await fetch(url,{method:"PUT",headers,body:JSON.stringify({message:"Publish video news",content:content,sha:file.sha})});
+if(!save.ok) throw new Error("ভিডিও প্রকাশ হয়নি: "+save.status);
+status.textContent="ভিডিও নিউজ সফলভাবে প্রকাশ হয়েছে। হোমপেজে দেখতে কিছুক্ষণ অপেক্ষা করুন।";
+document.getElementById("videoForm").reset();
+}catch(err){status.textContent="সমস্যা: "+err.message;}
 });
 </script>
 </body>
