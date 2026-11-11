@@ -121,6 +121,15 @@ button,a{-webkit-tap-highlight-color:transparent}
 @media(max-width:760px){.hero-image{height:245px}}
 @media(max-width:520px){.hero-image{height:210px}.hero:before{top:10px;left:10px}}
 
+
+/* Reading progress and back-to-top */
+#readingProgress{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,#f7b733,#fff,#f7b733);z-index:9999;box-shadow:0 1px 5px #0002;transition:width .08s linear}
+#backToTop{position:fixed;right:17px;bottom:20px;z-index:999;display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:50%;background:linear-gradient(135deg,#a90e27,#d32645);color:#fff;font-size:22px;font-weight:900;box-shadow:0 7px 22px #a90e2745;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .2s,visibility .2s,transform .2s}
+#backToTop.visible{opacity:1;visibility:visible;transform:translateY(0)}
+#backToTop:focus-visible{outline:3px solid #f7b733;outline-offset:3px}
+@media(max-width:520px){#backToTop{right:13px;bottom:14px;width:44px;height:44px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#backToTop{transition:none}}
+
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","description":"বরগুনা ও দেশের সর্বশেষ সংবাদ, ছবি ও ভিডিও খবর।","inLanguage":"bn-BD"}</script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -128,6 +137,8 @@ button,a{-webkit-tap-highlight-color:transparent}
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 </head>
 <body>
+<div id="readingProgress" aria-hidden="true"></div>
+<button id="backToTop" type="button" aria-label="পাতার উপরে যান" title="উপরে যান">↑</button>
 <div class="topbar"><div class="wrap"><span id="today">আজকের সংবাদ</span><span>বরগুনা, বাংলাদেশ</span></div></div>
 <header><div class="wrap head"><div><div class="brand"><img src="images/app-icon.svg?v=5" alt="BD Barguna News নতুন লোগো">BD Barguna News</div><div class="tagline">বরগুনা ও দেশের সর্বশেষ সংবাদ</div></div><form class="search" id="searchForm"><input id="q" type="search" placeholder="খবর খুঁজুন..." aria-label="খবর খুঁজুন"><button type="submit">খুঁজুন</button></form></div></header>
 <nav aria-label="প্রধান বিভাগ"><div class="wrap nav"><details class="more-menu"><summary aria-label="আরও মেনু">⋮</summary><div class="more-menu-panel"><a href="#latest" data-category="all">হোম</a><a href="#latest" data-category="আজকের সর্বশেষ খবর">আজকের সর্বশেষ খবর</a><a href="#videos">ভিডিও</a><a href="#quick-links">ই-পেপার ও প্রয়োজনীয় লিংক</a><a href="admin/">অ্যাডমিন প্যানেল</a><a href="contact.html">যোগাযোগ</a></div></details><a href="#latest" data-category="all">হোম</a><a href="#latest" data-category="all">আজকের সর্বশেষ খবর</a><a href="#latest" data-category="বিশেষ সংবাদ">বিশেষ সংবাদ</a><a href="#latest" data-category="করোনাভাইরাস">করোনাভাইরাস</a><a href="#latest" data-category="বরগুনা">বরগুনা</a><a href="#latest" data-category="সম্পাদকীয়">সম্পাদকীয়</a><a href="#latest" data-category="জাতীয়">জাতীয়</a><a href="#latest" data-category="রাজধানী">রাজধানী</a><a href="#latest" data-category="সারাদেশ">সারাদেশ</a><a href="#latest" data-category="রাজনীতি">রাজনীতি</a><a href="#latest" data-category="বিশ্ব সংবাদ">বিশ্ব সংবাদ</a><a href="#latest" data-category="খেলা">খেলা</a><a href="#latest" data-category="বিনোদন">বিনোদন</a><a href="#latest" data-category="অর্থনীতি">অর্থনীতি</a><a href="#latest" data-category="টেক">টেক</a><a href="#latest" data-category="শিক্ষা">শিক্ষা</a><a href="#latest" data-category="স্বাস্থ্য">স্বাস্থ্য</a><a href="#latest" data-category="চাকরি">চাকরি</a><a href="#latest" data-category="সোশ্যাল মিডিয়া">সোশ্যাল মিডিয়া</a><a href="#latest" data-category="আইন-আদালত">আইন-আদালত</a><a href="#latest" data-category="প্রজন্ম">প্রজন্ম</a><a href="#latest" data-category="প্রবাস">প্রবাস</a><a href="#latest" data-category="ক্যাম্পাস">ক্যাম্পাস</a><a href="#latest" data-category="সাহিত্য">সাহিত্য</a><a href="#latest" data-category="ধর্ম">ধর্ম</a><a href="#latest" data-category="ছবি">ছবি</a><a href="#videos">ভিডিও</a><a href="#quick-links">ই-পেপার</a><a href="#latest" data-category="English">English</a></div></nav>
@@ -304,5 +315,26 @@ document.addEventListener('click',e=>{const play=e.target.closest('.video-play-b
 document.addEventListener('click',e=>{const a=e.target.closest('a[data-category]');if(!a)return;e.preventDefault();activeCategory=a.dataset.category||'all';searchQuery='';document.getElementById('q').value='';showNews(allNews,activeCategory);document.getElementById('latest').scrollIntoView({behavior:'smooth',block:'start'});});
 document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();searchQuery=document.getElementById('q').value.trim().toLocaleLowerCase();activeCategory='all';showNews(allNews,'all');showVideos(searchQuery?allVideos.filter(v=>[v.title,v.url].join(' ').toLocaleLowerCase().includes(searchQuery)):allVideos);document.getElementById('latest').scrollIntoView({behavior:'smooth',block:'start'});});
 })();
+
+/* Accessible page progress and quick return to top */
+(()=>{
+ const bar=document.getElementById('readingProgress');
+ const topButton=document.getElementById('backToTop');
+ if(!bar||!topButton)return;
+ let ticking=false;
+ const update=()=>{
+  const root=document.documentElement;
+  const max=root.scrollHeight-root.clientHeight;
+  const progress=max>0?(root.scrollTop/max)*100:0;
+  bar.style.width=Math.min(100,Math.max(0,progress))+'%';
+  topButton.classList.toggle('visible',root.scrollTop>420);
+  ticking=false;
+ };
+ window.addEventListener('scroll',()=>{if(!ticking){window.requestAnimationFrame(update);ticking=true;}},{passive:true});
+ window.addEventListener('resize',update,{passive:true});
+ topButton.addEventListener('click',()=>window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+ update();
+})();
+
 </script>
 </body></html>
