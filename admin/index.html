@@ -1,22 +1,38 @@
-
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="theme-color" content="#b5122b">\n<link rel="icon" type="image/svg+xml" href="../images/app-icon.svg?v=6">\n<link rel="apple-touch-icon" href="../images/app-icon.svg?v=6">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#b5122b">
+<link rel="icon" type="image/svg+xml" href="../images/app-icon.svg?v=6">
+<link rel="apple-touch-icon" href="../images/app-icon.svg?v=6">
 <link rel="manifest" href="manifest.webmanifest">
 <title>BD Barguna News Admin</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f2f4f7;padding:20px}
-main{max-width:550px;margin:auto;background:white;padding:20px;border-radius:10px}
-input,textarea,button{width:100%;box-sizing:border-box;padding:12px;margin:8px 0}
-button{background:#087b42;color:white;border:0;border-radius:5px}
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f2f4f7;padding:20px;margin:0}
+main{max-width:650px;margin:auto;background:white;padding:20px;border-radius:10px}
+input,textarea,button{width:100%;padding:12px;margin:8px 0;font:inherit}
+button{background:#087b42;color:white;border:0;border-radius:5px;cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
+.news-card{border:1px solid #ddd;border-radius:8px;padding:12px;margin:12px 0}
+.news-card p{overflow-wrap:anywhere}
+.action-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.action-row button{margin:3px 0}
+.copy-btn{background:#175cd3}
+.facebook-btn{background:#1877f2}
+.whatsapp-btn{background:#128c4a}
+.edit-btn{background:#667085}
+.delete-btn{background:#b42318}
+.small-note{font-size:13px;color:#667085;line-height:1.6}
+.status{overflow-wrap:anywhere}
+@media(max-width:420px){body{padding:8px}main{padding:14px}.action-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <main>
 <h2>BD Barguna News — Admin Panel</h2>
+
 <form id="newsForm">
 <label>সংবাদের শিরোনাম</label>
 <input id="title" required>
@@ -29,11 +45,17 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 <label>অথবা মোবাইল থেকে ছবি আপলোড করুন (সর্বোচ্চ 5 MB)</label>
 <input id="imageFile" type="file" accept="image/*">
 <label>GitHub Token</label>
-<input id="token" type="password" required>
+<input id="token" type="password" required autocomplete="off">
 <button type="submit">সংবাদ প্রকাশ করুন</button>
 </form>
-<p id="status"></p>
-<hr style="margin:28px 0;border:0;border-top:1px solid #ddd"><h2>প্রকাশিত সংবাদ পরিচালনা</h2><button type="button" id="loadNews">সংবাদের তালিকা দেখুন</button><p id="manageStatus"></p><div id="newsList"></div>
+<p id="status" class="status"></p>
+
+<hr style="margin:28px 0;border:0;border-top:1px solid #ddd">
+<h2>প্রকাশিত সংবাদ পরিচালনা</h2>
+<button type="button" id="loadNews">সংবাদের তালিকা দেখুন</button>
+<p id="manageStatus" class="status"></p>
+<div id="newsList"></div>
+
 <hr style="margin:28px 0;border:0;border-top:1px solid #ddd">
 <h2>ভিডিও নিউজ প্রকাশ</h2>
 <form id="videoForm">
@@ -45,212 +67,365 @@ button{background:#087b42;color:white;border:0;border-radius:5px}
 <input id="videoDate" placeholder="আজকের তারিখ স্বয়ংক্রিয় হবে">
 <button type="submit">ভিডিও প্রকাশ করুন</button>
 </form>
-<p style="font-size:13px;color:#667085">উপরের GitHub Token ব্যবহার করেই ভিডিও সংরক্ষিত হবে। টোকেন কোথাও সংরক্ষণ করা হয় না।</p>
+<p class="small-note">উপরের GitHub Token ব্যবহার করেই ভিডিও সংরক্ষিত হবে। টোকেন কোথাও সংরক্ষণ করা হয় না।</p>
+
 <hr style="margin:28px 0;border:0;border-top:1px solid #ddd">
 <h2>অনলাইন জরিপ তৈরি ও প্রকাশ</h2>
 <form id="pollForm">
 <label>জরিপ প্রকাশের GitHub Token</label>
 <input id="pollToken" type="password" autocomplete="off" required placeholder="এখানে GitHub Token দিন">
-<p style="font-size:13px;color:#667085">এই টোকেন শুধু জরিপ ও জরিপের ছবি প্রকাশে ব্যবহার হবে; কোথাও সংরক্ষণ করা হয় না।</p>
+<p class="small-note">এই টোকেন শুধু জরিপ ও জরিপের ছবি প্রকাশে ব্যবহার হবে; কোথাও সংরক্ষণ করা হয় না।</p>
 <label>জরিপের প্রশ্ন</label>
 <input id="pollQuestion" placeholder="আপনি কোন ধরনের খবর বেশি পড়তে চান?" required>
 <label>জরিপের ছবি ১ (ঐচ্ছিক)</label>
 <input id="pollImageFile1" type="file" accept="image/*">
 <label>জরিপের ছবি ২ (ঐচ্ছিক)</label>
 <input id="pollImageFile2" type="file" accept="image/*">
-<p style="font-size:13px;color:#667085">প্রতিটি ছবি সর্বোচ্চ 5 MB। ছবি না দিলেও জরিপ প্রকাশ করা যাবে।</p>
+<p class="small-note">প্রতিটি ছবি সর্বোচ্চ 5 MB। ছবি না দিলেও জরিপ প্রকাশ করা যাবে।</p>
 <label>উত্তরের বিকল্প (প্রতি লাইনে একটি)</label>
-<textarea id="pollOptions" rows="5" placeholder="বরগুনা\nজাতীয়\nআন্তর্জাতিক\nখেলাধুলা" required></textarea>
+<textarea id="pollOptions" rows="5" placeholder="বরগুনা&#10;জাতীয়&#10;আন্তর্জাতিক&#10;খেলাধুলা" required></textarea>
 <button type="submit">জরিপ প্রকাশ করুন</button>
 </form>
-<p id="pollStatus"></p>
-<p style="font-size:13px;color:#667085">জরিপ প্রকাশের পর পাঠকেরা ওয়েবসাইটে ভোট দিতে পারবেন। ভোটের ফলাফল Firebase Realtime Database থেকে সরাসরি দেখানো হবে। Firebase Database Rules ঠিকভাবে সেট করা থাকতে হবে।</p>
+<p id="pollStatus" class="status"></p>
+<p class="small-note">জরিপ প্রকাশের পর পাঠকেরা ওয়েবসাইটে ভোট দিতে পারবেন। ভোটের ফলাফল Firebase Realtime Database থেকে সরাসরি দেখানো হবে। Firebase Database Rules ঠিকভাবে সেট করা থাকতে হবে।</p>
 </main>
+
 <script>
 const owner="mdsaimoon518-ship-it";
 const repo="BD-Barguna-News";
 const path="news.json";
 let editingIndex=-1,cachedNews=[];
-const apiHeaders=token=>({"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"});
 
-function categoryImage(category){const c=String(category||'').toLocaleLowerCase();if(c.includes('বরগুনা')||c.includes('স্থানীয়'))return 'category-barguna.svg';if(c.includes('জাতীয়')||c.includes('বাংলাদেশ'))return 'category-national.svg';if(c.includes('সারাদেশ'))return 'category-country.svg';if(c.includes('খেলা'))return 'category-sports.svg';if(c.includes('আন্তর্জাতিক'))return 'category-world.svg';return 'news-placeholder.svg';}
-function articleHtml(n,slug){
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const title=esc(n.title||"সংবাদ");
-const category=esc(n.category||"সংবাদ");
-const body=esc(n.body||n.details||n.summary||"");
-const image=String(n.image||"").trim();
-const imageHtml=image?'<img class="photo" src="'+esc(image)+'" alt="'+title+'">':"";
-return '<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+' | BD Barguna News</title><meta name="description" content="'+body.slice(0,150)+'"><style>body{font-family:Arial,sans-serif;line-height:1.8;max-width:850px;margin:24px auto;padding:16px;color:#18212b}.brand{font-size:24px;font-weight:bold;color:#b5122b}.photo{width:100%;max-height:480px;object-fit:cover;border-radius:10px;margin:18px 0}.body{white-space:pre-wrap;font-size:18px}</style></head><body><a class="brand" href="../">BD Barguna News</a><p>'+category+'</p><h1>'+title+'</h1><p>'+esc(n.date||"")+'</p>'+imageHtml+'<div class="body">'+body+'</div><p><a href="../">প্রচ্ছদে ফিরে যান</a></p></body></html>';
+const apiHeaders=token=>({
+  "Authorization":"Bearer "+token,
+  "Accept":"application/vnd.github+json",
+  "X-GitHub-Api-Version":"2022-11-28"
+});
+
+function escHtml(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
 }
+
+function articleUrl(n){
+  if(!n||!n.slug)return "";
+  return new URL("../articles/"+encodeURIComponent(n.slug)+".html",location.href).href;
+}
+
+function articleHtml(n){
+  const title=escHtml(n.title||"সংবাদ");
+  const category=escHtml(n.category||"সংবাদ");
+  const body=escHtml(n.body||n.details||n.summary||"");
+  const image=String(n.image||"").trim();
+  const imageHtml=image?'<img class="photo" src="'+escHtml(image)+'" alt="'+title+'">':"";
+  return '<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+' | BD Barguna News</title><meta name="description" content="'+body.slice(0,150)+'"><style>body{font-family:Arial,sans-serif;line-height:1.8;max-width:850px;margin:24px auto;padding:16px;color:#18212b}.brand{font-size:24px;font-weight:bold;color:#b5122b;text-decoration:none}.photo{width:100%;max-height:480px;object-fit:cover;border-radius:10px;margin:18px 0}.body{white-space:pre-wrap;font-size:18px}</style></head><body><a class="brand" href="../">BD Barguna News</a><p>'+category+'</p><h1>'+title+'</h1><p>'+escHtml(n.date||"")+'</p>'+imageHtml+'<div class="body">'+body+'</div><p><a href="../">প্রচ্ছদে ফিরে যান</a></p></body></html>';
+}
+
 async function saveStaticArticle(token,n){
-const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/articles/'+n.slug+'.html';
-const headers=apiHeaders(token);
-const existing=await fetch(url,{headers});
-let sha;if(existing.ok){sha=(await existing.json()).sha;}else if(existing.status!==404){throw new Error("স্ট্যাটিক সংবাদ পেজ যাচাই হয়নি: "+existing.status);}
-const payload={message:"Generate static SEO article page",content:btoa(unescape(encodeURIComponent(articleHtml(n,n.slug))))};
-if(sha)payload.sha=sha;
-const saved=await fetch(url,{method:"PUT",headers,body:JSON.stringify(payload)});
-if(!saved.ok)throw new Error("স্ট্যাটিক সংবাদ পেজ তৈরি হয়নি: "+saved.status);
+  const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/articles/'+n.slug+'.html';
+  const headers=apiHeaders(token);
+  const existing=await fetch(url,{headers});
+  let sha;
+  if(existing.ok) sha=(await existing.json()).sha;
+  else if(existing.status!==404) throw new Error("স্ট্যাটিক সংবাদ পেজ যাচাই হয়নি: "+existing.status);
+  const payload={
+    message:"Generate static SEO article page",
+    content:btoa(unescape(encodeURIComponent(articleHtml(n))))
+  };
+  if(sha)payload.sha=sha;
+  const saved=await fetch(url,{method:"PUT",headers,body:JSON.stringify(payload)});
+  if(!saved.ok)throw new Error("স্ট্যাটিক সংবাদ পেজ তৈরি হয়নি: "+saved.status);
 }
+
 async function deleteStaticArticle(token,slug){
-if(!slug)return;
-const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/articles/'+slug+'.html';
-const headers=apiHeaders(token),r=await fetch(url,{headers});
-if(r.status===404)return;if(!r.ok)throw new Error("সংবাদ পেজ যাচাই হয়নি: "+r.status);
-const file=await r.json();const del=await fetch(url,{method:"DELETE",headers,body:JSON.stringify({message:"Delete static article page",sha:file.sha})});
-if(!del.ok)throw new Error("স্ট্যাটিক পেজ মুছতে সমস্যা: "+del.status);
+  if(!slug)return;
+  const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/articles/'+slug+'.html';
+  const headers=apiHeaders(token),r=await fetch(url,{headers});
+  if(r.status===404)return;
+  if(!r.ok)throw new Error("সংবাদ পেজ যাচাই হয়নি: "+r.status);
+  const file=await r.json();
+  const del=await fetch(url,{method:"DELETE",headers,body:JSON.stringify({
+    message:"Delete static article page",sha:file.sha
+  })});
+  if(!del.ok)throw new Error("স্ট্যাটিক পেজ মুছতে সমস্যা: "+del.status);
 }
 
 async function saveSitemap(token,items){
-const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/sitemap.xml';
-const headers=apiHeaders(token),r=await fetch(url,{headers});
-if(!r.ok)throw new Error("সাইটম্যাপ পড়া যায়নি: "+r.status);
-const file=await r.json(),base="https://"+location.host+"/BD-Barguna-News/";
-const escXml=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-const today=new Date().toISOString().slice(0,10);
-const entries=new Map();
-[base,base+"news.html"].forEach(u=>entries.set(u,today));
-[ "about.html","contact.html","privacy.html" ].forEach(p=>entries.set(base+p,""));
-(items||[]).forEach(n=>{
-if(!n||!n.slug)return;
-const articleUrl=base+"articles/"+encodeURIComponent(n.slug)+".html";
-const parsed=n.date?new Date(n.date):null;
-const lastmod=parsed&&!Number.isNaN(parsed.getTime())?parsed.toISOString().slice(0,10):"";
-entries.set(articleUrl,lastmod);
-});
-const nl=String.fromCharCode(10);
-const xml='<?xml version="1.0" encoding="UTF-8"?>'+nl+
-'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+nl+
-[...entries.entries()].map(([u,lastmod])=>'  <url><loc>'+escXml(u)+'</loc>'+(lastmod?'<lastmod>'+lastmod+'</lastmod>':'')+'</url>').join(nl)+nl+
-'</urlset>'+nl;
-const saved=await fetch(url,{method:"PUT",headers,body:JSON.stringify({message:"Update news sitemap",content:btoa(unescape(encodeURIComponent(xml))),sha:file.sha})});
-if(!saved.ok)throw new Error("সাইটম্যাপ আপডেট হয়নি: "+saved.status);
+  const url='https://api.github.com/repos/'+owner+'/'+repo+'/contents/sitemap.xml';
+  const headers=apiHeaders(token),r=await fetch(url,{headers});
+  if(!r.ok)throw new Error("সাইটম্যাপ পড়া যায়নি: "+r.status);
+  const file=await r.json();
+  const base="https://"+location.host+"/BD-Barguna-News/";
+  const escXml=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const today=new Date().toISOString().slice(0,10);
+  const entries=new Map();
+  [base,base+"news.html"].forEach(u=>entries.set(u,today));
+  ["about.html","contact.html","privacy.html"].forEach(p=>entries.set(base+p,""));
+  (items||[]).forEach(n=>{
+    if(!n||!n.slug)return;
+    const article=base+"articles/"+encodeURIComponent(n.slug)+".html";
+    const parsed=n.date?new Date(n.date):null;
+    const lastmod=parsed&&!Number.isNaN(parsed.getTime())?parsed.toISOString().slice(0,10):"";
+    entries.set(article,lastmod);
+  });
+  const nl=String.fromCharCode(10);
+  const xml='<?xml version="1.0" encoding="UTF-8"?>'+nl+
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+nl+
+    [...entries.entries()].map(([u,lastmod])=>'  <url><loc>'+escXml(u)+'</loc>'+(lastmod?'<lastmod>'+lastmod+'</lastmod>':'')+'</url>').join(nl)+nl+
+    '</urlset>'+nl;
+  const saved=await fetch(url,{method:"PUT",headers,body:JSON.stringify({
+    message:"Update news sitemap",
+    content:btoa(unescape(encodeURIComponent(xml))),
+    sha:file.sha
+  })});
+  if(!saved.ok)throw new Error("সাইটম্যাপ আপডেট হয়নি: "+saved.status);
 }
-async function getNewsFile(token){const url=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;const r=await fetch(url,{headers:apiHeaders(token)});if(!r.ok)throw new Error("সংবাদের ফাইল পড়া যায়নি: "+r.status);const file=await r.json();return {url,file,items:JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))))};}
-function renderNewsList(){const box=document.getElementById("newsList");box.innerHTML=cachedNews.length?cachedNews.map((n,i)=>`<div style="border:1px solid #ddd;border-radius:8px;padding:12px;margin:10px 0"><b>${String(n.title||"শিরোনাম নেই").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}</b><p>${String(n.category||"সংবাদ")} · ${String(n.date||"")}</p><button type="button" onclick="editNews(${i})">সম্পাদনা</button><button type="button" style="background:#b42318" onclick="deleteNews(${i})">মুছে ফেলুন</button></div>`).join(""):"<p>এখনো কোনো সংবাদ নেই।</p>";}
-document.getElementById("loadNews").addEventListener("click",async()=>{const st=document.getElementById("manageStatus"),token=document.getElementById("token").value.trim();if(!token){st.textContent="আগে GitHub Token দিন।";return;}st.textContent="তালিকা আনা হচ্ছে...";try{const d=await getNewsFile(token);cachedNews=d.items;renderNewsList();st.textContent="সংবাদ পাওয়া গেছে: "+cachedNews.length+"টি";}catch(e){st.textContent="সমস্যা: "+e.message;}});
-window.editNews=i=>{const n=cachedNews[i];if(!n)return;editingIndex=i;document.getElementById("title").value=n.title||"";document.getElementById("category").value=n.category||"";document.getElementById("body").value=n.body||n.details||n.summary||"";document.getElementById("image").value=n.image||n.imageUrl||"";document.getElementById("imageFile").value="";document.querySelector("#newsForm button[type=submit]").textContent="পরিবর্তন সংরক্ষণ করুন";document.getElementById("status").textContent="ফর্মে সংবাদ সম্পাদনা করুন।";window.scrollTo({top:0,behavior:"smooth"});};
-window.deleteNews=async i=>{if(!confirm("এই সংবাদটি স্থায়ীভাবে মুছে ফেলবেন?"))return;const token=document.getElementById("token").value.trim(),st=document.getElementById("manageStatus");if(!token){st.textContent="আগে GitHub Token দিন।";return;}st.textContent="মুছে ফেলা হচ্ছে...";try{const d=await getNewsFile(token);await deleteStaticArticle(token,d.items[i]?.slug);d.items.splice(i,1);const content=btoa(unescape(encodeURIComponent(JSON.stringify(d.items,null,2))));const r=await fetch(d.url,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({message:"Delete news",content,sha:d.file.sha})});if(!r.ok)throw new Error("মুছে ফেলা যায়নি: "+r.status);await saveSitemap(token,d.items);cachedNews=d.items;renderNewsList();st.textContent="সংবাদ ও সাইটম্যাপ থেকে পেজটি মুছে ফেলা হয়েছে।";}catch(e){st.textContent="সমস্যা: "+e.message;}};
+
+async function getNewsFile(token){
+  const url=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  const r=await fetch(url,{headers:apiHeaders(token)});
+  if(!r.ok)throw new Error("সংবাদের ফাইল পড়া যায়নি: "+r.status);
+  const file=await r.json();
+  const items=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))));
+  return {url,file,items};
+}
+
+function renderNewsList(){
+  const box=document.getElementById("newsList");
+  box.innerHTML=cachedNews.length?cachedNews.map((n,i)=>{
+    const link=articleUrl(n);
+    return `<div class="news-card">
+      <b>${escHtml(n.title||"শিরোনাম নেই")}</b>
+      <p>${escHtml(n.category||"সংবাদ")} · ${escHtml(n.date||"")}</p>
+      <div class="action-row">
+        <button type="button" class="copy-btn" onclick="copyNewsLink(${i})">🔗 নিউজ লিংক কপি</button>
+        <button type="button" class="facebook-btn" onclick="shareNews(${i},'facebook')">📘 Facebook</button>
+        <button type="button" class="whatsapp-btn" onclick="shareNews(${i},'whatsapp')">🟢 WhatsApp</button>
+        <button type="button" class="edit-btn" onclick="editNews(${i})">✏️ সম্পাদনা</button>
+        <button type="button" class="delete-btn" onclick="deleteNews(${i})">🗑️ মুছে ফেলুন</button>
+      </div>
+      ${link?`<p class="small-note">সংবাদের লিংক: <a href="${escHtml(link)}" target="_blank" rel="noopener">নিউজ পেজ খুলুন</a></p>`:'<p class="small-note">এই সংবাদের slug নেই; সম্পাদনা করে পুনরায় সংরক্ষণ করুন।</p>'}
+    </div>`;
+  }).join(""):"<p>এখনো কোনো সংবাদ নেই।</p>";
+}
+
+window.copyNewsLink=async i=>{
+  const link=articleUrl(cachedNews[i]);
+  const status=document.getElementById("manageStatus");
+  if(!link){status.textContent="এই সংবাদের আলাদা লিংক পাওয়া যায়নি।";return;}
+  try{
+    if(navigator.clipboard&&window.isSecureContext){
+      await navigator.clipboard.writeText(link);
+    }else{
+      const temp=document.createElement("textarea");
+      temp.value=link;temp.style.position="fixed";temp.style.opacity="0";
+      document.body.appendChild(temp);temp.select();
+      const ok=document.execCommand("copy");temp.remove();
+      if(!ok)throw new Error("copy failed");
+    }
+    status.textContent="নিউজ লিংক কপি হয়েছে: "+link;
+  }catch(e){
+    prompt("নিউজ লিংকটি কপি করুন:",link);
+  }
+};
+
+window.shareNews=(i,platform)=>{
+  const n=cachedNews[i],link=articleUrl(n);
+  if(!link){alert("এই সংবাদের লিংক পাওয়া যায়নি।");return;}
+  const shareText=(n.title||"BD Barguna News")+" "+link;
+  const target=platform==="facebook"
+    ?"https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(link)
+    :"https://wa.me/?text="+encodeURIComponent(shareText);
+  window.open(target,"_blank","noopener,noreferrer");
+};
+
+document.getElementById("loadNews").addEventListener("click",async()=>{
+  const st=document.getElementById("manageStatus");
+  const token=document.getElementById("token").value.trim();
+  if(!token){st.textContent="আগে GitHub Token দিন।";return;}
+  st.textContent="তালিকা আনা হচ্ছে...";
+  try{
+    const d=await getNewsFile(token);
+    cachedNews=d.items;
+    renderNewsList();
+    st.textContent="সংবাদ পাওয়া গেছে: "+cachedNews.length+"টি";
+  }catch(e){st.textContent="সমস্যা: "+e.message;}
+});
+
+window.editNews=i=>{
+  const n=cachedNews[i];if(!n)return;
+  editingIndex=i;
+  document.getElementById("title").value=n.title||"";
+  document.getElementById("category").value=n.category||"";
+  document.getElementById("body").value=n.body||n.details||n.summary||"";
+  document.getElementById("image").value=n.image||n.imageUrl||"";
+  document.getElementById("imageFile").value="";
+  document.querySelector("#newsForm button[type=submit]").textContent="পরিবর্তন সংরক্ষণ করুন";
+  document.getElementById("status").textContent="ফর্মে সংবাদ সম্পাদনা করুন।";
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+
+window.deleteNews=async i=>{
+  if(!confirm("এই সংবাদটি স্থায়ীভাবে মুছে ফেলবেন?"))return;
+  const token=document.getElementById("token").value.trim();
+  const st=document.getElementById("manageStatus");
+  if(!token){st.textContent="আগে GitHub Token দিন।";return;}
+  st.textContent="মুছে ফেলা হচ্ছে...";
+  try{
+    const d=await getNewsFile(token);
+    await deleteStaticArticle(token,d.items[i]?.slug);
+    d.items.splice(i,1);
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(d.items,null,2))));
+    const r=await fetch(d.url,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({
+      message:"Delete news",content,sha:d.file.sha
+    })});
+    if(!r.ok)throw new Error("মুছে ফেলা যায়নি: "+r.status);
+    await saveSitemap(token,d.items);
+    cachedNews=d.items;renderNewsList();
+    st.textContent="সংবাদ ও সাইটম্যাপ থেকে পেজটি মুছে ফেলা হয়েছে।";
+  }catch(e){st.textContent="সমস্যা: "+e.message;}
+};
 
 async function uploadNewsImage(token){
-const file=document.getElementById("imageFile").files[0];
-if(!file)return document.getElementById("image").value.trim();
-if(!file.type.startsWith("image/"))throw new Error("শুধু ছবির ফাইল নির্বাচন করুন।");
-if(file.size>5*1024*1024)throw new Error("ছবির আকার 5 MB-এর কম হতে হবে।");
-const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
-const name="news-"+Date.now()+"."+ext;
-const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(",")[1]);reader.onerror=()=>reject(new Error("ছবি পড়া যায়নি।"));reader.readAsDataURL(file)});
-const headers={"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
-const res=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/images/${name}`,{method:"PUT",headers,body:JSON.stringify({message:"Upload news image",content:base64})});
-if(!res.ok)throw new Error("ছবি আপলোড হয়নি: "+res.status);
-return "images/"+name;
+  const file=document.getElementById("imageFile").files[0];
+  if(!file)return document.getElementById("image").value.trim();
+  if(!file.type.startsWith("image/"))throw new Error("শুধু ছবির ফাইল নির্বাচন করুন।");
+  if(file.size>5*1024*1024)throw new Error("ছবির আকার 5 MB-এর কম হতে হবে।");
+  const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+  const name="news-"+Date.now()+"."+ext;
+  const base64=await new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(String(reader.result).split(",")[1]);
+    reader.onerror=()=>reject(new Error("ছবি পড়া যায়নি।"));
+    reader.readAsDataURL(file);
+  });
+  const res=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/images/${name}`,{
+    method:"PUT",headers:apiHeaders(token),
+    body:JSON.stringify({message:"Upload news image",content:base64})
+  });
+  if(!res.ok)throw new Error("ছবি আপলোড হয়নি: "+res.status);
+  return "images/"+name;
 }
 
 document.getElementById("newsForm").addEventListener("submit",async e=>{
-e.preventDefault();
-const status=document.getElementById("status");
-const token=document.getElementById("token").value.trim();
-status.textContent="প্রকাশ করা হচ্ছে...";
-try{
-const headers={
-"Authorization":"Bearer "+token,
-"Accept":"application/vnd.github+json",
-"X-GitHub-Api-Version":"2022-11-28"
-};
-const url=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-const response=await fetch(url,{headers});
-if(!response.ok) throw new Error("GitHub ফাইল পড়া যায়নি: "+response.status);
-const file=await response.json();
-const old=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))));
-const imagePath=await uploadNewsImage(token);
-const item={title:document.getElementById("title").value,category:document.getElementById("category").value,body:document.getElementById("body").value,image:imagePath||(editingIndex>=0?(old[editingIndex]?.image||""):""),date:editingIndex>=0?(old[editingIndex]?.date||new Date().toISOString()):new Date().toISOString(),slug:editingIndex>=0?(old[editingIndex]?.slug||("news-"+Date.now())):("news-"+Date.now())};
-await saveStaticArticle(token,item);
-if(editingIndex>=0){old[editingIndex]=item;}else{old.unshift(item);}
-const content=btoa(unescape(encodeURIComponent(JSON.stringify(old,null,2))));
-const save=await fetch(url,{
-method:"PUT",headers,
-body:JSON.stringify({
-message:"Publish news",
-content,
-sha:file.sha
-})
-});
-if(!save.ok) throw new Error("প্রকাশ হয়নি: "+save.status);
-await saveSitemap(token,old);
-status.textContent=editingIndex>=0?"সংবাদ ও আলাদা SEO পেজ আপডেট হয়েছে।":"সংবাদ প্রকাশিত হয়েছে; আলাদা SEO পেজও তৈরি হয়েছে।";
-editingIndex=-1;document.querySelector("#newsForm button[type=submit]").textContent="সংবাদ প্রকাশ করুন";
-document.getElementById("newsForm").reset();
-const refreshed=await getNewsFile(token);cachedNews=refreshed.items;renderNewsList();
-}catch(err){
-status.textContent="সমস্যা: "+err.message;
-}
+  e.preventDefault();
+  const status=document.getElementById("status");
+  const token=document.getElementById("token").value.trim();
+  status.textContent="প্রকাশ করা হচ্ছে...";
+  try{
+    const url=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    const response=await fetch(url,{headers:apiHeaders(token)});
+    if(!response.ok)throw new Error("GitHub ফাইল পড়া যায়নি: "+response.status);
+    const file=await response.json();
+    const old=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))));
+    const imagePath=await uploadNewsImage(token);
+    const previous=editingIndex>=0?old[editingIndex]:null;
+    const item={
+      title:document.getElementById("title").value.trim(),
+      category:document.getElementById("category").value.trim(),
+      body:document.getElementById("body").value,
+      image:imagePath||(previous?.image||""),
+      date:previous?.date||new Date().toISOString(),
+      slug:previous?.slug||("news-"+Date.now())
+    };
+    await saveStaticArticle(token,item);
+    if(editingIndex>=0)old[editingIndex]=item;
+    else old.unshift(item);
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(old,null,2))));
+    const save=await fetch(url,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({
+      message:editingIndex>=0?"Update news":"Publish news",content,sha:file.sha
+    })});
+    if(!save.ok)throw new Error("প্রকাশ হয়নি: "+save.status);
+    await saveSitemap(token,old);
+    status.textContent=editingIndex>=0
+      ?"সংবাদ ও আলাদা SEO পেজ আপডেট হয়েছে।"
+      :"সংবাদ প্রকাশিত হয়েছে; আলাদা SEO পেজও তৈরি হয়েছে।";
+    editingIndex=-1;
+    document.querySelector("#newsForm button[type=submit]").textContent="সংবাদ প্রকাশ করুন";
+    document.getElementById("newsForm").reset();
+    const refreshed=await getNewsFile(token);
+    cachedNews=refreshed.items;renderNewsList();
+  }catch(err){status.textContent="সমস্যা: "+err.message;}
 });
 
 document.getElementById("pollForm").addEventListener("submit",async e=>{
-e.preventDefault();
-const status=document.getElementById("pollStatus");
-const token=document.getElementById("pollToken").value.trim();
-const question=document.getElementById("pollQuestion").value.trim();
-const options=[...new Set(document.getElementById("pollOptions").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))];
-if(!token){status.textContent="আগে GitHub Token দিন।";return;}
-if(options.length<2){status.textContent="কমপক্ষে ২টি উত্তর বিকল্প দিন।";return;}
-if(options.length>8){status.textContent="সর্বোচ্চ ৮টি বিকল্প দেওয়া যাবে।";return;}
-status.textContent="জরিপ প্রকাশ করা হচ্ছে...";
-try{
-const pollImages=[];
-for(const inputId of ["pollImageFile1","pollImageFile2"]){
-const selected=document.getElementById(inputId).files[0];
-if(!selected)continue;
-if(!selected.type.startsWith("image/"))throw new Error("জরিপের জন্য শুধু ছবির ফাইল দিন।");
-if(selected.size>5*1024*1024)throw new Error("প্রতিটি জরিপের ছবি 5 MB-এর কম হতে হবে।");
-const ext=(selected.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
-const filename="poll-"+Date.now()+"-"+(pollImages.length+1)+"."+ext;
-const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(",")[1]);reader.onerror=()=>reject(new Error("জরিপের ছবি পড়া যায়নি।"));reader.readAsDataURL(selected)});
-const uploaded=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/images/"+filename,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({message:"Upload poll image",content:base64})});
-if(!uploaded.ok)throw new Error("জরিপের ছবি আপলোড হয়নি: "+uploaded.status);
-pollImages.push("images/"+filename);
-}
-const headers=apiHeaders(token),url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/poll.json";
-const response=await fetch(url,{headers});
-let polls=[],sha;
-if(response.ok){const file=await response.json();sha=file.sha;polls=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\\n/g,"")))));if(!Array.isArray(polls))polls=[];}
-else if(response.status!==404)throw new Error("জরিপ ফাইল পড়া যায়নি: "+response.status);
-polls.unshift({id:"poll-"+Date.now(),question,options,images:pollImages,createdAt:new Date().toISOString(),active:true});
-const payload={message:"Create online reader poll",content:btoa(unescape(encodeURIComponent(JSON.stringify(polls,null,2))))};
-if(sha)payload.sha=sha;
-const save=await fetch(url,{method:"PUT",headers,body:JSON.stringify(payload)});
-if(!save.ok)throw new Error("জরিপ প্রকাশ হয়নি: "+save.status);
-status.textContent="জরিপ ও নির্বাচিত ছবি প্রকাশিত হয়েছে। ওয়েবসাইটে দেখতে ১–৩ মিনিট অপেক্ষা করে রিফ্রেশ করুন।";
-document.getElementById("pollForm").reset();
-}catch(err){status.textContent="সমস্যা: "+err.message;}
+  e.preventDefault();
+  const status=document.getElementById("pollStatus");
+  const token=document.getElementById("pollToken").value.trim();
+  const question=document.getElementById("pollQuestion").value.trim();
+  const options=[...new Set(document.getElementById("pollOptions").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))];
+  if(!token){status.textContent="আগে GitHub Token দিন।";return;}
+  if(options.length<2){status.textContent="কমপক্ষে ২টি উত্তর বিকল্প দিন।";return;}
+  if(options.length>8){status.textContent="সর্বোচ্চ ৮টি বিকল্প দেওয়া যাবে।";return;}
+  status.textContent="জরিপ প্রকাশ করা হচ্ছে...";
+  try{
+    const pollImages=[];
+    for(const inputId of ["pollImageFile1","pollImageFile2"]){
+      const selected=document.getElementById(inputId).files[0];
+      if(!selected)continue;
+      if(!selected.type.startsWith("image/"))throw new Error("জরিপের জন্য শুধু ছবির ফাইল দিন।");
+      if(selected.size>5*1024*1024)throw new Error("প্রতিটি জরিপের ছবি 5 MB-এর কম হতে হবে।");
+      const ext=(selected.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+      const filename="poll-"+Date.now()+"-"+(pollImages.length+1)+"."+ext;
+      const base64=await new Promise((resolve,reject)=>{
+        const reader=new FileReader();
+        reader.onload=()=>resolve(String(reader.result).split(",")[1]);
+        reader.onerror=()=>reject(new Error("জরিপের ছবি পড়া যায়নি।"));
+        reader.readAsDataURL(selected);
+      });
+      const uploaded=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/images/"+filename,{
+        method:"PUT",headers:apiHeaders(token),
+        body:JSON.stringify({message:"Upload poll image",content:base64})
+      });
+      if(!uploaded.ok)throw new Error("জরিপের ছবি আপলোড হয়নি: "+uploaded.status);
+      pollImages.push("images/"+filename);
+    }
+    const url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/poll.json";
+    const response=await fetch(url,{headers:apiHeaders(token)});
+    let polls=[],sha;
+    if(response.ok){
+      const file=await response.json();sha=file.sha;
+      polls=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))));
+      if(!Array.isArray(polls))polls=[];
+    }else if(response.status!==404)throw new Error("জরিপ ফাইল পড়া যায়নি: "+response.status);
+    polls.unshift({id:"poll-"+Date.now(),question,options,images:pollImages,createdAt:new Date().toISOString(),active:true});
+    const payload={message:"Create online reader poll",content:btoa(unescape(encodeURIComponent(JSON.stringify(polls,null,2))))};
+    if(sha)payload.sha=sha;
+    const save=await fetch(url,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify(payload)});
+    if(!save.ok)throw new Error("জরিপ প্রকাশ হয়নি: "+save.status);
+    status.textContent="জরিপ ও নির্বাচিত ছবি প্রকাশিত হয়েছে। ওয়েবসাইটে দেখতে ১–৩ মিনিট অপেক্ষা করে রিফ্রেশ করুন।";
+    document.getElementById("pollForm").reset();
+  }catch(err){status.textContent="সমস্যা: "+err.message;}
 });
 
 document.getElementById("videoForm").addEventListener("submit",async e=>{
-e.preventDefault();
-const status=document.getElementById("status");
-const token=document.getElementById("token").value.trim();
-const title=document.getElementById("videoTitle").value.trim();
-const videoUrl=document.getElementById("videoUrl").value.trim();
-const date=document.getElementById("videoDate").value.trim()||new Date().toLocaleDateString("bn-BD");
-if(!token){status.textContent="আগে GitHub Token দিন।";return;}
-if(!/(youtube\.com\/watch\?v=|youtu\.be\/)/i.test(videoUrl)){status.textContent="সঠিক YouTube ভিডিও লিংক দিন।";return;}
-status.textContent="ভিডিও প্রকাশ করা হচ্ছে...";
-try{
-const headers={"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
-const url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/videos.json";
-const response=await fetch(url,{headers});
-if(!response.ok) throw new Error("ভিডিও ফাইল পড়া যায়নি: "+response.status);
-const file=await response.json();
-const decoded=decodeURIComponent(escape(atob(file.content.replace(/\n/g,""))));
-const videos=JSON.parse(decoded);
-videos.unshift({title:title,url:videoUrl,date:date});
-const content=btoa(unescape(encodeURIComponent(JSON.stringify(videos,null,2))));
-const save=await fetch(url,{method:"PUT",headers,body:JSON.stringify({message:"Publish video news",content:content,sha:file.sha})});
-if(!save.ok) throw new Error("ভিডিও প্রকাশ হয়নি: "+save.status);
-status.textContent="ভিডিও নিউজ সফলভাবে প্রকাশ হয়েছে। হোমপেজে দেখতে কিছুক্ষণ অপেক্ষা করুন।";
-document.getElementById("videoForm").reset();
-}catch(err){status.textContent="সমস্যা: "+err.message;}
+  e.preventDefault();
+  const status=document.getElementById("status");
+  const token=document.getElementById("token").value.trim();
+  const title=document.getElementById("videoTitle").value.trim();
+  const videoUrl=document.getElementById("videoUrl").value.trim();
+  const date=document.getElementById("videoDate").value.trim()||new Date().toLocaleDateString("bn-BD");
+  if(!token){status.textContent="আগে GitHub Token দিন।";return;}
+  if(!/(youtube\.com\/watch\?v=|youtu\.be\/)/i.test(videoUrl)){
+    status.textContent="সঠিক YouTube ভিডিও লিংক দিন।";return;
+  }
+  status.textContent="ভিডিও প্রকাশ করা হচ্ছে...";
+  try{
+    const url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/videos.json";
+    const response=await fetch(url,{headers:apiHeaders(token)});
+    if(!response.ok)throw new Error("ভিডিও ফাইল পড়া যায়নি: "+response.status);
+    const file=await response.json();
+    const videos=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,"")))));
+    videos.unshift({title,url:videoUrl,date});
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(videos,null,2))));
+    const save=await fetch(url,{method:"PUT",headers:apiHeaders(token),body:JSON.stringify({
+      message:"Publish video news",content,sha:file.sha
+    })});
+    if(!save.ok)throw new Error("ভিডিও প্রকাশ হয়নি: "+save.status);
+    status.textContent="ভিডিও নিউজ সফলভাবে প্রকাশ হয়েছে। হোমপেজে দেখতে কিছুক্ষণ অপেক্ষা করুন।";
+    document.getElementById("videoForm").reset();
+  }catch(err){status.textContent="সমস্যা: "+err.message;}
 });
 </script>
 </body>
