@@ -36,6 +36,8 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <label>GitHub Token</label>
 <input id="token" type="password" autocomplete="off" placeholder="GitHub Token দিন">
 <p class="note">Token গোপন রাখবেন। কাউকে পাঠাবেন না।</p>
+<label style="display:flex;align-items:center;gap:9px;margin-top:10px"><input id="rememberToken" type="checkbox" style="width:auto;margin:0"> এই ডিভাইসে টোকেন মনে রাখুন</label>
+<p class="note">শুধু নিজের ব্যক্তিগত ডিভাইসে চালু রাখুন। টোকেন এই ব্রাউজারের স্টোরেজে থাকবে; ওয়েবসাইটের ফাইলে বা GitHub-এ সেভ হবে না।</p>
 
 <hr>
 <h3>📝 সংবাদ প্রকাশ</h3>
@@ -144,6 +146,33 @@ const VIDEOS="videos.json";
 const $=id=>document.getElementById(id);
 let cachedNews=[];
 let editingSlug=null;
+
+// Optional token memory: saved only in this browser on this device.
+const TOKEN_STORAGE_KEY="bdBargunaNews_adminGithubToken";
+try{
+ const savedToken=localStorage.getItem(TOKEN_STORAGE_KEY);
+ if(savedToken){
+  $("token").value=savedToken;
+  $("rememberToken").checked=true;
+ }
+}catch(error){console.warn("Token memory is unavailable in this browser.");}
+$("rememberToken").addEventListener("change",()=>{
+ try{
+  if($("rememberToken").checked){
+   const value=$("token").value.trim();
+   if(value)localStorage.setItem(TOKEN_STORAGE_KEY,value);
+  }else localStorage.removeItem(TOKEN_STORAGE_KEY);
+ }catch(error){alert("এই ব্রাউজারে টোকেন সেভ করা যাচ্ছে না।");}
+});
+$("token").addEventListener("input",()=>{
+ try{
+  if($("rememberToken").checked){
+   const value=$("token").value.trim();
+   if(value)localStorage.setItem(TOKEN_STORAGE_KEY,value);
+   else localStorage.removeItem(TOKEN_STORAGE_KEY);
+  }
+ }catch(error){console.warn("Token could not be saved.");}
+});
 
 function getHeaders(){
  const t=$("token").value.trim();
