@@ -575,9 +575,14 @@ async function loadHomepageVideos(){
   allVideos=Array.isArray(data)?data.filter(v=>v&&v.title&&v.url):[];
   if(!allVideos.length){root.innerHTML='<div class="empty"><strong>এখনো ভিডিও নিউজ প্রকাশিত হয়নি</strong>অ্যাডমিন প্যানেল থেকে ভিডিও যুক্ত করুন।</div>';return;}
   root.innerHTML=allVideos.map(v=>{
-   const id=videoId(v.url),thumb=id?'https://i.ytimg.com/vi/'+encodeURIComponent(id)+'/hqdefault.jpg':'';
    const safe=safeUrl(v.url);
-   return '<article class="video-card"><div class="video-frame">'+(thumb?'<img class="video-thumb" src="'+thumb+'" alt="'+esc(v.title)+'" loading="lazy">':'<div class="video-placeholder">ভিডিও নিউজ</div>')+'<a class="video-play-btn" href="'+esc(safe)+'" target="_blank" rel="noopener" aria-label="ভিডিও দেখুন">▶</a></div><div class="video-body"><span class="category">ভিডিও নিউজ</span><h3>'+esc(v.title)+'</h3><a class="readmore" href="'+esc(safe)+'" target="_blank" rel="noopener">ভিডিও দেখুন →</a></div></article>';
+   let host='';try{host=new URL(safe).hostname.toLowerCase().replace(/^www\\./,'');}catch(e){}
+   const isFacebook=v.platform==='facebook'||['facebook.com','m.facebook.com','web.facebook.com','fb.watch'].includes(host);
+   const id=videoId(v.url),thumb=id?'https://i.ytimg.com/vi/'+encodeURIComponent(id)+'/hqdefault.jpg':'';
+   const frame=isFacebook
+    ?'<iframe src="https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(safe)+'&show_text=false&width=560" title="'+esc(v.title)+'" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen loading="lazy" style="width:100%;height:100%;border:0"></iframe>'
+    :(thumb?'<img class="video-thumb" src="'+thumb+'" alt="'+esc(v.title)+'" loading="lazy">':'<div class="video-placeholder">ভিডিও নিউজ</div>');
+   return '<article class="video-card"><div class="video-frame">'+frame+(!isFacebook?'<a class="video-play-btn" href="'+esc(safe)+'" target="_blank" rel="noopener" aria-label="ভিডিও দেখুন">▶</a>':'')+'</div><div class="video-body"><span class="category">'+(isFacebook?'Facebook ভিডিও':'ভিডিও নিউজ')+'</span><h3>'+esc(v.title)+'</h3><a class="readmore" href="'+esc(safe)+'" target="_blank" rel="noopener">ভিডিও দেখুন →</a></div></article>';
   }).join('');
  }catch(error){root.innerHTML='<div class="empty">ভিডিও নিউজ এখন লোড করা যাচ্ছে না।</div>';console.error('Video loading failed:',error);}
 }
