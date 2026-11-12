@@ -301,6 +301,18 @@ body{padding-bottom:90px!important}
 .category-filter button.active,.category-filter button:hover{background:#a90e27;border-color:#a90e27;color:#fff}
 .share-btn.native-share{background:#34465a}.share-btn.copy-link{background:#596579}
 @media(max-width:520px){.category-filter{margin-left:-2px;margin-right:-2px}.category-filter button{padding:8px 12px}}
+
+/* Clickable visual category cards */
+.category-feature-list{gap:12px;align-content:start}
+.side-card.category-feature{display:block;color:inherit;text-decoration:none;padding:12px;cursor:pointer;border:1px solid #e5e8ef;border-radius:15px;background:#fff;transition:transform .18s,box-shadow .18s,border-color .18s}
+.side-card.category-feature:hover,.side-card.category-feature:focus-visible{transform:translateY(-3px);border-color:#b5122b;box-shadow:0 12px 26px rgba(20,30,50,.12)}
+.side-card.category-feature img{width:100%;height:112px;object-fit:cover;display:block;border-radius:10px;margin:8px 0 9px;background:#eef2f7}
+.side-card.category-feature h3{font-size:16px;line-height:1.45;margin:3px 0 5px;color:#17212b}
+.side-card.category-feature .meta{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.category-arrow{color:#a90e27;font-weight:800;white-space:nowrap}
+@media(max-width:760px){.category-feature-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.side-card.category-feature{padding:8px}.side-card.category-feature img{height:88px}.side-card.category-feature h3{font-size:13px}.side-card.category-feature .meta{font-size:10px}.category-arrow{font-size:10px}}
+@media(max-width:520px){.category-feature-list{grid-template-columns:1fr}.side-card.category-feature{padding:11px}.side-card.category-feature img{height:125px}.side-card.category-feature h3{font-size:16px}.side-card.category-feature .meta{font-size:12px}}
+
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","description":"বরগুনা ও দেশের সর্বশেষ সংবাদ, ছবি ও ভিডিও খবর।","inLanguage":"bn-BD"}</script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -328,7 +340,11 @@ body{padding-bottom:90px!important}
 <div class="ticker" id="newsTicker"><b id="tickerLabel">সর্বশেষ আপডেট</b><div class="ticker-track" id="breakingTicker" aria-live="polite"><span>বরগুনা ও দেশের সর্বশেষ খবর জানতে চোখ রাখুন BD Barguna News-এ।</span></div><button class="ticker-pause" id="tickerPause" type="button" aria-pressed="false" aria-label="চলমান সংবাদ থামান">Ⅱ</button></div>
 <div class="notification-tools"><button type="button" id="newsNotifyButton" aria-describedby="newsNotifyHelp">🔔 নিউজ নোটিফিকেশন চালু করুন</button><span id="newsNotifyStatus" role="status" aria-live="polite">নতুন ব্রেকিং নিউজের সতর্কতা পেতে চালু করুন</span><small id="newsNotifyHelp">সাইট/অ্যাপ খোলা থাকলে নতুন ব্রেকিং নিউজের নোটিফিকেশন আসবে।</small></div>
 <section class="lead-grid"><article class="hero"><div class="hero-image"><img src="images/home-news-cover.svg" alt="BD Barguna News — বরগুনার সংবাদ" fetchpriority="high"></div><div class="hero-body"><span class="category">বিশেষ প্রতিবেদন</span><h1>বরগুনা ও দেশের গুরুত্বপূর্ণ খবর সবার আগে</h1><p class="summary">সর্বশেষ সংবাদ, স্থানীয় প্রতিবেদন, ছবি ও ভিডিও খবর এক জায়গায় পড়ুন।</p><div class="meta">প্রকাশক ও সম্পাদক: মোঃ সাইমুন মিয়া · সংবাদ ডেস্ক</div></div></article>
-<div class="side"><article class="side-card"><span class="category">বরগুনা</span><img src="images/category-barguna.svg" alt="বরগুনা উপকূলের প্রতীকী ছবি" loading="lazy"><h3>বরগুনা জেলার সর্বশেষ স্থানীয় সংবাদ</h3><div class="meta">স্থানীয় সংবাদ বিভাগ</div></article><article class="side-card"><span class="category">জাতীয়</span><img src="images/category-national.svg" alt="জাতীয় সংবাদ বিভাগের প্রতীকী ছবি" loading="lazy"><h3>দেশের গুরুত্বপূর্ণ খবর ও আপডেট</h3><div class="meta">জাতীয় সংবাদ বিভাগ</div></article><article class="side-card"><span class="category">সারাদেশ</span><img src="images/category-country.svg" alt="সারাদেশ সংবাদ বিভাগের প্রতীকী ছবি" loading="lazy"><h3>জেলা-উপজেলার খবর এক নজরে</h3><div class="meta">সারাদেশ সংবাদ বিভাগ</div></article></div></section>
+<div class="side category-feature-list" aria-label="সংবাদ বিভাগের বিশেষ লিংক">
+<a class="side-card category-feature" href="#latest" data-home-category="বরগুনা"><span class="category">বরগুনা বিভাগ</span><img src="images/category-barguna.svg?v=20261112" alt="বরগুনা উপকূল ও সমুদ্রের প্রতীকী ছবি" loading="eager" decoding="async"><h3>বরগুনা জেলার সর্বশেষ স্থানীয় সংবাদ</h3><div class="meta">স্থানীয় সংবাদ বিভাগ <span class="category-arrow">বিস্তারিত দেখুন →</span></div></a>
+<a class="side-card category-feature" href="#latest" data-home-category="জাতীয়"><span class="category">জাতীয় বিভাগ</span><img src="images/category-national.svg?v=20261112" alt="জাতীয় সংবাদ বিভাগের প্রতীকী ছবি" loading="eager" decoding="async"><h3>দেশের গুরুত্বপূর্ণ খবর ও আপডেট</h3><div class="meta">জাতীয় সংবাদ বিভাগ <span class="category-arrow">বিস্তারিত দেখুন →</span></div></a>
+<a class="side-card category-feature" href="#latest" data-home-category="সারাদেশ"><span class="category">সারাদেশ বিভাগ</span><img src="images/category-country.svg?v=20261112" alt="সারাদেশের জেলা-উপজেলার প্রতীকী ছবি" loading="eager" decoding="async"><h3>জেলা-উপজেলার খবর এক নজরে</h3><div class="meta">সারাদেশ সংবাদ বিভাগ <span class="category-arrow">বিস্তারিত দেখুন →</span></div></a>
+</div></section>
 
 <section id="latest"><div class="section-head"><h2 class="section-title" id="newsHeading">সর্বশেষ সংবাদ</h2><span class="muted" id="newsCount">সংবাদ</span></div><div class="category-filter" id="categoryFilters" aria-label="সংবাদের বিভাগ"><button type="button" data-category="all" class="active" aria-pressed="true">সব খবর</button></div><div class="cards" id="newsCards"><div class="empty"><strong>সংবাদ লোড হচ্ছে...</strong>একটু অপেক্ষা করুন</div></div></section>
 <div class="ad-slot ad-inline" aria-label="বিজ্ঞাপনের স্থান"><strong>ADVERTISEMENT</strong><span>সংবাদের মাঝখানে বিজ্ঞাপন</span></div>
@@ -443,6 +459,14 @@ async function loadHomepageNews(){
   console.error('News loading failed:',error);
  }
 }
+
+document.querySelector('.category-feature-list')?.addEventListener('click',event=>{
+ const link=event.target.closest('a[data-home-category]');
+ if(!link)return;
+ activeCategory=link.dataset.homeCategory||'all';
+ renderCategoryFilters(allNews);
+ showNews(allNews,activeCategory);
+});
 document.getElementById('categoryFilters')?.addEventListener('click',event=>{
  const button=event.target.closest('button[data-category]');
  if(!button)return;
