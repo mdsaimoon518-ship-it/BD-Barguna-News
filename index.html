@@ -576,7 +576,7 @@ async function loadHomepageVideos(){
   if(!allVideos.length){root.innerHTML='<div class="empty"><strong>এখনো ভিডিও নিউজ প্রকাশিত হয়নি</strong>অ্যাডমিন প্যানেল থেকে ভিডিও যুক্ত করুন।</div>';return;}
   root.innerHTML=allVideos.map(v=>{
    const safe=safeUrl(v.url);
-   let host='';try{host=new URL(safe).hostname.toLowerCase().replace(/^www\\./,'');}catch(e){}
+   let host='';try{host=new URL(safe).hostname.toLowerCase().replace(/^www\./,'');}catch(e){}
    const isFacebook=v.platform==='facebook'||['facebook.com','m.facebook.com','web.facebook.com','fb.watch'].includes(host);
    const id=videoId(v.url),thumb=id?'https://i.ytimg.com/vi/'+encodeURIComponent(id)+'/hqdefault.jpg':'';
    const frame=isFacebook
