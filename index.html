@@ -482,13 +482,13 @@ document.addEventListener('click',e=>{
   const footerY=792;ctx.fillStyle='#f7f4f0';ctx.fillRect(0,footerY,W,H-footerY);
   ctx.fillStyle='#b5122b';ctx.fillRect(48,footerY+34,150,7);
   ctx.fillStyle='#a90e27';ctx.font='bold 27px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('সর্বশেষ সংবাদ',48,footerY+58);
-  ctx.fillStyle='#17202b';ctx.font='bold 48px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';
+  ctx.fillStyle='#17202b';ctx.font='bold 43px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';
   const words=title.split(/\s+/);let lines=[],line='';
   const maxWidth=1100;
   for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word;}else line=test;}
   if(line)lines.push(line);
-  const lineHeight=64,maxLines=3;lines.slice(0,maxLines).forEach((txt,i)=>ctx.fillText(txt,48,footerY+112+i*lineHeight));
-  const published=new Date(date);const validDate=!Number.isNaN(published.getTime());const dateText=validDate?published.toLocaleDateString('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}):date;const weekdayText=validDate?published.toLocaleDateString('bn-BD',{weekday:'long',timeZone:'Asia/Dhaka'}):'';ctx.fillStyle='#5b6470';ctx.font='25px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';ctx.fillText('তারিখ: '+dateText+(weekdayText?'  |  বার: '+weekdayText:''),48,footerY+340);
+  const lineHeight=54,maxLines=3;lines.slice(0,maxLines).forEach((txt,i)=>ctx.fillText(txt,48,footerY+108+i*lineHeight));
+  const published=new Date(date);const validDate=!Number.isNaN(published.getTime());const dateText=validDate?published.toLocaleDateString('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}):date;const weekdayText=validDate?published.toLocaleDateString('bn-BD',{weekday:'long',timeZone:'Asia/Dhaka'}):'';ctx.fillStyle='#5b6470';ctx.font='25px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';ctx.textBaseline='top';ctx.fillText('তারিখ: '+dateText+(weekdayText?'  |  বার: '+weekdayText:''),48,footerY+276);
   ctx.fillStyle='#a90e27';ctx.fillRect(0,H-100,W,100);
   ctx.fillStyle='#fff';ctx.font='bold 28px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';ctx.textBaseline='middle';ctx.fillText('বিস্তারিত পড়ুন আমাদের ওয়েবসাইটে',48,H-50);
   ctx.textAlign='right';ctx.font='bold 26px Arial,sans-serif';ctx.fillText('BD BARGUNA NEWS',W-48,H-50);
