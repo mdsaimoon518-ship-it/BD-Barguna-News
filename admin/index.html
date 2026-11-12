@@ -135,7 +135,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <p class="note">BD Barguna News | সত্যের সন্ধানে, মানুষের পাশে।</p>
 </main>
 
-<script src="./article-template.js?v=786c5d6"></script>
+<script src="./article-template.js?v=20261112c"></script>
 <script>
 "use strict";
 
@@ -435,7 +435,7 @@ async function ensureArticleTemplate(){
  if(typeof window.articleHTML==="function")return;
  await new Promise((resolve,reject)=>{
   const s=document.createElement("script");
-  s.src=new URL("./article-template.js?v=20261112b",location.href).href;
+  s.src=new URL("./article-template.js?v=20261112c",location.href).href;
   s.onload=resolve;
   s.onerror=()=>reject(new Error("আর্টিকেল টেমপ্লেট ফাইল লোড হয়নি। admin/article-template.js ফাইলটি ওয়েবসাইটে প্রকাশ হয়েছে কি না দেখুন।"));
   document.head.appendChild(s);
