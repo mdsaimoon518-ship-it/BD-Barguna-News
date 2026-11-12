@@ -331,6 +331,9 @@ async function uploadImage(file){
 }
 
 function articleHTML(n){
+ const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
+ const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
+ const articleNav='<nav class="article-nav" aria-label="প্রধান মেনু">'+mainMenu.map((x,i)=>'<a href="../'+(i===0?'':'#latest')+'">'+esc(x)+'</a>').join('')+'</nav><nav class="article-subnav" aria-label="দ্বিতীয় মেনু">'+subMenu.map(x=>'<a href="../#latest">'+esc(x)+'</a>').join('')+'</nav>';
  const image=n.image?
  `<div class="photo-card">
  <img src="${/^https?:\/\//i.test(n.image)?esc(n.image):"../"+esc(n.image).replace(/^\/+/,"")}" alt="${esc(n.title)}">
@@ -357,6 +360,14 @@ function articleHTML(n){
 body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Arial,sans-serif;line-height:1.9}
 .paper{max-width:850px;margin:auto;background:white;padding:25px;border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 20px #0001}
 .masthead{display:flex;align-items:center;gap:14px;border-bottom:4px solid #b5122b;padding-bottom:15px}
+.article-nav,.article-subnav{display:flex;gap:0;overflow-x:auto;white-space:nowrap;scrollbar-width:none;margin:12px -25px 0;padding:0 15px}
+.article-nav{background:#a90e27;color:#fff}
+.article-subnav{background:#f5f6f8;border-bottom:1px solid #e2e5eb;margin-top:0}
+.article-nav a,.article-subnav a{display:block;padding:10px 12px;font-size:13px;font-weight:700;text-decoration:none}
+.article-subnav a{color:#354052}
+.article-nav a:hover{background:#79091c}.article-subnav a:hover{color:#a90e27}
+.article-nav::-webkit-scrollbar,.article-subnav::-webkit-scrollbar{display:none}
+
 .logo{width:65px;height:65px;object-fit:contain}
 .brand{color:#b5122b;font-size:24px;font-weight:bold;margin:0}
 .tagline{font-size:13px;color:#667085;margin:0}
@@ -368,6 +379,12 @@ h1{font-size:30px;line-height:1.5}
 .caption{text-align:center;color:#667085;font-size:13px;padding-top:9px}
 .article{white-space:pre-wrap;overflow-wrap:anywhere;text-align:justify;font-size:18px}
 .footer{text-align:center;border-top:3px solid #b5122b;margin-top:30px;padding-top:14px;color:#667085}
+.publisher-info{max-width:680px;margin:18px auto 0;padding:16px 12px 0;border-top:1px solid #ddd;line-height:1.7}
+.publisher-info h2{margin:0 0 4px;color:#202936;font-size:21px}
+.publisher-info p{margin:7px 0;font-size:14px}
+.publisher-info a{color:#b5122b;font-weight:700}
+@media(max-width:500px){.article-nav,.article-subnav{margin-left:-15px;margin-right:-15px}.article-nav a,.article-subnav a{padding:9px 10px;font-size:12px}}
+
 .buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
@@ -384,6 +401,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
 </div>
 </header>
+${articleNav}
 <div class="category">${esc(n.category)}</div>
 <h1>${esc(n.title)}</h1>
 <div class="date">📅 প্রকাশিত: ${dateText}</div>
@@ -394,6 +412,14 @@ ${image}
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
 সত্যের সন্ধানে, মানুষের পাশে।
+<div class="publisher-info">
+<h2>মোঃ সাইমুন মিয়া</h2>
+<strong>প্রকাশক ও সম্পাদক</strong> · BD Barguna News
+<p>বরগুনা ও বাংলাদেশের স্থানীয়, জাতীয় এবং গুরুত্বপূর্ণ খবর পাঠকের কাছে তুলে ধরাই আমাদের লক্ষ্য। তথ্যভিত্তিক, স্পষ্ট ও পাঠকবান্ধব সংবাদ প্রকাশে আমরা কাজ করি।</p>
+<p>অফিস: শের-ই বাংলা সড়ক, বরগুনা</p>
+<p>মোবাইল: <a href="tel:+8801609320308">০১৬০৯৩২০৩০৮</a></p>
+<p>ইমেইল: <a href="mailto:mdsaimoon518@gmail.com">mdsaimoon518@gmail.com</a></p>
+</div>
 </footer>
 <div class="buttons">
 <button onclick="window.print()">🖨️ সংবাদ প্রিন্ট</button>
