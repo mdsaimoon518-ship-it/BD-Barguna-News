@@ -2,7 +2,24 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1816426000436287" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1816426000436287" crossorigin="anonymous">
+/* PWA install prompt and offline support */
+(()=>{
+ let installPrompt=null;
+ const installButton=document.getElementById('installAppButton');
+ if(installButton){
+  window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;});
+  window.addEventListener('appinstalled',()=>{installPrompt=null;installButton.hidden=true;});
+  installButton.addEventListener('click',async()=>{
+   if(installPrompt){installPrompt.prompt();try{await installPrompt.userChoice;}catch(error){}installPrompt=null;}
+   else alert('Chrome মেনু (⋮) খুলে “Add to Home screen” বা “Install app” নির্বাচন করুন।');
+  });
+ }
+ if('serviceWorker' in navigator && location.protocol==='https:'){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/BD-Barguna-News/sw.js',{scope:'/BD-Barguna-News/'}).catch(error=>console.warn('Offline support could not start:',error)));
+ }
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#b5122b">
 <meta name="description" content="BD Barguna News — বরগুনা ও দেশের সর্বশেষ সংবাদ, ছবি ও ভিডিও খবর।">
@@ -271,6 +288,13 @@ body{padding-bottom:90px!important}
  .hero-image img,.card-image img,.news-card,.video-card{transition:none!important}
 }
 
+
+/* Install BD Barguna News on your phone */
+#installAppButton{position:fixed;right:16px;bottom:92px;z-index:9998;border:0;border-radius:999px;padding:11px 16px;background:linear-gradient(110deg,#a90e27,#d32645);color:#fff;font-weight:800;font-size:13px;box-shadow:0 8px 22px #a90e2745;cursor:pointer;display:flex;align-items:center;gap:8px}
+#installAppButton:active{transform:scale(.97)}
+@media(min-width:761px){#installAppButton{bottom:24px}}
+@media(max-width:520px){#installAppButton{right:12px;bottom:82px;padding:10px 13px;font-size:12px}}
+@media(display-mode:standalone){#installAppButton{display:none}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","description":"বরগুনা ও দেশের সর্বশেষ সংবাদ, ছবি ও ভিডিও খবর।","inLanguage":"bn-BD"}</script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -514,6 +538,7 @@ document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDef
 
 </script>
 
+<button id="installAppButton" type="button" aria-label="BD Barguna News ফোনে ইনস্টল করুন"><span aria-hidden="true">⬇</span> অ্যাপ ইনস্টল করুন</button>
 <nav class="mobile-quick-nav" id="mobileQuickNav" aria-label="মোবাইল দ্রুত নেভিগেশন">
  <a href="#top" aria-label="হোম" aria-current="page">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg><span>হোম</span>
