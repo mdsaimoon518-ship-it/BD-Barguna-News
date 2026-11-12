@@ -628,7 +628,7 @@ document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDef
   }catch(error){button.disabled=false;status.textContent='চালু করা যায়নি। পেজটি রিফ্রেশ করে আবার চেষ্টা করুন।';}
  });
  if('Notification'in window){renderState();if(localStorage.getItem(enabledKey)==='yes'&&Notification.permission==='granted'){
-  checkNewBreaking(true);
+  checkNewBreaking(false);
   window.setInterval(()=>{if(document.visibilityState==='visible')checkNewBreaking(false);},5*60*1000);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkNewBreaking(false);});
  }}
