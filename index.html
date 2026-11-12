@@ -305,8 +305,9 @@ body{padding-bottom:90px!important}
 
 /* Clickable visual category cards */
 .category-feature-list{gap:12px;align-content:start}
-.side-card.category-feature{display:block;color:inherit;text-decoration:none;padding:12px;cursor:pointer;border:1px solid #e5e8ef;border-radius:15px;background:#fff;transition:transform .18s,box-shadow .18s,border-color .18s}
-.side-card.category-feature:hover,.side-card.category-feature:focus-visible{transform:translateY(-3px);border-color:#b5122b;box-shadow:0 12px 26px rgba(20,30,50,.12)}
+.side-card.category-feature{display:block;color:inherit;text-decoration:none;padding:12px;border:1px solid #e5e8ef;border-radius:15px;background:#fff;transition:transform .18s,box-shadow .18s,border-color .18s}
+.side-card.category-feature:hover{transform:translateY(-2px);border-color:#b5122b;box-shadow:0 12px 26px rgba(20,30,50,.10)}
+.category-live-news{display:grid;gap:8px;margin:9px 0 10px}.category-live-news a{display:block;color:#202b3a;text-decoration:none;font-size:13px;line-height:1.55;font-weight:700;border-top:1px solid #edf0f4;padding-top:7px}.category-live-news a:hover{color:#a90e27}.category-news-date{display:block;color:#87909e;font-size:10px;font-weight:500;margin-top:2px}.category-news-loading,.category-news-empty{font-size:12px;color:#788392}.category-open-btn{border:0;background:transparent;padding:4px 0;cursor:pointer;font:inherit}
 .side-card.category-feature img{width:100%;height:112px;object-fit:cover;display:block;border-radius:10px;margin:8px 0 9px;background:#eef2f7}
 .side-card.category-feature h3{font-size:16px;line-height:1.45;margin:3px 0 5px;color:#17212b}
 .side-card.category-feature .meta{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
@@ -341,10 +342,10 @@ body{padding-bottom:90px!important}
 <div class="ticker" id="newsTicker"><b id="tickerLabel">সর্বশেষ আপডেট</b><div class="ticker-track" id="breakingTicker" aria-live="polite"><span>বরগুনা ও দেশের সর্বশেষ খবর জানতে চোখ রাখুন BD Barguna News-এ।</span></div><button class="ticker-pause" id="tickerPause" type="button" aria-pressed="false" aria-label="চলমান সংবাদ থামান">Ⅱ</button></div>
 <div class="notification-tools"><button type="button" id="newsNotifyButton" aria-describedby="newsNotifyHelp">🔔 নিউজ নোটিফিকেশন চালু করুন</button><span id="newsNotifyStatus" role="status" aria-live="polite">নতুন ব্রেকিং নিউজের সতর্কতা পেতে চালু করুন</span><small id="newsNotifyHelp">সাইট/অ্যাপ খোলা থাকলে নতুন ব্রেকিং নিউজের নোটিফিকেশন আসবে।</small></div>
 <section class="lead-grid"><article class="hero"><div class="hero-image"><img src="images/home-news-cover.svg" alt="BD Barguna News — বরগুনার সংবাদ" fetchpriority="high"></div><div class="hero-body"><span class="category">বিশেষ প্রতিবেদন</span><h1>বরগুনা ও দেশের গুরুত্বপূর্ণ খবর সবার আগে</h1><p class="summary">সর্বশেষ সংবাদ, স্থানীয় প্রতিবেদন, ছবি ও ভিডিও খবর এক জায়গায় পড়ুন।</p><div class="meta">প্রকাশক ও সম্পাদক: মোঃ সাইমুন মিয়া · সংবাদ ডেস্ক</div></div></article>
-<div class="side category-feature-list" aria-label="সংবাদ বিভাগের বিশেষ লিংক">
-<a class="side-card category-feature" href="#latest" data-home-category="বরগুনা"><span class="category">বরগুনা বিভাগ</span><img src="images/category-barguna.svg?v=20261112" alt="বরগুনা উপকূল ও সমুদ্রের প্রতীকী ছবি" loading="eager" decoding="async"><h3>বরগুনা জেলার সর্বশেষ স্থানীয় সংবাদ</h3><div class="meta">স্থানীয় সংবাদ বিভাগ <span class="category-arrow">বিস্তারিত দেখুন →</span></div></a>
-<a class="side-card category-feature" href="#latest" data-home-category="জাতীয়"><span class="category">জাতীয় বিভাগ</span><img src="images/category-national.svg?v=20261112" alt="জাতীয় সংবাদ বিভাগের প্রতীকী ছবি" loading="eager" decoding="async"><h3>দেশের গুরুত্বপূর্ণ খবর ও আপডেট</h3><div class="meta">জাতীয় সংবাদ বিভাগ <span class="category-arrow">বিস্তারিত দেখুন →</span></div></a>
-<a class="side-card category-feature" href="#latest" data-home-category="সারাদেশ"><span class="category">সারাদেশ বিভাগ</span><img src="images/category-country.svg?v=20261112" alt="সারাদেশের জেলা-উপজেলার প্রতীকী ছবি" loading="eager" decoding="async"><h3>জেলা-উপজেলার খবর এক নজরে</h3><div class="meta">সারাদেশ সংবাদ বিভাগ <span class="category-arrow">বিস্তারিত দেখুন →</span></div></a>
+<div class="side category-feature-list" aria-label="সর্বশেষ সংবাদ বিভাগ">
+<article class="side-card category-feature"><span class="category">বরগুনা বিভাগ</span><img src="images/category-barguna.svg?v=20261112" alt="বরগুনা উপকূল ও সমুদ্রের প্রতীকী ছবি" loading="eager" decoding="async"><h3>বরগুনা জেলার সর্বশেষ স্থানীয় সংবাদ</h3><div class="category-live-news" id="homeBargunaNews" aria-live="polite"><span class="category-news-loading">সর্বশেষ সংবাদ লোড হচ্ছে...</span></div><button class="category-arrow category-open-btn" type="button" data-home-category="বরগুনা">বরগুনার সব খবর দেখুন →</button></article>
+<article class="side-card category-feature"><span class="category">জাতীয় বিভাগ</span><img src="images/category-national.svg?v=20261112" alt="জাতীয় সংবাদ বিভাগের প্রতীকী ছবি" loading="eager" decoding="async"><h3>দেশের গুরুত্বপূর্ণ খবর ও আপডেট</h3><div class="category-live-news" id="homeNationalNews" aria-live="polite"><span class="category-news-loading">সর্বশেষ সংবাদ লোড হচ্ছে...</span></div><button class="category-arrow category-open-btn" type="button" data-home-category="জাতীয়">জাতীয় সব খবর দেখুন →</button></article>
+<article class="side-card category-feature"><span class="category">সারাদেশ বিভাগ</span><img src="images/category-country.svg?v=20261112" alt="সারাদেশের জেলা-উপজেলার প্রতীকী ছবি" loading="eager" decoding="async"><h3>জেলা-উপজেলার খবর এক নজরে</h3><div class="category-live-news" id="homeCountryNews" aria-live="polite"><span class="category-news-loading">সর্বশেষ সংবাদ লোড হচ্ছে...</span></div><button class="category-arrow category-open-btn" type="button" data-home-category="সারাদেশ">সারাদেশের সব খবর দেখুন →</button></article>
 </div></section>
 
 <section id="latest"><div class="section-head"><h2 class="section-title" id="newsHeading">সর্বশেষ সংবাদ</h2><span class="muted" id="newsCount">সংবাদ</span></div><div class="category-filter" id="categoryFilters" aria-label="সংবাদের বিভাগ"><button type="button" data-category="all" class="active" aria-pressed="true">সব খবর</button></div><div class="cards" id="newsCards"><div class="empty"><strong>সংবাদ লোড হচ্ছে...</strong>একটু অপেক্ষা করুন</div></div></section>
@@ -413,7 +414,27 @@ function updateFeaturedNews(items){
  }
 }
 function showBreaking(items){const root=document.getElementById('breakingTicker'),label=document.getElementById('tickerLabel'),ticker=document.getElementById('newsTicker');const source=Array.isArray(items)?items:[];const list=source.filter(n=>n&&typeof n.title==='string'&&n.title.trim());if(!root)return;if(!list.length){if(label)label.textContent='সর্বশেষ আপডেট';if(ticker)ticker.classList.remove('has-breaking');root.innerHTML='<span>বরগুনা ও দেশের সর্বশেষ খবর জানতে চোখ রাখুন BD Barguna News-এ।</span>';return;}if(label)label.textContent='ব্রেকিং নিউজ';if(ticker)ticker.classList.add('has-breaking');const links=list.map(n=>{const index=source.indexOf(n);const href=n.slug?'articles/'+encodeURIComponent(n.slug)+'.html':'news.html?index='+index;return '<a href="'+href+'">'+esc(n.title.trim())+'</a>';}).join('');root.innerHTML='<div class="ticker-run">'+links+'</div>';}
-let allNews=[];let allVideos=[];let viewCounts={};let activeCategory='all';let searchQuery='';function renderCategoryFilters(items){const root=document.getElementById('categoryFilters');if(!root)return;const categories=[...new Set((Array.isArray(items)?items:[]).map(n=>String(n&&n.category||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'bn'));root.innerHTML='<button type="button" data-category="all" class="'+(activeCategory==='all'?'active':'')+'" aria-pressed="'+(activeCategory==='all')+'">সব খবর</button>'+categories.map(cat=>'<button type="button" data-category="'+esc(cat)+'" class="'+(activeCategory===cat?'active':'')+'" aria-pressed="'+(activeCategory===cat)+'">'+esc(cat)+'</button>').join('');}function showPopular(items){const root=document.getElementById('popularNews');if(!root)return;const list=(Array.isArray(items)?items:[]).filter(n=>n&&n.title).map(n=>({...n,views:Number(viewCounts[n.slug]||0)})).sort((a,b)=>b.views-a.views).slice(0,5);root.innerHTML=list.length?list.map(n=>'<li><a href="'+(n.slug?'articles/'+encodeURIComponent(n.slug)+'.html':'#latest')+'">'+esc(n.title)+'</a><div class="meta">👁️ '+bnDigits(n.views)+' বার পড়া হয়েছে</div></li>').join(''):'<li>এখনো সংবাদ প্রকাশিত হয়নি।</li>';}
+let allNews=[];let allVideos=[];let viewCounts={};let activeCategory='all';let searchQuery='';function renderCategoryFilters(items){const root=document.getElementById('categoryFilters');if(!root)return;const categories=[...new Set((Array.isArray(items)?items:[]).map(n=>String(n&&n.category||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'bn'));root.innerHTML='<button type="button" data-category="all" class="'+(activeCategory==='all'?'active':'')+'" aria-pressed="'+(activeCategory==='all')+'">সব খবর</button>'+categories.map(cat=>'<button type="button" data-category="'+esc(cat)+'" class="'+(activeCategory===cat?'active':'')+'" aria-pressed="'+(activeCategory===cat)+'">'+esc(cat)+'</button>').join('');}function updateHomeCategoryNews(items){
+ const source=(Array.isArray(items)?items:[]).filter(n=>n&&n.title).slice().sort((a,b)=>new Date(b.date||b.publishedAt||0)-new Date(a.date||a.publishedAt||0));
+ const groups=[
+  {id:'homeBargunaNews',test:n=>{const c=String(n.category||'').trim().toLocaleLowerCase();return c.includes('বরগুনা')||c.includes('স্থানীয়')||c.includes('স্থানীয়');}},
+  {id:'homeNationalNews',test:n=>{const c=String(n.category||'').trim().toLocaleLowerCase();return c==='জাতীয়'||c==='জাতীয়'||c.includes('বাংলাদেশ');}},
+  {id:'homeCountryNews',test:n=>String(n.category||'').trim().toLocaleLowerCase()==='সারাদেশ'}
+ ];
+ groups.forEach(group=>{
+  const root=document.getElementById(group.id);if(!root)return;
+  const matches=source.filter(group.test).slice(0,3);
+  if(!matches.length){root.innerHTML='<span class="category-news-empty">এই বিভাগে এখনো কোনো সংবাদ প্রকাশিত হয়নি।</span>';return;}
+  root.innerHTML=matches.map(n=>{
+   const index=source.indexOf(n);
+   const href=n.slug?'articles/'+encodeURIComponent(n.slug)+'.html':'news.html?index='+index;
+   const rawDate=n.date||n.publishedAt||'';
+   let date='';if(rawDate){const d=new Date(rawDate);date=Number.isNaN(d.getTime())?String(rawDate):d.toLocaleDateString('bn-BD',{day:'numeric',month:'short'});}
+   return '<a href="'+href+'">'+esc(n.title)+'<span class="category-news-date">'+esc(date)+'</span></a>';
+  }).join('');
+ });
+}
+function showPopular(items){const root=document.getElementById('popularNews');if(!root)return;const list=(Array.isArray(items)?items:[]).filter(n=>n&&n.title).map(n=>({...n,views:Number(viewCounts[n.slug]||0)})).sort((a,b)=>b.views-a.views).slice(0,5);root.innerHTML=list.length?list.map(n=>'<li><a href="'+(n.slug?'articles/'+encodeURIComponent(n.slug)+'.html':'#latest')+'">'+esc(n.title)+'</a><div class="meta">👁️ '+bnDigits(n.views)+' বার পড়া হয়েছে</div></li>').join(''):'<li>এখনো সংবাদ প্রকাশিত হয়নি।</li>';}
 function showNews(items,selected='all'){
  const cards=document.getElementById('newsCards'),more=document.getElementById('moreNews');
  const source=Array.isArray(items)?items.filter(x=>x&&x.title):[];
@@ -451,6 +472,7 @@ async function loadHomepageNews(){
   allNews=Array.isArray(data)?data.filter(n=>n&&typeof n.title==='string'&&n.title.trim()):[];
   showBreaking(allNews);
   updateFeaturedNews(allNews);
+  updateHomeCategoryNews(allNews);
   renderCategoryFilters(allNews);
   showNews(allNews);
   showPopular(allNews);
@@ -462,11 +484,12 @@ async function loadHomepageNews(){
 }
 
 document.querySelector('.category-feature-list')?.addEventListener('click',event=>{
- const link=event.target.closest('a[data-home-category]');
- if(!link)return;
- activeCategory=link.dataset.homeCategory||'all';
+ const button=event.target.closest('button[data-home-category]');
+ if(!button)return;
+ activeCategory=button.dataset.homeCategory||'all';
  renderCategoryFilters(allNews);
  showNews(allNews,activeCategory);
+ document.getElementById('latest')?.scrollIntoView({behavior:'smooth',block:'start'});
 });
 document.getElementById('categoryFilters')?.addEventListener('click',event=>{
  const button=event.target.closest('button[data-category]');
