@@ -164,8 +164,8 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#c51b36';rr(82,710,250,52,16);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 23px "Noto Sans Bengali",Arial';ctx.fillText(category.slice(0,18),104,745);
  ctx.fillStyle='#64748b';ctx.font='bold 22px "Noto Sans Bengali",Arial';ctx.textAlign='right';ctx.fillText(dayText,1115,745);ctx.textAlign='left';
  const wrap=(text,maxWidth,font,maxLines)=>{ctx.font=font;const words=text.split(/\s+/),lines=[];let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>maxWidth&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);if(lines.length>maxLines){lines.length=maxLines;let last=lines[maxLines-1];while(last.length&&ctx.measureText(last+'…').width>maxWidth)last=last.slice(0,-1);lines[maxLines-1]=last+'…';}return lines;};
- const titleLines=wrap(title,1025,'bold 49px "Noto Sans Bengali",Arial',3);
- ctx.fillStyle='#111827';ctx.font='bold 49px "Noto Sans Bengali",Arial';let y=825;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=62;});
+ const titleLines=wrap(title,1025,'bold 46px "Noto Sans Bengali",Arial',2);
+ ctx.fillStyle='#111827';ctx.font='bold 46px "Noto Sans Bengali",Arial';let y=825;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=58;});
  
  ctx.fillStyle='#e2e8f0';ctx.fillRect(82,1000,1036,2);ctx.fillStyle='#c51b36';ctx.fillRect(82,1000,140,5);
  ctx.fillStyle='#475569';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,1035);ctx.textAlign='right';ctx.font='20px "Noto Sans Bengali",Arial';ctx.fillText(dateText,1118,1035);ctx.textAlign='left';
