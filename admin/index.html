@@ -431,6 +431,18 @@ $("cancelEdit").onclick=()=>{
  $("cancelEdit").hidden=true;
 };
 
+async function ensureArticleTemplate(){
+ if(typeof window.articleHTML==="function")return;
+ await new Promise((resolve,reject)=>{
+  const s=document.createElement("script");
+  s.src=new URL("./article-template.js?v=20261112b",location.href).href;
+  s.onload=resolve;
+  s.onerror=()=>reject(new Error("আর্টিকেল টেমপ্লেট ফাইল লোড হয়নি। admin/article-template.js ফাইলটি ওয়েবসাইটে প্রকাশ হয়েছে কি না দেখুন।"));
+  document.head.appendChild(s);
+ });
+ if(typeof window.articleHTML!=="function")throw new Error("আর্টিকেল টেমপ্লেট লোড হয়েছে, কিন্তু articleHTML ফাংশন পাওয়া যায়নি।");
+}
+
 $("newsForm").addEventListener("submit",async e=>{
  e.preventDefault();
  const btn=$("publishBtn");
@@ -461,7 +473,8 @@ $("newsForm").addEventListener("submit",async e=>{
    ?latest.map(x=>x.slug===editingSlug?n:x)
    :[n,...latest];
 
-  await saveFile("articles/"+n.slug+".html",articleHTML(n),"Publish article page");
+  await ensureArticleTemplate();
+  await saveFile("articles/"+n.slug+".html",window.articleHTML(n),"Publish article page");
   await saveFile(NEWS,JSON.stringify(updated,null,2),old?"Update news":"Publish news");
   await saveSitemap(updated);
 
