@@ -13,8 +13,8 @@ function articleHTML(n){
  const dateText=Number.isNaN(date.getTime())?esc(n.date):
  date.toLocaleString("bn-BD",{dateStyle:"long",timeStyle:"short"});
  const canonical="https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/articles/"+encodeURIComponent(n.slug)+".html";
- const description=String(n.body||n.title).replace(/\\s+/g," ").trim().slice(0,160);
- const imageUrl=n.image?(/^https?:\\/\\//i.test(n.image)?n.image:"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/"+String(n.image).replace(/^\\/+/, "")):"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/site-logo.svg";
+ const description=String(n.body||n.title).replace(/\s+/g," ").trim().slice(0,160);
+ const imageUrl=n.image?(/^https?:\/\//i.test(n.image)?n.image:"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/"+String(n.image).replace(/^\/+/, "")):"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/site-logo.svg";
  const publishedDate=Number.isNaN(date.getTime())?new Date().toISOString():date.toISOString();
  const modifiedDate=n.modifiedAt||publishedDate;
  const articleSchema=JSON.stringify({
