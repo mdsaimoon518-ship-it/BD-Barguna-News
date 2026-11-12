@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /BD-Barguna-News/admin/
 
 Sitemap: https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/sitemap.xml
