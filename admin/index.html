@@ -474,6 +474,7 @@ ${image}
 </div>
 </footer>
 <div class="buttons">
+<button onclick="downloadNewsPhotoCard()">🖼️ নিউজ ফটোকার্ড ডাউনলোড</button>
 <button onclick="window.print()">🖨️ সংবাদ প্রিন্ট</button>
 <button class="gray" onclick="copyArticleLink()">🔗 লিংক কপি</button>
 <button class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
@@ -482,6 +483,48 @@ ${image}
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
 </main>
 <script>
+window.downloadNewsPhotoCard=async function(){
+ const canvas=document.createElement("canvas");
+ canvas.width=1080;canvas.height=1080;
+ const ctx=canvas.getContext("2d");
+ if(!ctx){alert("ফটোকার্ড তৈরি করা যাচ্ছে না।");return;}
+ const photo=document.querySelector(".photo-card img");
+ const logo=document.querySelector(".logo");
+ const drawImage=(img,x,y,w,h,cover=true)=>{
+  if(!img||!img.complete||!img.naturalWidth)return;
+  const scale=cover?Math.max(w/img.naturalWidth,h/img.naturalHeight):Math.min(w/img.naturalWidth,h/img.naturalHeight);
+  const sw=w/scale,sh=h/scale,sx=(img.naturalWidth-sw)/2,sy=(img.naturalHeight-sh)/2;
+  ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);
+ };
+ ctx.fillStyle="#101820";ctx.fillRect(0,0,1080,1080);
+ if(photo&&photo.complete&&photo.naturalWidth){drawImage(photo,0,0,1080,650,true);}
+ else{ctx.fillStyle="#303b4a";ctx.fillRect(0,0,1080,650);ctx.fillStyle="#fff";ctx.font="bold 44px Arial";ctx.fillText("BD Barguna News",70,340);}
+ const gradient=ctx.createLinearGradient(0,620,0,1080);
+ gradient.addColorStop(0,"#a90e27");gradient.addColorStop(1,"#65091a");
+ ctx.fillStyle=gradient;ctx.fillRect(0,650,1080,430);
+ ctx.fillStyle="#ffe4e8";ctx.font="bold 28px Arial";ctx.fillText("সর্বশেষ সংবাদ",68,710);
+ ctx.fillStyle="#ffffff";ctx.font="bold 48px 'Noto Sans Bengali',Arial";
+ const words=(document.querySelector("h1")?.innerText||document.title).trim().split(/\s+/);
+ let line="",lines=[];
+ for(const word of words){
+  const next=line?line+" "+word:word;
+  if(ctx.measureText(next).width>940&&line){lines.push(line);line=word;}else line=next;
+ }
+ if(line)lines.push(line);
+ let y=790;
+ lines.slice(0,4).forEach(t=>{ctx.fillText(t,68,y);y+=66;});
+ ctx.fillStyle="#ffe4e8";ctx.font="26px Arial";ctx.fillText("BD Barguna News  |  বরগুনা ও দেশের সর্বশেষ সংবাদ",68,1015);
+ if(logo&&logo.complete&&logo.naturalWidth){
+  ctx.fillStyle="#ffffff";ctx.beginPath();ctx.roundRect(865,680,145,145,20);ctx.fill();
+  try{drawImage(logo,880,695,115,115,false);}catch(e){}
+ }
+ try{
+  const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("ফটোকার্ড তৈরি হয়নি")),"image/png"));
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="bd-barguna-news-photo-card.png";a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+ }catch(error){alert("ফটোকার্ড তৈরি করা যায়নি। ছবিটি অন্য সার্ভারে থাকলে সেটি ডাউনলোড-সুরক্ষা দিতে পারে।");}
+};
 window.copyArticleLink=async function(){
  const text=location.href;
  try{
