@@ -271,7 +271,7 @@ function makeSitemap(items){
  (Array.isArray(items)?items:[]).forEach(n=>{
   if(!n||!n.slug||!n.title)return;
   const d=new Date(n.date||Date.now());
-  urls.push({loc:SITE_BASE+"articles/"+encodeURIComponent(n.slug)+".html",lastmod:Number.isNaN(d.getTime())?today:d.toISOString().slice(0,10)});
+  const changed=new Date(n.modifiedAt||n.date||Date.now());\n  urls.push({loc:SITE_BASE+"articles/"+encodeURIComponent(n.slug)+".html",lastmod:Number.isNaN(changed.getTime())?today:changed.toISOString().slice(0,10)});
  });
  const unique=[...new Map(urls.map(u=>[u.loc,u])).values()];
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
@@ -367,6 +367,7 @@ function articleHTML(n){
  const description=String(n.body||n.title).replace(/\\s+/g," ").trim().slice(0,160);
  const imageUrl=n.image?(/^https?:\\/\\//i.test(n.image)?n.image:"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/"+String(n.image).replace(/^\\/+/, "")):"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/site-logo.svg";
  const publishedDate=Number.isNaN(date.getTime())?new Date().toISOString():date.toISOString();
+ const modifiedDate=n.modifiedAt||publishedDate;
  const articleSchema=JSON.stringify({
   "@context":"https://schema.org",
   "@type":"NewsArticle",
@@ -375,7 +376,7 @@ function articleHTML(n){
   "description":description,
   "image":[imageUrl],
   "datePublished":publishedDate,
-  "dateModified":publishedDate,
+  "dateModified":modifiedDate,
   "inLanguage":"bn-BD",
   "articleSection":n.category||"সংবাদ",
   "publisher":{"@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","logo":{"@type":"ImageObject","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/site-logo.svg"}}
@@ -615,6 +616,7 @@ $("newsForm").addEventListener("submit",async e=>{
    caption:$("caption").value.trim(),
    breaking:$("breaking").checked,
    date:old?.date||new Date().toISOString(),
+   modifiedAt:new Date().toISOString(),
    slug:old?.slug||makeSlug(title)
   };
 
