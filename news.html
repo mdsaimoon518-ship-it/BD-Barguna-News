@@ -26,8 +26,8 @@ document.getElementById('seoCanonical').href=canonicalUrl;
 document.getElementById('ogTitle').content=document.title;
 document.getElementById('ogDescription').content=pageDescription;
 document.getElementById('ogUrl').content=canonicalUrl;
-document.getElementById('twitter:title').content=document.title;
-document.getElementById('twitter:description').content=pageDescription;
+document.querySelector('meta[name="twitter:title"]').content=document.title;
+document.querySelector('meta[name="twitter:description"]').content=pageDescription;
 if(img){document.getElementById('ogImage').content=img;document.getElementById('twitterImage').content=img;}
 if(publishedDate){const published=document.createElement('meta');published.setAttribute('property','article:published_time');published.content=publishedDate;document.head.appendChild(published);}
 const articleSchema={'@context':'https://schema.org','@type':'NewsArticle','mainEntityOfPage':{'@type':'WebPage','@id':canonicalUrl},'headline':String(n.title||'BD Barguna News').slice(0,110),'description':pageDescription,'datePublished':publishedDate||undefined,'dateModified':publishedDate||undefined,'image':img?[img]:undefined,'articleSection':n.category||'সংবাদ','inLanguage':'bn-BD','author':{'@type':'Organization','name':'BD Barguna News'},'publisher':{'@type':'Organization','name':'BD Barguna News','url':'https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/'}};
