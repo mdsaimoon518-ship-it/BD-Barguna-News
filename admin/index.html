@@ -114,8 +114,14 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <form id="videoForm">
 <label>ভিডিওর শিরোনাম</label>
 <input id="videoTitle" required>
-<label>YouTube ভিডিও লিংক</label>
-<input id="videoUrl" type="url" required placeholder="YouTube URL">
+<label>ভিডিও প্ল্যাটফর্ম</label>
+<select id="videoPlatform" required>
+<option value="youtube">YouTube</option>
+<option value="facebook">Facebook</option>
+</select>
+<label id="videoUrlLabel">YouTube ভিডিও লিংক</label>
+<input id="videoUrl" type="url" required placeholder="YouTube ভিডিও URL দিন">
+<p class="note">Facebook ভিডিওর ক্ষেত্রে ভিডিওটি Public হতে হবে এবং Embedding অনুমোদিত থাকতে হবে। Facebook-এর ভিডিও ফাইল সরাসরি আপলোড নয়—ভিডিওর শেয়ার লিংক যোগ করুন।</p>
 <button type="submit">ভিডিও প্রকাশ করুন</button>
 </form>
 <p id="videoStatus" class="status"></p>
@@ -539,6 +545,12 @@ async function loadVideos(){
  }catch(e){$("videoList").textContent=e.message}
 }
 
+$("videoPlatform").addEventListener("change",()=>{
+ const facebook=$("videoPlatform").value==="facebook";
+ $("videoUrlLabel").textContent=facebook?"Facebook ভিডিও লিংক":"YouTube ভিডিও লিংক";
+ $("videoUrl").placeholder=facebook?"Facebook ভিডিও Share URL দিন":"YouTube ভিডিও URL দিন";
+});
+
 $("loadVideos").onclick=loadVideos;
 
 /* LIVE STREAM SETTINGS */
@@ -586,10 +598,19 @@ $("videoForm").addEventListener("submit",async e=>{
   const title=$("videoTitle").value.trim();
   const url=$("videoUrl").value.trim();
   const u=new URL(url);
-  if(!["youtube.com","www.youtube.com","youtu.be","m.youtube.com"].includes(u.hostname))
-   throw new Error("সঠিক YouTube URL দিন");
+  const host=u.hostname.toLowerCase().replace(/^www\./,"");
+  const platform=$("videoPlatform").value;
+  if(platform==="youtube"){
+   if(!["youtube.com","youtu.be","m.youtube.com","music.youtube.com"].includes(host))
+    throw new Error("সঠিক YouTube ভিডিও URL দিন");
+  }else if(platform==="facebook"){
+   if(!["facebook.com","m.facebook.com","web.facebook.com","fb.watch"].includes(host))
+    throw new Error("সঠিক Facebook ভিডিও URL দিন");
+   if(u.pathname==="/"||u.pathname.length<2)
+    throw new Error("নির্দিষ্ট Facebook ভিডিওর শেয়ার লিংক দিন, শুধু পেজের লিংক নয়");
+  }else throw new Error("ভিডিও প্ল্যাটফর্ম নির্বাচন করুন");
   const videos=await readJSON(VIDEOS);
-  videos.unshift({title,url,date:new Date().toISOString()});
+  videos.unshift({title,url,platform,date:new Date().toISOString()});
   await saveFile(VIDEOS,JSON.stringify(videos,null,2),"Publish video news");
   $("videoForm").reset();
   show("videoStatus","ভিডিও নিউজ প্রকাশ হয়েছে");
