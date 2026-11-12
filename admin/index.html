@@ -105,6 +105,8 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <hr>
 <h3>📚 প্রকাশিত সংবাদ পরিচালনা</h3>
 <button id="loadNews" class="blue" type="button">সংবাদের তালিকা দেখুন</button>
+<button id="refreshArticlePages" type="button">🔄 পুরোনো সংবাদ পেজগুলো নতুন ডিজাইনে আপডেট করুন</button>
+<p class="note">একবার চাপলে প্রকাশিত সব সংবাদের পেজে নতুন ফটোকার্ড, ডাউনলোড, প্রিন্ট ও কপি অপশন যুক্ত হবে।</p>
 <div id="newsList"></div>
 
 <hr>
@@ -135,7 +137,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <p class="note">BD Barguna News | সত্যের সন্ধানে, মানুষের পাশে।</p>
 </main>
 
-<script src="./article-template.js?v=20261112d"></script>
+<script src="./article-template.js?v=20261112e"></script>
 <script>
 "use strict";
 
@@ -435,7 +437,7 @@ async function ensureArticleTemplate(){
  if(typeof window.articleHTML==="function")return;
  await new Promise((resolve,reject)=>{
   const s=document.createElement("script");
-  s.src=new URL("./article-template.js?v=20261112d",location.href).href;
+  s.src=new URL("./article-template.js?v=20261112e",location.href).href;
   s.onload=resolve;
   s.onerror=()=>reject(new Error("আর্টিকেল টেমপ্লেট ফাইল লোড হয়নি। admin/article-template.js ফাইলটি ওয়েবসাইটে প্রকাশ হয়েছে কি না দেখুন।"));
   document.head.appendChild(s);
@@ -501,6 +503,26 @@ $("newsForm").addEventListener("submit",async e=>{
 });
 
 $("loadNews").onclick=loadNews;
+
+$("refreshArticlePages").onclick=async()=>{
+ const btn=$("refreshArticlePages");
+ if(!confirm("প্রকাশিত সব সংবাদ পেজ নতুন ডিজাইনে আপডেট করবেন?"))return;
+ btn.disabled=true;
+ try{
+  await ensureArticleTemplate();
+  const items=await readJSON(NEWS);
+  if(!items.length)throw new Error("কোনো প্রকাশিত সংবাদ পাওয়া যায়নি");
+  let done=0;
+  for(const n of items){
+   if(!n||!n.slug||!n.title)continue;
+   await saveFile("articles/"+n.slug+".html",window.articleHTML(n),"Refresh article page design");
+   done++;
+   show("status","নতুন ডিজাইন আপডেট হচ্ছে: "+done+" / "+items.length);
+  }
+  show("status","সফল! "+done+"টি সংবাদ পেজে নতুন ফটোকার্ড, ডাউনলোড, প্রিন্ট ও কপি অপশন যুক্ত হয়েছে।");
+ }catch(err){show("status","সমস্যা: "+err.message,true)}
+ finally{btn.disabled=false}
+};
 
 /* VIDEO NEWS */
 
