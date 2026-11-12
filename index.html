@@ -395,7 +395,7 @@ body{padding-bottom:90px!important}
 
 <section id="latest"><div class="section-head"><h2 class="section-title" id="newsHeading">সর্বশেষ সংবাদ</h2><span class="muted" id="newsCount">সংবাদ</span></div><div class="category-filter" id="categoryFilters" aria-label="সংবাদের বিভাগ"><button type="button" data-category="all" class="active" aria-pressed="true">সব খবর</button></div><div class="cards" id="newsCards"><div class="empty"><strong>সংবাদ লোড হচ্ছে...</strong>একটু অপেক্ষা করুন</div></div></section>
 <div class="ad-slot ad-inline" aria-label="বিজ্ঞাপনের স্থান"><strong>ADVERTISEMENT</strong><span>সংবাদের মাঝখানে বিজ্ঞাপন</span></div>
-<section class="live-section" id="liveSection" aria-label="সরাসরি সম্প্রচার"><div class="live-head"><span class="live-dot"></span><span class="live-label">🔴 সরাসরি সম্প্রচার</span><span class="live-title" id="liveTitle">BD Barguna News লাইভ</span></div><div class="live-player" id="livePlayer"></div><div class="live-note">লাইভ সম্প্রচার YouTube-এর মাধ্যমে দেখানো হচ্ছে। ভিডিও চালাতে প্লেয়ারের ▶ বোতামে চাপ দিন।</div></section>
+<section class="live-section" id="liveSection" aria-label="সরাসরি সম্প্রচার"><div class="live-head"><span class="live-dot"></span><span class="live-label">🔴 সরাসরি সম্প্রচার</span><span class="live-title" id="liveTitle">BD Barguna News লাইভ</span></div><div class="live-player" id="livePlayer"></div><div class="live-note">Facebook বা YouTube-এ চালু করা পাবলিক লাইভ সম্প্রচার এখানে সরাসরি দেখা যাবে।</div></section>
 <section class="video-section" id="videos"><div class="section-head"><h2 class="section-title">ভিডিও নিউজ</h2><a class="video-channel-link" href="https://www.youtube.com/@mdSaimoon-e5d" target="_blank" rel="noopener">YouTube চ্যানেল দেখুন ↗</a></div><div class="video-grid" id="videoCards"><div class="empty"><strong>ভিডিও নিউজ শিগগিরই</strong>ভিডিও যুক্ত হলে এখানে দেখা যাবে।</div></div></section>
 <div class="columns"><section><div class="section-head"><h2 class="section-title">আরও খবর</h2></div><div id="moreNews"><div class="empty">আরও সংবাদ যুক্ত হলে এখানে দেখা যাবে।</div></div></section><aside class="popular"><h2 class="section-title">জনপ্রিয় সংবাদ</h2><ol id="popularNews"><li>পাঠসংখ্যা অনুযায়ী জনপ্রিয় সংবাদ এখানে দেখা যাবে।</li></ol></aside></div>
 </main>
@@ -445,6 +445,28 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const safeUrl=u=>{try{const x=new URL(u,location.href);return ['http:','https:'].includes(x.protocol)?x.href:''}catch(e){return ''}};
 function categoryFallback(category){const c=String(category||'').toLocaleLowerCase();if(c.includes('বরগুনা')||c.includes('স্থানীয়'))return 'images/category-barguna.svg';if(c.includes('জাতীয়')||c.includes('বাংলাদেশ'))return 'images/category-national.svg';if(c.includes('সারাদেশ'))return 'images/category-country.svg';if(c.includes('খেলা'))return 'images/category-sports.svg';if(c.includes('আন্তর্জাতিক'))return 'images/category-world.svg';return 'images/news-placeholder.svg';}
 function videoId(url){try{const raw=String(url);const host=(raw.split('//')[1]||'').split('/')[0].split(':')[0].replace('www.','').toLowerCase();const path=(raw.split('//')[1]||'').split('?')[0].split('#')[0].split('/').slice(1).filter(Boolean);const query=(raw.match(/[?&]v=([^&]+)/)||[])[1];if(host==='youtu.be')return path[0]||'';if(['youtube.com','m.youtube.com','music.youtube.com'].includes(host)){if(query)return query;if(['embed','shorts','live','v'].includes(path[0])&&path[1])return path[1];}}catch(e){}return ''}
+async function loadHomepageLive(){
+ const section=document.getElementById('liveSection'),player=document.getElementById('livePlayer'),title=document.getElementById('liveTitle');
+ if(!section||!player)return;
+ try{
+  const response=await fetch('https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/live.json?update='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw new Error('লাইভ সেটিং পাওয়া যায়নি');
+  const live=await response.json();
+  if(!live.active||!live.url){section.classList.remove('active');player.innerHTML='';return;}
+  const url=safeUrl(live.url);if(!url)throw new Error('লাইভ লিংকটি সঠিক নয়');
+  const parsed=new URL(url),host=parsed.hostname.toLowerCase();
+  let embed='';
+  if(['facebook.com','www.facebook.com','m.facebook.com','web.facebook.com','fb.watch'].includes(host)){
+   embed='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=560';
+  }else if(['youtube.com','www.youtube.com','m.youtube.com','youtu.be','music.youtube.com'].includes(host)){
+   const id=videoId(url);if(!id)throw new Error('YouTube লাইভ ভিডিও আইডি পাওয়া যায়নি');
+   embed='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id);
+  }else throw new Error('সমর্থিত Facebook Live বা YouTube Live লিংক নয়');
+  if(title)title.textContent=live.title||'BD Barguna News লাইভ';
+  player.innerHTML='<iframe src="'+esc(embed)+'" title="BD Barguna News Live" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+  section.classList.add('active');
+ }catch(error){section.classList.remove('active');player.innerHTML='';console.warn('Live stream could not load:',error);}
+}
 function updateFeaturedNews(items){
  const hero=document.querySelector('.hero');if(!hero)return;
  const n=Array.isArray(items)?items.find(x=>x&&x.title):null;if(!n)return;
@@ -563,6 +585,8 @@ loadHomepageNews();
 setInterval(()=>{if(document.visibilityState==='visible')loadHomepageNews();},180000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadHomepageNews();});
 loadHomepageVideos();
+loadHomepageLive();
+setInterval(()=>{if(document.visibilityState==='visible')loadHomepageLive();},60000);
 })();
 </script>
 </body>
