@@ -186,5 +186,35 @@ firebase.auth().signInAnonymously().then(()=>firebase.database().ref("articleVie
 document.getElementById("articleComments").src="https://www.facebook.com/plugins/comments.php?href="+encodeURIComponent(location.href)+"&width=100%25&numposts=10&order_by=reverse_time";
 })();
 </script>
+<style>.legacy-photo-card-tools{display:flex;justify-content:center;margin:22px 0}.legacy-photo-card-tools button{background:#a90e27;color:#fff;border:0;border-radius:8px;padding:13px 18px;font-size:16px;font-weight:700;cursor:pointer}</style>
+<div class="legacy-photo-card-tools"><button type="button" onclick="makeLegacyNewsPhotoCard()">🖼️ নিউজ ফটোকার্ড তৈরি ও ডাউনলোড</button></div>
+<script>
+async function makeLegacyNewsPhotoCard(){
+ const title=document.querySelector('h1,.title')?.textContent?.trim()||document.title;
+ const photo=document.querySelector('article img,.photo-card img,.photo');
+ const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1200;
+ const ctx=canvas.getContext('2d');
+ if(!ctx){alert('ফটোকার্ড তৈরি করা যাচ্ছে না।');return;}
+ const drawCover=(img,x,y,w,h)=>{
+  const scale=Math.max(w/img.naturalWidth,h/img.naturalHeight),sw=w/scale,sh=h/scale;
+  ctx.drawImage(img,(img.naturalWidth-sw)/2,(img.naturalHeight-sh)/2,sw,sh,x,y,w,h);
+ };
+ const finish=()=>{
+  const g=ctx.createLinearGradient(0,680,0,1200);g.addColorStop(0,'#b5122b');g.addColorStop(1,'#65091c');
+  ctx.fillStyle=g;ctx.fillRect(0,680,1200,520);
+  ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText('BD BARGUNA NEWS',64,740);
+  ctx.font='bold 54px "Noto Sans Bengali",Arial';ctx.fillStyle='#fff';
+  const words=title.split(/\s+/),lines=[];let line='';
+  for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>1060&&line){lines.push(line);line=word;}else line=next;}
+  if(line)lines.push(line);let y=830;
+  lines.slice(0,4).forEach(t=>{ctx.fillText(t,64,y);y+=76;});
+  ctx.fillStyle='#ffe4e8';ctx.font='28px Arial';ctx.fillText('বরগুনা ও দেশের সর্বশেষ সংবাদ',64,1140);
+  canvas.toBlob(blob=>{if(!blob){alert('ফটোকার্ড তৈরি হয়নি।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='bd-barguna-news-photo-card.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);},'image/png');
+ };
+ if(photo&&photo.src){
+  const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{drawCover(im,0,0,1200,680);finish();};im.onerror=()=>{ctx.fillStyle='#273444';ctx.fillRect(0,0,1200,680);finish();};im.src=photo.src;
+ }else{ctx.fillStyle='#273444';ctx.fillRect(0,0,1200,680);finish();}
+}
+</script>
 </body>
 </html>
