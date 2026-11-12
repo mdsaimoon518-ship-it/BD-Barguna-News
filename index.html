@@ -300,6 +300,15 @@ body{padding-bottom:90px!important}
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+<style>
+.notification-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:-10px 0 20px;padding:10px 12px;background:#fff;border:1px solid #e8eaf0;border-radius:12px;box-shadow:0 4px 14px rgba(15,23,42,.04)}
+#newsNotifyButton{border:0;border-radius:999px;padding:9px 15px;background:linear-gradient(110deg,#a90e27,#d32645);color:#fff;font:700 13px inherit;cursor:pointer;box-shadow:0 4px 12px #a90e2725}
+#newsNotifyButton:disabled{opacity:.65;cursor:default}
+#newsNotifyStatus{font-size:12px;color:#344054;font-weight:700}
+#newsNotifyHelp{flex-basis:100%;font-size:11px;color:#667085}
+@media(max-width:520px){.notification-tools{align-items:flex-start;flex-direction:column;gap:6px}.notification-tools #newsNotifyButton{width:100%}}
+</style>
 </head>
 <body>
 <div id="readingProgress" aria-hidden="true"></div>
@@ -311,6 +320,7 @@ body{padding-bottom:90px!important}
 <div class="wrap"><div class="ad-slot" aria-label="বিজ্ঞাপনের স্থান"><strong>ADVERTISEMENT</strong><span>এখানে বিজ্ঞাপন দেখানো হবে</span></div></div>
 <main class="wrap">
 <div class="ticker" id="newsTicker"><b id="tickerLabel">সর্বশেষ আপডেট</b><div class="ticker-track" id="breakingTicker" aria-live="polite"><span>বরগুনা ও দেশের সর্বশেষ খবর জানতে চোখ রাখুন BD Barguna News-এ।</span></div><button class="ticker-pause" id="tickerPause" type="button" aria-pressed="false" aria-label="চলমান সংবাদ থামান">Ⅱ</button></div>
+<div class="notification-tools"><button type="button" id="newsNotifyButton" aria-describedby="newsNotifyHelp">🔔 নিউজ নোটিফিকেশন চালু করুন</button><span id="newsNotifyStatus" role="status" aria-live="polite">নতুন ব্রেকিং নিউজের সতর্কতা পেতে চালু করুন</span><small id="newsNotifyHelp">সাইট/অ্যাপ খোলা থাকলে নতুন ব্রেকিং নিউজের নোটিফিকেশন আসবে।</small></div>
 <section class="lead-grid"><article class="hero"><div class="hero-image"><img src="images/home-news-cover.svg" alt="BD Barguna News — বরগুনার সংবাদ" fetchpriority="high"></div><div class="hero-body"><span class="category">বিশেষ প্রতিবেদন</span><h1>বরগুনা ও দেশের গুরুত্বপূর্ণ খবর সবার আগে</h1><p class="summary">সর্বশেষ সংবাদ, স্থানীয় প্রতিবেদন, ছবি ও ভিডিও খবর এক জায়গায় পড়ুন।</p><div class="meta">প্রকাশক ও সম্পাদক: মোঃ সাইমুন মিয়া · সংবাদ ডেস্ক</div></div></article>
 <div class="side"><article class="side-card"><span class="category">বরগুনা</span><img src="images/category-barguna.svg" alt="বরগুনা উপকূলের প্রতীকী ছবি" loading="lazy"><h3>বরগুনা জেলার সর্বশেষ স্থানীয় সংবাদ</h3><div class="meta">স্থানীয় সংবাদ বিভাগ</div></article><article class="side-card"><span class="category">জাতীয়</span><img src="images/category-national.svg" alt="জাতীয় সংবাদ বিভাগের প্রতীকী ছবি" loading="lazy"><h3>দেশের গুরুত্বপূর্ণ খবর ও আপডেট</h3><div class="meta">জাতীয় সংবাদ বিভাগ</div></article><article class="side-card"><span class="category">সারাদেশ</span><img src="images/category-country.svg" alt="সারাদেশ সংবাদ বিভাগের প্রতীকী ছবি" loading="lazy"><h3>জেলা-উপজেলার খবর এক নজরে</h3><div class="meta">সারাদেশ সংবাদ বিভাগ</div></article></div></section>
 
@@ -554,4 +564,74 @@ document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDef
  </button>
 </nav>
 
+
+<script>
+/* BD Barguna News: opt-in breaking-news notifications (while the site/app is open) */
+(()=>{
+ const button=document.getElementById('newsNotifyButton');
+ const status=document.getElementById('newsNotifyStatus');
+ if(!button||!status)return;
+ const enabledKey='bdBargunaNewsNotificationsEnabled';
+ const seenKey='bdBargunaNewsSeenBreaking';
+ const storyKey=n=>String(n.slug||((n.title||'')+'|'+(n.date||n.publishedAt||n.createdAt||'')));
+ const readSeen=()=>{try{return new Set(JSON.parse(localStorage.getItem(seenKey)||'[]'));}catch(e){return new Set();}};
+ const writeSeen=set=>{try{localStorage.setItem(seenKey,JSON.stringify([...set].slice(-150)));}catch(e){}};
+ let busy=false;
+ async function getBreaking(){
+  const response=await fetch('news.json?notify='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw new Error('সংবাদ সার্ভার থেকে পাওয়া যায়নি');
+  const items=await response.json();
+  return Array.isArray(items)?items.filter(n=>n&&n.title&&n.breaking===true).slice(0,30):[];
+ }
+ async function checkNewBreaking(firstRun=false){
+  if(busy||Notification.permission!=='granted')return;
+  busy=true;
+  try{
+   const items=await getBreaking(),seen=readSeen();
+   if(firstRun){items.forEach(n=>seen.add(storyKey(n)));writeSeen(seen);return;}
+   const fresh=items.filter(n=>!seen.has(storyKey(n))).reverse();
+   for(const n of fresh){
+    const key=storyKey(n);seen.add(key);
+    const url=n.slug?'articles/'+encodeURIComponent(n.slug)+'.html':'#latest';
+    const reg=await navigator.serviceWorker.ready;
+    await reg.showNotification('BD Barguna News — ব্রেকিং নিউজ',{body:String(n.title).slice(0,180),icon:'images/app-icon.svg',badge:'images/app-icon.svg',tag:'bd-news-'+key,renotify:false,data:{url}});
+   }
+   writeSeen(seen);
+  }catch(error){console.warn('News notification check:',error);}
+  finally{busy=false;}
+ }
+ function renderState(){
+  const on=localStorage.getItem(enabledKey)==='yes';
+  if(on&&Notification.permission==='granted'){
+   button.textContent='🔔 নোটিফিকেশন চালু আছে';button.disabled=true;
+   status.textContent='চালু আছে — নতুন ব্রেকিং নিউজের জন্য প্রতি ৫ মিনিটে পরীক্ষা হবে (সাইট/অ্যাপ খোলা থাকলে)।';
+  }else if(Notification.permission==='denied'){
+   button.textContent='নোটিফিকেশন অনুমতি বন্ধ';button.disabled=true;
+   status.textContent='ফোনের Chrome Site settings থেকে Notifications অনুমতি চালু করতে হবে।';
+  }
+ }
+ button.addEventListener('click',async()=>{
+  if(!('Notification'in window)||!('serviceWorker'in navigator)){
+   status.textContent='এই ব্রাউজারে নোটিফিকেশন সুবিধা পাওয়া যাচ্ছে না।';return;
+  }
+  button.disabled=true;status.textContent='অনুমতি চাওয়া হচ্ছে...';
+  try{
+   const permission=await Notification.requestPermission();
+   if(permission!=='granted'){
+    status.textContent=permission==='denied'?'অনুমতি দেওয়া হয়নি। Chrome সেটিংস থেকে চালু করুন।':'অনুমতি না দেওয়ায় চালু হয়নি।';
+    button.disabled=false;return;
+   }
+   await navigator.serviceWorker.ready;
+   localStorage.setItem(enabledKey,'yes');
+   await checkNewBreaking(true);
+   renderState();
+  }catch(error){button.disabled=false;status.textContent='চালু করা যায়নি। পেজটি রিফ্রেশ করে আবার চেষ্টা করুন।';}
+ });
+ if('Notification'in window){renderState();if(localStorage.getItem(enabledKey)==='yes'&&Notification.permission==='granted'){
+  checkNewBreaking(true);
+  window.setInterval(()=>{if(document.visibilityState==='visible')checkNewBreaking(false);},5*60*1000);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkNewBreaking(false);});
+ }}
+})();
+</script>
 </body></html>
