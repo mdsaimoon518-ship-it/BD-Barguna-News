@@ -274,9 +274,9 @@ function makeSitemap(items){
   urls.push({loc:SITE_BASE+"articles/"+encodeURIComponent(n.slug)+".html",lastmod:Number.isNaN(d.getTime())?today:d.toISOString().slice(0,10)});
  });
  const unique=[...new Map(urls.map(u=>[u.loc,u])).values()];
- return '<?xml version="1.0" encoding="UTF-8"?>\\n'+
- '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n'+
- unique.map(u=>'  <url><loc>'+xmlEscape(u.loc)+'</loc><lastmod>'+u.lastmod+'</lastmod></url>').join('\\n')+
+ return '<?xml version="1.0" encoding="UTF-8"?>\n'+
+ '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+
+ unique.map(u=>'  <url><loc>'+xmlEscape(u.loc)+'</loc><lastmod>'+u.lastmod+'</lastmod></url>').join('\n')+
  '\n</urlset>\n';
 }
 async function saveSitemap(items){
