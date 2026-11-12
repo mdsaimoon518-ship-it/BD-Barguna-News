@@ -177,6 +177,34 @@ button,a{-webkit-tap-highlight-color:transparent}
 }
 @media(min-width:761px){.mobile-quick-nav{display:none!important}}
 
+
+/* Strong mobile dock override: keeps the navigation visible above phone browser controls */
+@media screen and (max-width: 900px){
+ #mobileQuickNav{
+  display:grid!important;visibility:visible!important;opacity:1!important;
+  position:fixed!important;left:10px!important;right:10px!important;
+  bottom:calc(10px + env(safe-area-inset-bottom, 0px))!important;
+  z-index:2147483000!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:4px!important;padding:7px!important;
+  background:#fff!important;border:1px solid #dce1e9!important;
+  border-radius:18px!important;box-shadow:0 8px 28px rgba(15,23,42,.22)!important;
+  overflow:visible!important;white-space:normal!important;
+ }
+ #mobileQuickNav a,#mobileQuickNav button{
+  display:flex!important;visibility:visible!important;opacity:1!important;
+  min-width:0!important;min-height:48px!important;padding:5px 2px!important;
+  flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:3px!important;background:transparent!important;border:0!important;
+  color:#a90e27!important;text-decoration:none!important;
+  font-family:Arial,sans-serif!important;font-size:11px!important;font-weight:700!important;
+  line-height:1.2!important;white-space:normal!important;
+ }
+ #mobileQuickNav svg{display:block!important;width:21px!important;height:21px!important;stroke:currentColor!important;fill:none!important;stroke-width:2!important}
+ body{padding-bottom:85px!important}
+}
+@media screen and (min-width:901px){#mobileQuickNav{display:none!important}}
+
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","description":"বরগুনা ও দেশের সর্বশেষ সংবাদ, ছবি ও ভিডিও খবর।","inLanguage":"bn-BD"}</script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
