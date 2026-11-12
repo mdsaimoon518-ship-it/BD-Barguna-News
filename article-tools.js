@@ -47,6 +47,7 @@ function start(){
  btn('🖼️ ফটোকার্ড ডাউনলোড','#087b42',download);
  btn('🖨️ ফটোকার্ড প্রিন্ট','#475569',()=>{const w=window.open('','_blank');if(!w)return;w.document.write('<img style="width:100%" src="'+canvas.toDataURL('image/png')+'" onload="window.print()">');w.document.close();});
  btn('🖨️ সংবাদ প্রিন্ট','#475569',()=>window.print());
+ btn('🔗 কপি লিংক','#334155',async()=>{try{await navigator.clipboard.writeText(location.href);alert('নিউজের লিংক কপি হয়েছে');}catch(e){window.prompt('নিউজের লিংক কপি করুন:',location.href);}});
  btn('Facebook শেয়ার','#1877f2',()=>window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener'));
  btn('WhatsApp শেয়ার','#128c4a',()=>window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener'));
  btn('▶ YouTube-এ শেয়ার','#e62117',async()=>{try{await navigator.clipboard.writeText(location.href);}catch(e){window.prompt('এই লিংকটি কপি করে YouTube-এ পেস্ট করুন:',location.href);}window.open('https://www.youtube.com/','_blank','noopener');});
