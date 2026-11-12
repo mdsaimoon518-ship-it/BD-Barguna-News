@@ -514,6 +514,8 @@ async function loadHomepageVideos(){
  }catch(error){root.innerHTML='<div class="empty">ভিডিও নিউজ এখন লোড করা যাচ্ছে না।</div>';console.error('Video loading failed:',error);}
 }
 loadHomepageNews();
+setInterval(()=>{if(document.visibilityState==='visible')loadHomepageNews();},180000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadHomepageNews();});
 loadHomepageVideos();
 })();
 </script>
