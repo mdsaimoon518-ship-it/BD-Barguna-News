@@ -124,10 +124,10 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 
 <hr>
 <h3>🔴 সরাসরি লাইভ সম্প্রচার</h3>
-<p class="note">YouTube Live চালু করে লাইভ ভিডিওর লিংক এখানে দিন। সম্প্রচার শুরু হলে “লাইভ চালু” নির্বাচন করে সংরক্ষণ করুন। বন্ধ করতে টিক তুলে আবার সংরক্ষণ করুন।</p>
+<p class="note">Facebook-এ লাইভ চালু করার পর সেই লাইভ ভিডিওর পাবলিক লিংক এখানে দিন। অথবা YouTube Live URL দিন। “লাইভ চালু” নির্বাচন করে সংরক্ষণ করুন। Facebook ভিডিওটি Public এবং Embedding অনুমোদিত থাকতে হবে।</p>
 <form id="liveForm">
 <label>লাইভের শিরোনাম</label><input id="liveTitleInput" placeholder="যেমন: বরগুনা থেকে সরাসরি সংবাদ">
-<label>YouTube Live URL</label><input id="liveUrlInput" type="url" placeholder="https://www.youtube.com/live/..." required>
+<label>Facebook Live / YouTube Live ভিডিও লিংক</label><input id="liveUrlInput" type="url" placeholder="Facebook বা YouTube Live URL দিন" required>
 <label style="display:flex;align-items:center;gap:9px"><input id="liveActive" type="checkbox" style="width:auto;margin:0"> 🔴 লাইভ চালু</label>
 <button type="submit">লাইভ সেটিং সংরক্ষণ করুন</button>
 </form>
@@ -560,10 +560,17 @@ $("liveForm").addEventListener("submit",async e=>{
   const title=$("liveTitleInput").value.trim()||"BD Barguna News লাইভ";
   const url=$("liveUrlInput").value.trim();
   const u=new URL(url);
-  if(!["youtube.com","www.youtube.com","youtu.be","m.youtube.com","music.youtube.com"].includes(u.hostname.toLowerCase()))throw new Error("সঠিক YouTube Live URL দিন");
-    const id=(u.hostname.toLowerCase()==="youtu.be"?u.pathname.split("/").filter(Boolean)[0]:(u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).slice(-1)[0]));
-  if(!id||! /^[A-Za-z0-9_-]{6,}$/.test(id))throw new Error("YouTube ভিডিও/লাইভ আইডি পাওয়া যায়নি");
-  const config={active:$("liveActive").checked,title,url,date:new Date().toISOString()};
+  const host=u.hostname.toLowerCase();
+  let platform="";
+  if(["facebook.com","www.facebook.com","m.facebook.com","web.facebook.com","fb.watch"].includes(host)){
+   if(u.pathname==="/"||u.pathname.length<2)throw new Error("নির্দিষ্ট Facebook Live ভিডিওর লিংক দিন, শুধু পেজের লিংক নয়");
+   platform="facebook";
+  }else if(["youtube.com","www.youtube.com","youtu.be","m.youtube.com","music.youtube.com"].includes(host)){
+   const id=(host==="youtu.be"?u.pathname.split("/").filter(Boolean)[0]:(u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).slice(-1)[0]));
+   if(!id||! /^[A-Za-z0-9_-]{6,}$/.test(id))throw new Error("YouTube ভিডিও/লাইভ আইডি পাওয়া যায়নি");
+   platform="youtube";
+  }else throw new Error("সঠিক Facebook Live বা YouTube Live ভিডিও লিংক দিন");
+  const config={active:$("liveActive").checked,title,url,platform,date:new Date().toISOString()};
   await saveFile("live.json",JSON.stringify(config,null,2),"Update live stream settings");
   show("liveStatus",config.active?"সফল! ওয়েবসাইটে লাইভ চালু করার সেটিং সংরক্ষিত হয়েছে।":"লাইভ বন্ধ করার সেটিং সংরক্ষিত হয়েছে।");
  }catch(err){show("liveStatus",err.message,true)}
