@@ -270,8 +270,8 @@ function makeSitemap(items){
  const urls=pages.map(path=>({loc:SITE_BASE+path,lastmod:today}));
  (Array.isArray(items)?items:[]).forEach(n=>{
   if(!n||!n.slug||!n.title)return;
-  const d=new Date(n.date||Date.now());
-  const changed=new Date(n.modifiedAt||n.date||Date.now());\n  urls.push({loc:SITE_BASE+"articles/"+encodeURIComponent(n.slug)+".html",lastmod:Number.isNaN(changed.getTime())?today:changed.toISOString().slice(0,10)});
+  const changed=new Date(n.modifiedAt||n.date||Date.now());
+  urls.push({loc:SITE_BASE+"articles/"+encodeURIComponent(n.slug)+".html",lastmod:Number.isNaN(changed.getTime())?today:changed.toISOString().slice(0,10)});
  });
  const unique=[...new Map(urls.map(u=>[u.loc,u])).values()];
  return '<?xml version="1.0" encoding="UTF-8"?>\n'+
