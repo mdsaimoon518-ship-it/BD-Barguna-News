@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#b5122b">
+<meta name="robots" content="noindex,nofollow">
 <title>BD Barguna News Admin Panel</title>
 <style>
 *{box-sizing:border-box}
@@ -259,6 +260,29 @@ async function readJSON(path){
  return data;
 }
 
+const SITE_BASE="https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/";
+function xmlEscape(value){
+ return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;");
+}
+function makeSitemap(items){
+ const today=new Date().toISOString().slice(0,10);
+ const pages=["","news.html","about.html","contact.html","privacy.html","disclaimer.html","editorial-policy.html","terms.html","advertise.html"];
+ const urls=pages.map(path=>({loc:SITE_BASE+path,lastmod:today}));
+ (Array.isArray(items)?items:[]).forEach(n=>{
+  if(!n||!n.slug||!n.title)return;
+  const d=new Date(n.date||Date.now());
+  urls.push({loc:SITE_BASE+"articles/"+encodeURIComponent(n.slug)+".html",lastmod:Number.isNaN(d.getTime())?today:d.toISOString().slice(0,10)});
+ });
+ const unique=[...new Map(urls.map(u=>[u.loc,u])).values()];
+ return '<?xml version="1.0" encoding="UTF-8"?>\\n'+
+ '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n'+
+ unique.map(u=>'  <url><loc>'+xmlEscape(u.loc)+'</loc><lastmod>'+u.lastmod+'</lastmod></url>').join('\\n')+
+ '\\n</urlset>\\n';
+}
+async function saveSitemap(items){
+ await saveFile("sitemap.xml",makeSitemap(items),"Update Google SEO sitemap");
+}
+
 function esc(s){
  return String(s??"").replace(/[&<>"']/g,c=>({
   "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
@@ -339,6 +363,23 @@ function articleHTML(n){
  const date=new Date(n.date);
  const dateText=Number.isNaN(date.getTime())?esc(n.date):
  date.toLocaleString("bn-BD",{dateStyle:"long",timeStyle:"short"});
+ const canonical="https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/articles/"+encodeURIComponent(n.slug)+".html";
+ const description=String(n.body||n.title).replace(/\\s+/g," ").trim().slice(0,160);
+ const imageUrl=n.image?(/^https?:\\/\\//i.test(n.image)?n.image:"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/"+String(n.image).replace(/^\\/+/, "")):"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/site-logo.svg";
+ const publishedDate=Number.isNaN(date.getTime())?new Date().toISOString():date.toISOString();
+ const articleSchema=JSON.stringify({
+  "@context":"https://schema.org",
+  "@type":"NewsArticle",
+  "mainEntityOfPage":{"@type":"WebPage","@id":canonical},
+  "headline":n.title,
+  "description":description,
+  "image":[imageUrl],
+  "datePublished":publishedDate,
+  "dateModified":publishedDate,
+  "inLanguage":"bn-BD",
+  "articleSection":n.category||"সংবাদ",
+  "publisher":{"@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","logo":{"@type":"ImageObject","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/site-logo.svg"}}
+ }).replace(/</g,"\\\\u003c");
 
  return `<!DOCTYPE html>
 <html lang="bn">
@@ -351,6 +392,20 @@ function articleHTML(n){
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"><\/script>
 <title>${esc(n.title)} | BD Barguna News</title>
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="BD Barguna News">
+<meta property="og:title" content="${esc(n.title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:url" content="${canonical}">
+<meta property="og:image" content="${esc(imageUrl)}">
+<meta property="article:published_time" content="${publishedDate}">
+<meta property="article:section" content="${esc(n.category)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(n.title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${esc(imageUrl)}">
+<script type="application/ld+json">${articleSchema}</script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Arial,sans-serif;line-height:1.9}
@@ -507,8 +562,10 @@ $("newsList").addEventListener("click",async e=>{
     if(!confirm("এই সংবাদ ডিলিট করবেন?"))return;
     b.disabled=true;
     const latest=await readJSON(NEWS);
-    await saveFile(NEWS,JSON.stringify(latest.filter(x=>x.slug!==n.slug),null,2),"Delete news");
+    const remaining=latest.filter(x=>x.slug!==n.slug);
+    await saveFile(NEWS,JSON.stringify(remaining,null,2),"Delete news");
     await removeFile("articles/"+n.slug+".html");
+    await saveSitemap(remaining);
     show("status","সংবাদ ডিলিট হয়েছে");
     await loadNews();
     break;
@@ -567,6 +624,7 @@ $("newsForm").addEventListener("submit",async e=>{
 
   await saveFile("articles/"+n.slug+".html",articleHTML(n),"Publish article page");
   await saveFile(NEWS,JSON.stringify(updated,null,2),old?"Update news":"Publish news");
+  await saveSitemap(updated);
 
   editingSlug=null;
   $("newsForm").reset();
