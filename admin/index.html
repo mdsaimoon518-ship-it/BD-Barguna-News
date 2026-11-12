@@ -303,29 +303,25 @@ async function copyLink(text){
 
 async function uploadImage(file){
  if(!file)return "";
- if(!file.type.startsWith("image/"))throw new Error("ছবি নির্বাচন সঠিক নয়");
- if(file.size>5*1024*1024)throw new Error("ছবি 5 MB-এর বেশি");
-
- const base=await new Promise((resolve,reject)=>{
-  const r=new FileReader();
-  r.onload=()=>resolve(String(r.result).split(",")[1]);
-  r.onerror=()=>reject(new Error("ছবি পড়া যায়নি"));
-  r.readAsDataURL(file);
+ if(!file.type.startsWith("image/"))throw new Error("শুধু ছবির ফাইল নির্বাচন করুন");
+ if(file.size>15*1024*1024)throw new Error("মূল ছবির সাইজ 15 MB-এর বেশি। ছোট ছবি নির্বাচন করুন।");
+ show("status","ছবি ছোট করে আপলোডের জন্য প্রস্তুত করা হচ্ছে...");
+ const source=await new Promise((resolve,reject)=>{
+  const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error("ছবি খোলা যাচ্ছে না"));img.src=r.result;};r.onerror=()=>reject(new Error("ছবি পড়া যায়নি"));r.readAsDataURL(file);
  });
-
- const ext=(file.name.split(".").pop()||"jpg")
- .toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
- const path="images/news/news-"+Date.now()+"."+ext;
-
- const r=await fetch(api(path),{
-  method:"PUT",
-  headers:{...getHeaders(),"Content-Type":"application/json"},
-  body:JSON.stringify({
-   message:"Upload news photo",
-   content:base,
-   branch:BRANCH
-  })
- });
+ const scale=Math.min(1,1600/Math.max(source.naturalWidth,source.naturalHeight));
+ const canvas=document.createElement("canvas");
+ canvas.width=Math.max(1,Math.round(source.naturalWidth*scale));
+ canvas.height=Math.max(1,Math.round(source.naturalHeight*scale));
+ const ctx=canvas.getContext("2d");if(!ctx)throw new Error("ছবি প্রস্তুত করা যাচ্ছে না");
+ ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(source,0,0,canvas.width,canvas.height);
+ const blobFor=quality=>new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",quality));
+ let blob=null;
+ for(const quality of [0.84,0.76,0.68,0.60,0.52,0.45]){blob=await blobFor(quality);if(blob&&blob.size<=850*1024)break;}
+ if(!blob||blob.size>900*1024)throw new Error("ছবিটি ছোট করা যায়নি। অন্য ছবি নির্বাচন করুন।");
+ const base=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result).split(",")[1]);r.onerror=()=>reject(new Error("ছবি প্রস্তুত করা যায়নি"));r.readAsDataURL(blob);});
+ const path="images/news/news-"+Date.now()+".jpg";
+ const r=await fetch(api(path),{method:"PUT",headers:{...getHeaders(),"Content-Type":"application/json"},body:JSON.stringify({message:"Upload compressed news photo",content:base,branch:BRANCH})});
  if(!r.ok)throw new Error(await errorText(r));
  return path;
 }
