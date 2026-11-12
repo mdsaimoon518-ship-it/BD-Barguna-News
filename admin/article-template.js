@@ -123,7 +123,9 @@ ${image}
 </div>
 </footer>
 <div class="buttons">
-<button onclick="downloadNewsPhotoCard()">🖼️ নিউজ ফটোকার্ড ডাউনলোড</button>
+<button onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
+<button class="gray" onclick="printNewsPhotoCard()">🖨️ ফটোকার্ড প্রিন্ট</button>
+<button class="gray" onclick="copyNewsPhotoCard()">📋 ফটোকার্ড কপি</button>
 <button onclick="window.print()">🖨️ সংবাদ প্রিন্ট</button>
 <button class="gray" onclick="copyArticleLink()">🔗 লিংক কপি</button>
 <button class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
@@ -132,31 +134,56 @@ ${image}
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
 </main>
 <script>
-window.downloadNewsPhotoCard=async function(){
+window.buildNewsPhotoCard=async function(){
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1200;
- const ctx=canvas.getContext('2d');if(!ctx){alert('ফটোকার্ড তৈরি করা যাচ্ছে না।');return;}
- const published=document.querySelector('meta[property="article:published_time"]')?.content||document.querySelector('.date')?.textContent?.replace(/^📅 প্রকাশিত:\s*/,'')||new Date().toISOString();
- const date=new Date(published),dateText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(isNaN(date)?new Date():date);
+ const ctx=canvas.getContext('2d');if(!ctx)throw new Error('ফটোকার্ড তৈরি করা যাচ্ছে না।');
+ const published=document.querySelector('meta[property="article:published_time"]')?.content||new Date().toISOString();
+ const parsed=new Date(published),safeDate=isNaN(parsed.getTime())?new Date():parsed;
+ const dateText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(safeDate);
+ const dayText=new Intl.DateTimeFormat('bn-BD',{weekday:'long',timeZone:'Asia/Dhaka'}).format(safeDate);
+ const detail=(document.querySelector('.article')?.textContent||'').replace(/\\s+/g,' ').trim().slice(0,155);
  const photoEl=document.querySelector('.photo-card img');
  const photoUrl=photoEl?.currentSrc||photoEl?.src||'';
  const logoUrl=new URL('../images/site-logo.svg',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
  const [photo,logo]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl)]);
- ctx.fillStyle='#101827';ctx.fillRect(0,0,1200,1200);ctx.fillStyle='#f8fafc';ctx.beginPath();ctx.roundRect(28,28,1144,1144,34);ctx.fill();
- ctx.save();ctx.beginPath();ctx.roundRect(42,42,1116,1116,26);ctx.clip();
- if(photo){const scale=Math.max(1116/photo.naturalWidth,690/photo.naturalHeight),sw=1116/scale,sh=690/scale;ctx.drawImage(photo,(photo.naturalWidth-sw)/2,(photo.naturalHeight-sh)/2,sw,sh,42,42,1116,690);}else{const g=ctx.createLinearGradient(42,42,1158,732);g.addColorStop(0,'#243b55');g.addColorStop(1,'#141e30');ctx.fillStyle=g;ctx.fillRect(42,42,1116,690);}
- const overlay=ctx.createLinearGradient(42,440,42,735);overlay.addColorStop(0,'rgba(4,12,24,0)');overlay.addColorStop(1,'rgba(4,12,24,.68)');ctx.fillStyle=overlay;ctx.fillRect(42,400,1116,332);
- ctx.fillStyle='#fff';ctx.font='bold 28px Arial';ctx.fillText('BD BARGUNA NEWS',78,105);
- ctx.fillStyle='#c8102e';ctx.beginPath();ctx.roundRect(78,625,240,58,18);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px Arial';ctx.fillText('সর্বশেষ সংবাদ',101,664);
- ctx.fillStyle='#fff';ctx.fillRect(42,732,1116,426);ctx.fillStyle='#c8102e';ctx.fillRect(42,732,12,426);
- if(logo){ctx.fillStyle='#fff';ctx.beginPath();ctx.roundRect(78,775,112,112,24);ctx.fill();const s=Math.min(84/logo.naturalWidth,84/logo.naturalHeight);ctx.drawImage(logo,92,789,logo.naturalWidth*s,logo.naturalHeight*s);}
- ctx.fillStyle='#a20d27';ctx.font='bold 30px Arial';ctx.fillText('BD BARGUNA NEWS',214,815);ctx.fillStyle='#667085';ctx.font='24px Arial';ctx.fillText('বরগুনা ও দেশের সর্বশেষ সংবাদ',214,855);
- ctx.fillStyle='#a20d27';ctx.beginPath();ctx.roundRect(850,780,260,58,18);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.textAlign='center';ctx.fillText(dateText,980,818);ctx.textAlign='left';
- ctx.fillStyle='#172033';ctx.font='bold 48px "Noto Sans Bengali",Arial';const words=title.split(/\s+/),lines=[];let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>1000&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);
- let y=950;lines.slice(0,3).forEach(t=>{ctx.fillText(t,82,y);y+=65;});if(lines.length>3){ctx.fillStyle='#c8102e';ctx.font='bold 34px Arial';ctx.fillText('বিস্তারিত পড়ুন ওয়েবসাইটে',82,1130);}else{ctx.fillStyle='#c8102e';ctx.fillRect(82,1092,120,6);}
+ ctx.fillStyle='#111827';ctx.fillRect(0,0,1200,1200);
+ const bg=ctx.createLinearGradient(0,0,1200,1200);bg.addColorStop(0,'#fff');bg.addColorStop(1,'#f2f4f8');ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(24,24,1152,1152,34);ctx.fill();
+ ctx.save();ctx.beginPath();ctx.roundRect(40,40,1120,1120,25);ctx.clip();
+ ctx.fillStyle='#b5122b';ctx.fillRect(40,40,1120,14);
+ if(photo){const scale=Math.max(1120/photo.naturalWidth,600/photo.naturalHeight),sw=1120/scale,sh=600/scale;ctx.drawImage(photo,(photo.naturalWidth-sw)/2,(photo.naturalHeight-sh)/2,sw,sh,40,54,1120,600);}
+ else{const g=ctx.createLinearGradient(40,54,1160,654);g.addColorStop(0,'#263b59');g.addColorStop(1,'#111827');ctx.fillStyle=g;ctx.fillRect(40,54,1120,600);}
+ const shade=ctx.createLinearGradient(40,430,40,654);shade.addColorStop(0,'rgba(0,0,0,0)');shade.addColorStop(1,'rgba(0,0,0,.62)');ctx.fillStyle=shade;ctx.fillRect(40,400,1120,254);
+ ctx.fillStyle='#fff';ctx.font='bold 28px Arial';ctx.fillText('BD BARGUNA NEWS',78,112);
+ ctx.fillStyle='#b5122b';ctx.beginPath();ctx.roundRect(78,560,245,58,18);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px Arial';ctx.fillText('সর্বশেষ সংবাদ',101,599);
+ ctx.fillStyle='#fff';ctx.fillRect(40,654,1120,506);
+ if(logo){ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(122,740,54,0,Math.PI*2);ctx.fill();const s=Math.min(84/logo.naturalWidth,84/logo.naturalHeight);ctx.drawImage(logo,122-logo.naturalWidth*s/2,740-logo.naturalHeight*s/2,logo.naturalWidth*s,logo.naturalHeight*s);}
+ ctx.fillStyle='#a20d27';ctx.font='bold 29px Arial';ctx.fillText('BD BARGUNA NEWS',205,722);
+ ctx.fillStyle='#667085';ctx.font='22px Arial';ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',205,760);
+ ctx.fillStyle='#fff1f2';ctx.beginPath();ctx.roundRect(810,690,305,84,18);ctx.fill();ctx.fillStyle='#a20d27';ctx.textAlign='center';ctx.font='bold 25px Arial';ctx.fillText(dateText,962,724);ctx.font='bold 22px Arial';ctx.fillText(dayText,962,755);ctx.textAlign='left';
+ ctx.fillStyle='#172033';ctx.font='bold 47px "Noto Sans Bengali",Arial';
+ const wrap=(text,maxWidth,font)=>{ctx.font=font;const words=text.split(/\\s+/),lines=[];let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>maxWidth&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);return lines;};
+ const titleLines=wrap(title,1030,'bold 47px "Noto Sans Bengali",Arial');
+ let y=850;titleLines.slice(0,2).forEach(t=>{ctx.fillStyle='#172033';ctx.fillText(t,82,y);y+=62;});
+ const detailLines=wrap(detail,1030,'25px "Noto Sans Bengali",Arial').slice(0,2);
+ y=Math.max(y+4,990);ctx.fillStyle='#586174';ctx.font='25px "Noto Sans Bengali",Arial';detailLines.forEach(t=>{ctx.fillText(t,82,y);y+=39;});
+ ctx.fillStyle='#b5122b';ctx.fillRect(82,1110,1036,5);
+ ctx.fillStyle='#667085';ctx.font='20px Arial';ctx.fillText('বিস্তারিত পড়ুন: mdsaimoon518-ship-it.github.io/BD-Barguna-News',82,1142);
  ctx.restore();
- canvas.toBlob(blob=>{if(!blob){alert('ফটোকার্ড তৈরি হয়নি।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='bd-barguna-news-photo-card.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);},'image/png');
+ return canvas;
+};
+window.downloadNewsPhotoCard=async function(){
+ try{const canvas=await window.buildNewsPhotoCard();canvas.toBlob(blob=>{if(!blob){alert('ফটোকার্ড তৈরি হয়নি।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='bd-barguna-news-photo-card.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);},'image/png');}
+ catch(e){alert(e.message||'ফটোকার্ড তৈরি করা যায়নি।');}
+};
+window.printNewsPhotoCard=async function(){
+ try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
+ catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
+};
+window.copyNewsPhotoCard=async function(){
+ try{const canvas=await window.buildNewsPhotoCard();const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('ছবি তৈরি করা যায়নি।');if(!navigator.clipboard||!window.ClipboardItem)throw new Error('এই ব্রাউজারে ছবি কপি সুবিধা নেই—ডাউনলোড বাটন ব্যবহার করুন।');await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);alert('ফটোকার্ড কপি হয়েছে। এখন Facebook পোস্টে পেস্ট করতে পারবেন।');}
+ catch(e){alert(e.message||'ফটোকার্ড কপি করা যায়নি।');}
 };
 window.copyArticleLink=async function(){
  const text=location.href;
