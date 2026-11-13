@@ -140,25 +140,4 @@ window.printNewsPhotoCard=window.bdBnPrintCard=async()=>{try{const c=await makeM
 window.copyNewsPhotoCard=window.bdBnCopyCard=async()=>{try{const c=await makeModernCard(),b=await new Promise(r=>c.toBlob(r,'image/png'));if(!navigator.clipboard||!window.ClipboardItem)throw Error('এই ব্রাউজারে ছবি কপি নেই—ডাউনলোড ব্যবহার করুন');await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);alert('ফটোকার্ড কপি হয়েছে');}catch(e){alert(e.message);}};
 window.addEventListener('load',async()=>{const p=document.querySelector('#newsPhotoCardPreview,#bd-bn-card-preview');if(p){try{p.src=(await makeModernCard()).toDataURL('image/png');p.hidden=false;const n=p.parentElement?.querySelector('.preview-note,#bd-bn-status');if(n)n.textContent='তারিখ ও আধুনিক ডিজাইনসহ ফটোকার্ড প্রস্তুত';}catch(e){console.error(e);}}});
 })();</script>
-<script id="bd-print-ad-script">
-window.bdAddPrintAd=async function(){
- const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),out=document.getElementById('printAdOutput');
- const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',copy=txt?txt.value.trim():'';
- if(!files.length&&!link&&!copy){alert('বিজ্ঞাপনের ছবি অথবা লেখা দিন।');return;}
- const sources=[];
- for(const f of files){sources.push(await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f);}));}
- if(!sources.length&&link)sources.push(link);
- if(!sources.length)sources.push('');
- sources.forEach(src=>{
-  const item=document.createElement('div');item.className='print-ad-item';
-  if(src){const img=document.createElement('img');img.src=src;img.alt='বিজ্ঞাপন';item.appendChild(img);}
-  if(copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=copy;item.appendChild(p);}
-  const remove=document.createElement('button');remove.type='button';remove.className='print-ad-remove';remove.textContent='এই বিজ্ঞাপন মুছুন';remove.onclick=()=>{item.remove();bdUpdatePrintAdCount();};item.appendChild(remove);
-  out.appendChild(item);
- });
- if(file)file.value='';if(url)url.value='';if(txt)txt.value='';
- bdUpdatePrintAdCount();
-};
-window.bdUpdatePrintAdCount=function(){const out=document.getElementById('printAdOutput'),count=document.getElementById('printAdCount');if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+((out&&out.querySelectorAll('.print-ad-item').length)||0)+'টি';};
-window.bdClearPrintAds=function(){const out=document.getElementById('printAdOutput');if(out)out.replaceChildren();bdUpdatePrintAdCount();};
-</script></body></html>
+<script id="bd-print-ad-script">window.bdAddPrintAd=async function(){const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),out=document.getElementById('printAdOutput'),files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',copy=txt?txt.value.trim():'';if(!files.length&&!link&&!copy){alert('বিজ্ঞাপনের ছবি অথবা লেখা দিন।');return;}const sources=[];for(const f of files)sources.push(await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f);}));if(!sources.length&&link)sources.push(link);if(!sources.length)sources.push('');sources.forEach(src=>{const item=document.createElement('div');item.className='print-ad-item';if(src){const img=document.createElement('img');img.src=src;img.alt='বিজ্ঞাপন';item.appendChild(img);}if(copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=copy;item.appendChild(p);}const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';rm.onclick=()=>{item.remove();bdUpdatePrintAdCount();};item.appendChild(rm);out.appendChild(item);});if(file)file.value='';if(url)url.value='';if(txt)txt.value='';bdUpdatePrintAdCount();};window.bdUpdatePrintAdCount=function(){const o=document.getElementById('printAdOutput'),c=document.getElementById('printAdCount');if(c)c.textContent='যোগ করা বিজ্ঞাপন: '+((o&&o.querySelectorAll('.print-ad-item').length)||0)+'টি';};window.bdClearPrintAds=function(){const o=document.getElementById('printAdOutput');if(o)o.replaceChildren();bdUpdatePrintAdCount();};</script></body></html>
