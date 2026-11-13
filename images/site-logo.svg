@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 190"><title>BD BARGUNA NEWS</title><rect width="720" height="190" rx="18" fill="#fff"/><text x="360" y="119" text-anchor="middle" font-family="Arial,sans-serif" font-size="76" font-weight="900" letter-spacing="-2" fill="#a90e27">BD BARGUNA NEWS</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<title id="title">BD Barguna News</title><desc id="desc">BD Barguna News framed channel logo</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#063d2b"/><stop offset=".55" stop-color="#092c27"/><stop offset="1" stop-color="#111d2b"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0b0"/><stop offset=".5" stop-color="#d9a83c"/><stop offset="1" stop-color="#fff0b0"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ef3340"/><stop offset="1" stop-color="#a90e27"/></linearGradient>
+</defs>
+<rect width="512" height="512" rx="70" fill="url(#bg)"/>
+<rect x="17" y="17" width="478" height="478" rx="57" fill="none" stroke="url(#gold)" stroke-width="8"/>
+<rect x="31" y="31" width="450" height="450" rx="45" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="2"/>
+<path d="M90 113H422" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/>
+<path d="M90 399H422" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/>
+<rect x="112" y="139" width="288" height="118" rx="22" fill="#fff" fill-opacity=".08" stroke="url(#gold)" stroke-width="3"/>
+<text x="256" y="225" text-anchor="middle" font-family="Arial,sans-serif" font-size="91" font-weight="900" letter-spacing="-5" fill="#fff">BD</text>
+<text x="256" y="316" text-anchor="middle" font-family="Arial,sans-serif" font-size="45" font-weight="900" letter-spacing="1.2" fill="#fff">BARGUNA</text>
+<rect x="160" y="337" width="192" height="48" rx="12" fill="url(#red)"/>
+<text x="256" y="371" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="900" letter-spacing="4" fill="#fff">NEWS</text>
+</svg>
