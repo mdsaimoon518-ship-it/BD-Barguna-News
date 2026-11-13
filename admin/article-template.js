@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="qr-20261114d";
+window.articleTemplateVersion="newspaper-print-20261114a";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -98,19 +98,19 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 @media print{
  html,body{margin:0!important;padding:0!important;background:#fffdf4!important;color:#171717!important;font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
  .paper{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fffdf4!important}
- .print-masthead{display:block!important;margin:0 0 3mm!important;padding:0 0 2mm!important;color:#171717!important;break-inside:avoid!important;border-bottom:3px double #171717!important;text-align:center!important}
- .print-topline{display:flex!important;justify-content:space-between!important;gap:6px!important;font-size:7.5pt!important;border-bottom:1px solid #333!important;padding-bottom:1.5mm!important}
- .print-brand{font-family:Georgia,"Noto Serif Bengali",serif!important;font-size:31pt!important;letter-spacing:.5px!important;line-height:1.08!important;font-weight:900!important;color:#171717!important;margin:1.5mm 0!important}
- .print-tagline{font-size:9pt!important;font-weight:700!important;letter-spacing:.4px!important}
+ .print-masthead{display:block!important;margin:0 0 3mm!important;padding:0 0 2mm!important;color:#171717!important;break-inside:avoid!important;border-bottom:3px double #171717!important;text-align:center!important}.print-head-grid{display:grid!important;grid-template-columns:22mm 1fr 23mm!important;align-items:center!important;gap:3mm!important;margin:1.5mm 0!important}.print-qr img{display:block!important;width:19mm!important;height:19mm!important;object-fit:contain!important}.print-brand-wrap{min-width:0!important}.print-issue{display:flex!important;flex-direction:column!important;gap:1mm!important;text-align:right!important;font-size:7pt!important;color:#333!important}.print-issue b{font-size:9pt!important;color:#b5122b!important}.print-banner{display:flex!important;justify-content:space-between!important;gap:3mm!important;background:#b5122b!important;color:white!important;padding:1.4mm 2mm!important;font-size:7pt!important;font-weight:700!important}.category{display:block!important;width:max-content!important;margin:1.5mm auto!important;padding:1mm 4mm!important;background:#e8f3f4!important;color:#15536b!important;font-size:8pt!important;font-weight:700!important;break-after:avoid!important}
+ .print-topline{display:flex!important;justify-content:space-between!important;gap:6px!important;font-size:7pt!important;border-bottom:1px solid #333!important;padding-bottom:1mm!important;font-weight:700!important}
+ .print-brand{font-family:Georgia,"Noto Serif Bengali",serif!important;font-size:34pt!important;letter-spacing:-.8px!important;line-height:1!important;font-weight:900!important;color:#111!important;margin:0!important;text-align:center!important}
+ .print-tagline{font-size:8pt!important;font-weight:700!important;letter-spacing:.4px!important;text-align:center!important;margin-top:1mm!important}
  .print-rule{height:3px!important;border-top:2px solid #171717!important;border-bottom:1px solid #171717!important;margin:1.5mm 0!important}
  .print-edition{display:flex!important;justify-content:space-between!important;font-size:7pt!important;font-weight:700!important}
- .masthead,.article-nav,.article-subnav,.category,#articleViewCount,.photo-card-preview,section[style*="margin-top:28px"],.buttons,.home,.publisher-info{display:none!important}
- h1{font-size:22pt!important;line-height:1.2!important;font-weight:900!important;text-align:center!important;margin:2mm 0 1.5mm!important;color:#171717!important;column-span:all!important;break-after:avoid!important;border-bottom:1px solid #555!important;padding-bottom:2mm!important}
+ .masthead,.article-nav,.article-subnav,#articleViewCount,.photo-card-preview,section[style*="margin-top:28px"],.buttons,.home,.publisher-info{display:none!important}
+ h1{font-size:27pt!important;line-height:1.12!important;font-weight:900!important;text-align:center!important;margin:2mm 0 1mm!important;color:#b5122b!important;column-span:all!important;break-after:avoid!important;border-bottom:1px solid #777!important;padding-bottom:2mm!important}
  .date{font-size:7.5pt!important;text-align:center!important;color:#333!important;border:0!important;padding:0 0 2mm!important;margin:0 0 2mm!important}
- .photo-card{float:left!important;width:39%!important;margin:1mm 3mm 2mm 0!important;padding:1mm!important;border:1px solid #888!important;border-radius:0!important;background:transparent!important;break-inside:avoid!important}
- .photo-card img{width:100%!important;max-width:100%!important;height:auto!important;max-height:72mm!important;object-fit:contain!important;margin:0!important;border-radius:0!important}
+ .photo-card{float:left!important;width:54%!important;margin:1mm 3mm 2mm 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;break-inside:avoid!important}
+ .photo-card img{width:100%!important;max-width:100%!important;height:auto!important;max-height:82mm!important;object-fit:cover!important;margin:0!important;border-radius:0!important}
  .caption{font-size:7pt!important;color:#333!important;padding:1mm 0!important;text-align:center!important}
- .article{font-size:10pt!important;line-height:1.48!important;text-align:justify!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;column-count:2!important;column-gap:6mm!important;column-rule:.35pt solid #aaa!important;column-fill:balance!important}
+ .article{font-size:9pt!important;line-height:1.42!important;text-align:justify!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;column-count:3!important;column-gap:4mm!important;column-rule:.35pt solid #aaa!important;column-fill:balance!important}
  .footer{font-size:8pt!important;border-top:2px double #222!important;margin-top:4mm!important;padding-top:1.5mm!important;color:#222!important;break-inside:avoid!important;text-align:center!important}
  .footer>strong{font-size:12pt!important;color:#111!important}
  .print-ad-output:not(:empty){display:block!important;column-span:all!important;width:100%!important;break-inside:avoid!important;margin:2.5mm 0!important}
@@ -151,11 +151,14 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 <body>
 <main class="paper">
 <div class="print-masthead">
- <div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span class="print-date"></span></div>
- <div class="print-brand">BD BARGUNA NEWS</div>
- <div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div>
+ <div class="print-topline"><span>দৈনিক অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span class="print-date"></span></div>
+ <div class="print-head-grid">
+  <div class="print-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&amp;margin=5&amp;data=${encodeURIComponent(canonical)}" alt="এই সংবাদটি স্ক্যান করুন"></div>
+  <div class="print-brand-wrap"><div class="print-brand">BD BARGUNA NEWS</div><div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div></div>
+  <div class="print-issue"><b>বিশেষ সংবাদ</b><span>প্রকাশিত সংবাদ</span><span>বরগুনা</span></div>
+ </div>
  <div class="print-rule"></div>
- <div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div>
+ <div class="print-banner"><span>সত্যনিষ্ঠ সংবাদ</span><span>স্থানীয় • জাতীয় • আন্তর্জাতিক</span><span>পাঠকের কণ্ঠস্বর</span></div>
 </div>
 <header class="masthead">
 <div class="logo-mark" role="img" aria-label="BD Barguna News"><span>BD</span><b>BARGUNA</b><i>NEWS</i></div>
