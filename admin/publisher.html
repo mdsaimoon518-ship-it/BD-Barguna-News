@@ -146,7 +146,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <p class="note">BD Barguna News | সত্যের সন্ধানে, মানুষের পাশে।</p>
 </main>
 
-<script src="./article-template.js?v=20261113fix1"></script>
+<script src="./article-template.js?v=20261113fix2"></script>
 <script>
 "use strict";
 
@@ -456,16 +456,26 @@ $("cancelEdit").onclick=()=>{
 
 async function ensureArticleTemplate(){
  if(typeof window.articleHTML==="function")return;
- const script=document.createElement("script");
- script.src=new URL("./article-template.js?v=20261113fix1",location.href).href;
- await new Promise((resolve,reject)=>{
-  script.onload=resolve;
-  script.onerror=()=>reject(new Error("মূল সংবাদ টেমপ্লেট লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।"));
-  document.head.appendChild(script);
- });
- if(typeof window.articleHTML!=="function"){
-  throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। বিকল্প পুরোনো টেমপ্লেট ব্যবহার না করে প্রকাশ বন্ধ রাখা হয়েছে।");
+ const sources=[
+  new URL("./article-template.js?v=20261113fix2",location.href).href,
+  "https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/admin/article-template.js?v=20261113fix2"
+ ];
+ const errors=[];
+ for(const src of sources){
+  try{
+   await new Promise((resolve,reject)=>{
+    const script=document.createElement("script");
+    script.src=src;
+    script.async=true;
+    script.onload=resolve;
+    script.onerror=()=>reject(new Error("স্ক্রিপ্ট ডাউনলোড ব্যর্থ: "+src));
+    document.head.appendChild(script);
+   });
+   if(typeof window.articleHTML==="function")return;
+   errors.push("ফাইল লোড হয়েছে, কিন্তু articleHTML পাওয়া যায়নি: "+src);
+  }catch(error){errors.push(error.message);}
  }
+ throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। বিকল্প পুরোনো টেমপ্লেট ব্যবহার না করে প্রকাশ বন্ধ রাখা হয়েছে। "+errors.join(" | "));
 }
 function validateArticlePage(html){
  const required=["downloadNewsPhotoCard","printNewsPhotoCard","copyNewsPhotoCard","copyArticleText","copyArticleLink","shareToYouTube","printAdPanel","printAdFile","printAdPosition","printAdOutput-top","printAdOutput-headline","printAdOutput-middle","printAdOutput-bottom","bdAddPrintAd","bdClearPrintAds"];
