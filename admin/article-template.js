@@ -161,7 +161,7 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText('BD BARGUNA NEWS',174,88);ctx.fillStyle='#cbd5e1';ctx.font='23px Arial';ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',174,126);
  ctx.fillStyle='#f8fafc';ctx.font='bold 19px Arial';ctx.textAlign='right';ctx.fillText('NEWS • বরগুনা',1138,95);ctx.textAlign='left';ctx.save();rr(805,112,333,42,18);ctx.fillStyle='rgba(255,255,255,.14)';ctx.fill();ctx.fillStyle='#f5d58a';ctx.font='bold 19px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('প্রকাশ: '+dateText,971,141);ctx.textAlign='left';ctx.restore();
  ctx.save();rr(48,170,1104,535,28);ctx.clip();
- if(photo){const scale=Math.max(1104/photo.naturalWidth,535/photo.naturalHeight),sw=1104/scale,sh=535/scale;ctx.drawImage(photo,(photo.naturalWidth-sw)/2,(photo.naturalHeight-sh)/2,sw,sh,48,170,1104,535);}
+ if(photo){ctx.fillStyle='#172b40';ctx.fillRect(48,170,1104,535);const scale=Math.min(1104/photo.naturalWidth,535/photo.naturalHeight),dw=photo.naturalWidth*scale,dh=photo.naturalHeight*scale;ctx.drawImage(photo,48+(1104-dw)/2,170+(535-dh)/2,dw,dh);}
  else{const pg=ctx.createLinearGradient(48,170,1152,705);pg.addColorStop(0,'#334b6c');pg.addColorStop(1,'#0f172a');ctx.fillStyle=pg;ctx.fillRect(48,170,1104,535);ctx.fillStyle='rgba(255,255,255,.14)';ctx.font='bold 64px Arial';ctx.fillText('BD BARGUNA NEWS',100,440);}
  const shade=ctx.createLinearGradient(0,430,0,705);shade.addColorStop(0,'rgba(5,12,24,0)');shade.addColorStop(1,'rgba(5,12,24,.82)');ctx.fillStyle=shade;ctx.fillRect(48,420,1104,285);
  ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText('সত্যের খবর, সবার আগে',82,665);ctx.restore();
