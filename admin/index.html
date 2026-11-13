@@ -471,6 +471,7 @@ async function ensureArticleTemplate(){
  if(typeof window.articleHTML!=="function"){
   throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। প্রকাশ বন্ধ রাখা হয়েছে; পুরোনো টেমপ্লেট ব্যবহার করা হয়নি।");
 }
+}
 function validateArticlePage(html){
  const required=["downloadNewsPhotoCard","printNewsPhotoCard","copyNewsPhotoCard","copyArticleText","copyArticleLink","shareToYouTube","printAdPanel","printAdFile","printAdPosition","printAdOutput-top","printAdOutput-headline","printAdOutput-middle","printAdOutput-bottom","bdAddPrintAd","bdClearPrintAds"];
  const missing=required.filter(key=>!html.includes(key));
