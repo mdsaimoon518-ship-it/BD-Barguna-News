@@ -143,7 +143,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <p class="note">BD Barguna News | সত্যের সন্ধানে, মানুষের পাশে।</p>
 </main>
 
-<script src="./article-template.js?v=20261113e"></script>
+<script src="./article-template.js?v=20261113f"></script>
 <script>
 "use strict";
 
@@ -445,7 +445,7 @@ async function ensureArticleTemplate(){
  delete window.articleHTML;
  await new Promise(resolve=>{
   const script=document.createElement("script");
-  script.src=new URL("./article-template.js?v=20261113d",location.href).href;
+  script.src=new URL("./article-template.js?v=20261113f",location.href).href;
   script.onload=resolve;script.onerror=resolve;
   document.head.appendChild(script);
  });
