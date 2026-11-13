@@ -37,7 +37,7 @@ function start(){
   ctx.fillStyle='#111827';ctx.font='bold 48px Arial';
   const words=title.split(/\\s+/);let lines=[],line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>1020&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);
   let y=825;lines.slice(0,3).forEach((v,i)=>{ctx.fillText(v,82,y);y+=66;});
-  ctx.fillStyle='#bd1834';ctx.fillRect(82,1005,140,5);ctx.fillStyle='#475569';ctx.font='bold 22px Arial';ctx.fillText('BD BARGUNA NEWS',82,1045);
+  ctx.fillStyle='#bd1834';ctx.fillRect(82,1005,140,5);ctx.fillStyle='#475569';ctx.font='bold 22px Arial';ctx.fillText('BD BARGUNA NEWS',82,1045);ctx.fillStyle='#bd1834';ctx.font='bold 27px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮',600,1135);ctx.textAlign='left';
   preview.src=canvas.toDataURL('image/png');
  }).catch(()=>{});
  const old=root.querySelector('.buttons');if(old)old.remove();
