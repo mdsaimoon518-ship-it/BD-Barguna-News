@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="qr-20261114";
+window.articleTemplateVersion="qr-20261114b";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -174,7 +174,7 @@ ${articleNav}
 ${image}
 <div id="printAdOutput-middle" class="print-ad-output"></div>
 <section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো, প্রকাশের তারিখ ও এই নিউজের নিজস্ব QR স্ক্যানারসহ ফটোকার্ড</p></section>
-<section class="article-qr" aria-label="এই সংবাদের QR কোড"><img id="articleQrImage" alt="এই সংবাদের QR কোড"><div><strong>এই নিউজটি স্ক্যান করুন</strong><span>মোবাইল ক্যামেরা দিয়ে QR কোড স্ক্যান করলে সরাসরি এই সংবাদটি খুলবে</span><small>${canonical}</small></div></section>
+<section class="article-qr" aria-label="এই সংবাদের QR কোড"><img id="articleQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&amp;margin=10&amp;data=${encodeURIComponent(canonical)}" alt="এই সংবাদের QR কোড" width="240" height="240"><div><strong>এই নিউজটি স্ক্যান করুন</strong><span>মোবাইল ক্যামেরা দিয়ে QR কোড স্ক্যান করলে সরাসরি এই সংবাদটি খুলবে</span><small>${canonical}</small></div></section>
 <div class="article">${esc(n.body)}</div>
 <div id="printAdOutput-bottom" class="print-ad-output"></div>
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
