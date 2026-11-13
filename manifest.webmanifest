@@ -11,13 +11,13 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/BD-Barguna-News/images/app-icon.svg?v=6",
+      "src": "/BD-Barguna-News/images/app-icon.svg?v=7",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/BD-Barguna-News/images/app-icon.svg?v=6",
+      "src": "/BD-Barguna-News/images/app-icon.svg?v=7",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"
