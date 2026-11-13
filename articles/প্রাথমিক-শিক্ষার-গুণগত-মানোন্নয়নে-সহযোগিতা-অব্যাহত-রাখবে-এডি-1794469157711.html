@@ -217,7 +217,7 @@ BD Barguna News
 document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅s*প্রকাশিত:s*/,''):'';});
 window.buildNewsPhotoCard=async function(){
  const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
- const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:"M"}):"";
+ const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:"M"}):"https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=1&data="+encodeURIComponent(articleLink);
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const wrap=(value,maxWidth,font)=>{
   ctx.font=font;const result=[];let line='';
