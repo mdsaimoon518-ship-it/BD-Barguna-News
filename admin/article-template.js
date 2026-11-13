@@ -235,8 +235,8 @@ window.buildNewsPhotoCard=async function(){
  let titleSize=44,titleLines=[];
  for(;titleSize>24;titleSize-=2){titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');if(titleLines.length<=18&&titleLines.length*(titleSize+14)<=900)break;}
  titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');
- const footerY=Math.max(1120,790+titleLines.length*(titleSize+14)+105);
- canvas.width=1200;canvas.height=footerY+100;
+ const footerY=Math.max(1160,850+titleLines.length*(titleSize+14)+105);
+ canvas.width=1200;canvas.height=footerY+145;
  const category=(document.querySelector('.cat,.category')?.textContent||'সর্বশেষ সংবাদ').trim();
  const detail=(document.querySelector('.article')?.textContent||'').replace(/\s+/g,' ').trim().slice(0,145);
  const dateRaw=document.querySelector('meta[property="article:published_time"]')?.content||document.querySelector('.date:not(#articleViewCount)')?.getAttribute('datetime')||document.querySelector('.date:not(#articleViewCount)')?.textContent||new Date().toISOString();
@@ -260,13 +260,13 @@ window.buildNewsPhotoCard=async function(){
  else{const pg=ctx.createLinearGradient(48,170,1152,705);pg.addColorStop(0,'#334b6c');pg.addColorStop(1,'#0f172a');ctx.fillStyle=pg;ctx.fillRect(48,170,1104,535);ctx.fillStyle='rgba(255,255,255,.14)';ctx.font='bold 64px Arial';ctx.fillText('BD BARGUNA NEWS',100,440);}
  const shade=ctx.createLinearGradient(0,430,0,705);shade.addColorStop(0,'rgba(5,12,24,0)');shade.addColorStop(1,'rgba(5,12,24,.82)');ctx.fillStyle=shade;ctx.fillRect(48,420,1104,285);
  ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText('সত্যের খবর, সবার আগে',82,665);ctx.restore();
- ctx.save();rr(48,675,1104,790,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
+ ctx.save();rr(48,675,1104,footerY+135-675,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
  ctx.fillStyle='#c51b36';rr(82,710,250,52,16);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 23px "Noto Sans Bengali",Arial';ctx.fillText(category.slice(0,18),104,745);
  ctx.fillStyle='#64748b';ctx.font='bold 22px "Noto Sans Bengali",Arial';ctx.textAlign='right';ctx.fillText(dayText,1115,745);ctx.textAlign='left';
- ctx.fillStyle='#111827';ctx.font='bold '+titleSize+'px "Noto Sans Bengali",Arial';let y=790;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=titleSize+14;});
+ ctx.fillStyle='#111827';ctx.font='bold '+titleSize+'px "Noto Sans Bengali",Arial';let y=850;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=titleSize+14;});
  
  ctx.fillStyle='#e2e8f0';ctx.fillRect(82,footerY,1036,2);ctx.fillStyle='#d6a84f';ctx.fillRect(82,footerY,1036,4);
- ctx.fillStyle='#f8fafc';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.fillStyle='#f5d58a';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,footerY+35);ctx.textAlign='left';ctx.fillStyle='#f8fafc';ctx.font='bold 23px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮',600,footerY+78);ctx.textAlign='left';
+ ctx.fillStyle='#334155';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,footerY+35);ctx.textAlign='left';rr(82,footerY+55,1036,52,14);ctx.fillStyle='#c51b36';ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮',600,footerY+89);ctx.textAlign='left';
  return canvas;
 };
 window.downloadNewsPhotoCard=async function(){
