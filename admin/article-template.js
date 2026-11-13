@@ -91,26 +91,25 @@ h1{font-size:30px;line-height:1.5}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
 @media(max-width:500px){.paper{padding:15px}h1{font-size:23px}.brand{font-size:20px}.article{font-size:16px}}
-@media screen{.print-masthead{display:none}}
-@page{size:A4 portrait;margin:10mm}
+@media screen{.print-masthead{display:none!important}}
+@page{size:A4 portrait;margin:8mm}
 @media print{
- html,body{width:190mm!important;min-width:0!important;margin:0!important;padding:0!important;background:#fff!important;color:#111!important;font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important}
- body{font-size:10pt!important;line-height:1.45!important}
+ html,body{margin:0!important;padding:0!important;background:#fff!important;color:#111!important;font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important}
  .paper{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important}
- .print-masthead{display:block!important;text-align:center!important;color:#111!important;margin:0 0 4mm!important;break-inside:avoid}
- .print-topline{display:flex;justify-content:space-between;align-items:center;font:8pt Arial,sans-serif;border-bottom:1px solid #222;padding:0 0 2mm}
- .print-brand{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;font-size:31pt!important;font-weight:900!important;line-height:1.2!important;margin:1mm 0}
- .print-tagline{font-size:10pt!important;font-weight:700!important}
- .print-rule{height:2px;background:#111;margin:2mm 0 1mm}
- .print-edition{display:flex;justify-content:space-between;font-size:8pt;border-bottom:3px double #222;padding:1mm 0 2mm}
+ .print-masthead{display:block!important;margin:0 0 3mm!important;padding:0 0 2mm!important;color:#111!important;break-inside:avoid!important}
+ .print-topline{display:flex!important;justify-content:space-between!important;gap:6px!important;font-size:8pt!important;border-bottom:1px solid #333!important;padding-bottom:1.5mm!important}
+ .print-brand{font-size:29pt!important;line-height:1.1!important;font-weight:900!important;color:#111!important;margin:1mm 0!important}
+ .print-tagline{font-size:9pt!important;font-weight:700!important}
+ .print-rule{height:3px!important;border-top:1px solid #111!important;border-bottom:1px solid #111!important;margin:1mm 0!important}
+ .print-edition{display:flex!important;justify-content:space-between!important;font-size:7pt!important}
  .masthead,.article-nav,.article-subnav,.category,#articleViewCount,.photo-card-preview,section[style*="margin-top:28px"],.buttons,.home,.publisher-info{display:none!important}
- h1{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;font-size:23pt!important;line-height:1.28!important;font-weight:900!important;text-align:center!important;margin:3mm 0 1.5mm!important;color:#111!important;column-span:all;break-after:avoid}
- .date{font-size:8pt!important;text-align:center!important;color:#333!important;border:0!important;padding:0 0 2mm!important;margin:0 0 2mm!important}
- .photo-card{float:none!important;width:100%!important;margin:0 0 3mm!important;padding:0!important;border:0!important;border-radius:0!important;background:#fff!important;break-inside:avoid;column-span:all}
- .photo-card img{width:auto!important;max-width:100%!important;height:auto!important;max-height:68mm!important;object-fit:contain!important;margin:0 auto!important;border-radius:0!important}
- .caption{font-size:7.5pt!important;color:#333!important;padding:1mm 0!important}
- .article{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;font-size:10pt!important;line-height:1.48!important;text-align:justify!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;column-count:3!important;column-gap:5mm!important;column-rule:0.3pt solid #aaa!important}
- .footer{font-size:8pt!important;border-top:2px solid #222!important;margin-top:5mm!important;padding-top:2mm!important;color:#222!important;break-inside:avoid}
+ h1{font-size:21pt!important;line-height:1.2!important;font-weight:900!important;text-align:left!important;margin:2mm 0 1mm!important;color:#a20f25!important;column-span:all!important;break-after:avoid!important;border-bottom:1px solid #999!important;padding-bottom:2mm!important}
+ .date{font-size:8pt!important;text-align:left!important;color:#333!important;border:0!important;padding:0 0 2mm!important;margin:0 0 2mm!important}
+ .photo-card{float:left!important;width:38%!important;margin:1mm 3mm 2mm 0!important;padding:0!important;border:0!important;border-radius:0!important;background:#fff!important;break-inside:avoid!important}
+ .photo-card img{width:100%!important;max-width:100%!important;height:auto!important;max-height:70mm!important;object-fit:contain!important;margin:0!important;border-radius:0!important}
+ .caption{font-size:7pt!important;color:#333!important;padding:1mm 0!important;text-align:left!important}
+ .article{font-size:9pt!important;line-height:1.38!important;text-align:justify!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;column-count:3!important;column-gap:4mm!important;column-rule:.25pt solid #bbb!important}
+ .footer{font-size:8pt!important;border-top:2px solid #222!important;margin-top:4mm!important;padding-top:1.5mm!important;color:#222!important;break-inside:avoid!important}
  .footer>strong{font-size:12pt!important;color:#111!important}
  a{color:inherit!important;text-decoration:none!important}
 }
@@ -119,11 +118,11 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 <body>
 <main class="paper">
 <div class="print-masthead">
- <div class="print-topline"><span>BD BARGUNA NEWS</span><span>অনলাইন দৈনিক সংবাদপত্র</span><span class="print-date"></span></div>
+ <div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span class="print-date"></span></div>
  <div class="print-brand">বিডি বরগুনা নিউজ</div>
  <div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div>
  <div class="print-rule"></div>
- <div class="print-edition">বরগুনা • বাংলাদেশ <span>বিশেষ সংবাদ সংস্করণ</span></div>
+ <div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div>
 </div>
 <header class="masthead">
 <img class="logo" src="../images/app-icon.svg" alt="BD Barguna News Logo">
