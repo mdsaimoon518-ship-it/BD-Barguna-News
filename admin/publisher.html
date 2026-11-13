@@ -1,0 +1,624 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#b5122b">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>BD Barguna News Updated Publisher</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:12px;background:#f1f3f6;font-family:Arial,sans-serif}
+main{max-width:720px;margin:auto;background:white;padding:18px;border-radius:12px}
+h2,h3{color:#b5122b}
+input,textarea,select,button{width:100%;padding:12px;margin:7px 0;font:inherit;border:1px solid #ddd;border-radius:6px}
+textarea{min-height:110px}
+button{background:#087b42;color:white;border:0;cursor:pointer;font-weight:bold}
+button:disabled{opacity:.5}
+.blue{background:#175cd3}
+.facebook{background:#1877f2}
+.whatsapp{background:#128c4a}
+.gray{background:#667085}
+.red{background:#b42318}
+.card{border:1px solid #ddd;padding:12px;border-radius:9px;margin:12px 0}
+.card img{width:100%;max-height:220px;object-fit:contain}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.status{overflow-wrap:anywhere}
+.note{font-size:13px;color:#667085;line-height:1.6}
+hr{border:0;border-top:1px solid #ddd;margin:25px 0}
+</style>
+</head>
+<body>
+<main>
+<h2>📰 BD Barguna News</h2>
+<p>Admin Control Panel</p>
+
+<label>GitHub Token</label>
+<input id="token" type="password" autocomplete="off" placeholder="GitHub Token দিন">
+<p class="note">Token গোপন রাখবেন। কাউকে পাঠাবেন না।</p>
+<label style="display:flex;align-items:center;gap:9px;margin-top:10px"><input id="rememberToken" type="checkbox" style="width:auto;margin:0"> এই ডিভাইসে টোকেন মনে রাখুন</label>
+<p class="note">শুধু নিজের ব্যক্তিগত ডিভাইসে চালু রাখুন। টোকেন এই ব্রাউজারের স্টোরেজে থাকবে; ওয়েবসাইটের ফাইলে বা GitHub-এ সেভ হবে না।</p>
+
+<hr>
+<h3>📝 সংবাদ প্রকাশ</h3>
+<form id="newsForm">
+<label>সংবাদের শিরোনাম</label>
+<input id="title" required>
+
+<label>সংবাদের বিভাগ</label>
+<select id="category" required>
+<option value="">বিভাগ নির্বাচন করুন</option>
+<option value="বরগুনা">বরগুনা সংবাদ</option>
+<option value="জাতীয়">জাতীয় সংবাদ</option>
+<option value="আন্তর্জাতিক">আন্তর্জাতিক সংবাদ</option>
+<option value="রাজনীতি">রাজনীতি</option>
+<option value="অর্থনীতি">অর্থনীতি</option>
+<option value="শিক্ষা">শিক্ষা</option>
+<option value="স্বাস্থ্য">স্বাস্থ্য</option>
+<option value="অপরাধ">অপরাধ</option>
+<option value="খেলাধুলা">খেলাধুলা</option>
+<option value="বিনোদন">বিনোদন</option>
+<option value="আবহাওয়া">আবহাওয়া</option>
+<option value="প্রযুক্তি">তথ্যপ্রযুক্তি</option>
+<option value="অন্যান্য">অন্যান্য</option>
+<option value="বিশেষ সংবাদ">বিশেষ সংবাদ</option>
+<option value="করোনাভাইরাস">করোনাভাইরাস</option>
+<option value="সম্পাদকীয়">সম্পাদকীয়</option>
+<option value="রাজধানী">রাজধানী</option>
+<option value="সারাদেশ">সারাদেশ</option>
+<option value="বিশ্ব সংবাদ">বিশ্ব সংবাদ</option>
+<option value="খেলা">খেলা</option>
+<option value="টেক">টেক</option>
+<option value="চাকরি">চাকরি</option>
+<option value="সোশ্যাল মিডিয়া">সোশ্যাল মিডিয়া</option>
+<option value="আইন-আদালত">আইন-আদালত</option>
+<option value="প্রজন্ম">প্রজন্ম</option>
+<option value="প্রবাস">প্রবাস</option>
+<option value="ক্যাম্পাস">ক্যাম্পাস</option>
+<option value="সাহিত্য">সাহিত্য</option>
+<option value="ধর্ম">ধর্ম</option>
+<option value="ছবি">ছবি</option>
+<option value="লাইফস্টাইল">লাইফস্টাইল</option>
+<option value="মতামত">মতামত</option>
+<option value="English">English</option>
+</select>
+<label style="display:flex;align-items:center;gap:9px;margin:12px 0"><input id="breaking" type="checkbox" style="width:auto;margin:0"> 🔴 এই সংবাদটি ব্রেকিং নিউজ হিসেবে দেখান</label>
+
+<label>সংবাদের বিবরণ</label>
+<textarea id="body" required></textarea>
+
+<label>ছবির URL (ঐচ্ছিক)</label>
+<input id="image" type="url" placeholder="https://example.com/photo.jpg">
+
+<label>মোবাইল থেকে ছবি আপলোড (15 MB পর্যন্ত; স্বয়ংক্রিয়ভাবে ছোট হবে)</label>
+<input id="imageFile" type="file" accept="image/*">
+
+<label>ছবির ক্যাপশন</label>
+<input id="caption" placeholder="ছবি: BD Barguna News">
+
+<button id="publishBtn" type="submit">সংবাদ প্রকাশ করুন</button>
+<button id="cancelEdit" type="button" class="gray" hidden>এডিট বাতিল</button>
+</form>
+<p id="status" class="status"></p>
+
+<hr>
+<h3>📚 প্রকাশিত সংবাদ পরিচালনা</h3>
+<button id="loadNews" class="blue" type="button">সংবাদের তালিকা দেখুন</button>
+<button id="refreshArticlePages" type="button">🔄 পুরোনো সংবাদ পেজগুলো নতুন ডিজাইনে আপডেট করুন</button>
+<p class="note">একবার চাপলে প্রকাশিত সব সংবাদের পেজে নতুন ফটোকার্ড, ডাউনলোড, প্রিন্ট ও কপি অপশন যুক্ত হবে।</p>
+<div id="newsList"></div>
+
+<hr>
+<h3>🎥 ভিডিও নিউজ প্রকাশ</h3>
+<form id="videoForm">
+<label>ভিডিওর শিরোনাম</label>
+<input id="videoTitle" required>
+<label>ভিডিও প্ল্যাটফর্ম</label>
+<select id="videoPlatform" required>
+<option value="youtube">YouTube</option>
+<option value="facebook">Facebook</option>
+</select>
+<label id="videoUrlLabel">YouTube ভিডিও লিংক</label>
+<input id="videoUrl" type="url" required placeholder="YouTube ভিডিও URL দিন">
+<p class="note">Facebook ভিডিওর ক্ষেত্রে ভিডিওটি Public হতে হবে এবং Embedding অনুমোদিত থাকতে হবে। Facebook-এর ভিডিও ফাইল সরাসরি আপলোড নয়—ভিডিওর শেয়ার লিংক যোগ করুন।</p>
+<button type="submit">ভিডিও প্রকাশ করুন</button>
+</form>
+<p id="videoStatus" class="status"></p>
+<button id="loadVideos" type="button" class="blue">ভিডিও তালিকা দেখুন</button>
+<div id="videoList"></div>
+
+<hr>
+<h3>🔴 সরাসরি লাইভ সম্প্রচার</h3>
+<p class="note">Facebook-এ লাইভ চালু করার পর সেই লাইভ ভিডিওর পাবলিক লিংক এখানে দিন। অথবা YouTube Live URL দিন। “লাইভ চালু” নির্বাচন করে সংরক্ষণ করুন। Facebook ভিডিওটি Public এবং Embedding অনুমোদিত থাকতে হবে।</p>
+<form id="liveForm">
+<label>লাইভের শিরোনাম</label><input id="liveTitleInput" placeholder="যেমন: বরগুনা থেকে সরাসরি সংবাদ">
+<label>Facebook Live / YouTube Live ভিডিও লিংক</label><input id="liveUrlInput" type="url" placeholder="Facebook বা YouTube Live URL দিন" required>
+<label style="display:flex;align-items:center;gap:9px"><input id="liveActive" type="checkbox" style="width:auto;margin:0"> 🔴 লাইভ চালু</label>
+<button type="submit">লাইভ সেটিং সংরক্ষণ করুন</button>
+</form>
+<p id="liveStatus" class="status"></p>
+<button id="loadLive" type="button" class="blue">লাইভ সেটিং দেখুন</button>
+<hr>
+<p class="note">BD Barguna News | সত্যের সন্ধানে, মানুষের পাশে।</p>
+</main>
+
+<script src="./article-template.js?v=20261113i"></script>
+<script>
+"use strict";
+
+const OWNER="mdsaimoon518-ship-it";
+const REPO="BD-Barguna-News";
+const BRANCH="main";
+const NEWS="news.json";
+const VIDEOS="videos.json";
+
+const $=id=>document.getElementById(id);
+let cachedNews=[];
+let editingSlug=null;
+
+// Optional token memory: saved only in this browser on this device.
+const TOKEN_STORAGE_KEY="bdBargunaNews_adminGithubToken";
+try{
+ const savedToken=localStorage.getItem(TOKEN_STORAGE_KEY);
+ if(savedToken){
+  $("token").value=savedToken;
+  $("rememberToken").checked=true;
+ }
+}catch(error){console.warn("Token memory is unavailable in this browser.");}
+$("rememberToken").addEventListener("change",()=>{
+ try{
+  if($("rememberToken").checked){
+   const value=$("token").value.trim();
+   if(value)localStorage.setItem(TOKEN_STORAGE_KEY,value);
+  }else localStorage.removeItem(TOKEN_STORAGE_KEY);
+ }catch(error){alert("এই ব্রাউজারে টোকেন সেভ করা যাচ্ছে না।");}
+});
+$("token").addEventListener("input",()=>{
+ try{
+  if($("rememberToken").checked){
+   const value=$("token").value.trim();
+   if(value)localStorage.setItem(TOKEN_STORAGE_KEY,value);
+   else localStorage.removeItem(TOKEN_STORAGE_KEY);
+  }
+ }catch(error){console.warn("Token could not be saved.");}
+});
+
+function getHeaders(){
+ const t=$("token").value.trim();
+ if(!t)throw new Error("GitHub Token দিন");
+ return {
+  Authorization:"Bearer "+t,
+  Accept:"application/vnd.github+json",
+  "X-GitHub-Api-Version":"2022-11-28"
+ };
+}
+
+function api(path){
+ return "https://api.github.com/repos/"+OWNER+"/"+REPO+
+ "/contents/"+path.split("/").map(encodeURIComponent).join("/");
+}
+
+function encode64(str){
+ const bytes=new TextEncoder().encode(str);
+ let binary="";
+ for(let i=0;i<bytes.length;i+=8192)
+  binary+=String.fromCharCode(...bytes.subarray(i,i+8192));
+ return btoa(binary);
+}
+
+function decode64(str){
+ const binary=atob(str.replace(/\s/g,""));
+ return new TextDecoder().decode(
+  Uint8Array.from(binary,c=>c.charCodeAt(0))
+ );
+}
+
+async function readFile(path){
+ const r=await fetch(api(path),{headers:getHeaders(),cache:"no-store"});
+ if(r.status===404)return {data:null,sha:null};
+ if(!r.ok)throw new Error(await errorText(r));
+ const d=await r.json();
+ return {data:decode64(d.content),sha:d.sha};
+}
+
+async function errorText(r){
+ let msg="GitHub Error "+r.status;
+ try{msg+=": "+(await r.json()).message}catch(e){}
+ return msg;
+}
+
+async function saveFile(path,content,message){
+ const old=await readFile(path);
+ const payload={
+  message,
+  content:encode64(content),
+  branch:BRANCH
+ };
+ if(old.sha)payload.sha=old.sha;
+
+ const r=await fetch(api(path),{
+  method:"PUT",
+  headers:{...getHeaders(),"Content-Type":"application/json"},
+  body:JSON.stringify(payload)
+ });
+ if(!r.ok)throw new Error(await errorText(r));
+ return r.json();
+}
+
+async function removeFile(path){
+ const old=await readFile(path);
+ if(!old.sha)return;
+ const r=await fetch(api(path),{
+  method:"DELETE",
+  headers:{...getHeaders(),"Content-Type":"application/json"},
+  body:JSON.stringify({
+   message:"Delete article",
+   sha:old.sha,
+   branch:BRANCH
+  })
+ });
+ if(!r.ok)throw new Error(await errorText(r));
+}
+
+async function readJSON(path){
+ const f=await readFile(path);
+ if(!f.data)return [];
+ const data=JSON.parse(f.data);
+ if(!Array.isArray(data))throw new Error("JSON ফাইলের ফরম্যাট ভুল");
+ return data;
+}
+
+const SITE_BASE="https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/";
+function xmlEscape(value){
+ return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;");
+}
+function makeSitemap(items){
+ const today=new Date().toISOString().slice(0,10);
+ const pages=["","news.html","about.html","contact.html","privacy.html","disclaimer.html","editorial-policy.html","terms.html","advertise.html"];
+ const urls=pages.map(path=>({loc:SITE_BASE+path,lastmod:today}));
+ (Array.isArray(items)?items:[]).forEach(n=>{
+  if(!n||!n.slug||!n.title)return;
+  const changed=new Date(n.modifiedAt||n.date||Date.now());
+  urls.push({loc:SITE_BASE+"articles/"+encodeURIComponent(n.slug)+".html",lastmod:Number.isNaN(changed.getTime())?today:changed.toISOString().slice(0,10)});
+ });
+ const unique=[...new Map(urls.map(u=>[u.loc,u])).values()];
+ return '<?xml version="1.0" encoding="UTF-8"?>\n'+
+ '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+
+ unique.map(u=>'  <url><loc>'+xmlEscape(u.loc)+'</loc><lastmod>'+u.lastmod+'</lastmod></url>').join('\n')+
+ '\n</urlset>\n';
+}
+async function saveSitemap(items){
+ await saveFile("sitemap.xml",makeSitemap(items),"Update Google SEO sitemap");
+}
+
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function makeSlug(s){
+ return s.toLowerCase().replace(/[^\u0980-\u09ffa-z0-9]+/g,"-")
+ .replace(/^-+|-+$/g,"").slice(0,60)+"-"+Date.now();
+}
+
+function show(id,msg,error=false){
+ $(id).textContent=msg;
+ $(id).style.color=error?"#b42318":"#087b42";
+}
+
+function articleUrl(n){
+ return new URL("../articles/"+encodeURIComponent(n.slug)+".html",location.href).href;
+}
+
+async function copyLink(text){
+ try{
+  if(navigator.clipboard && window.isSecureContext){
+   await navigator.clipboard.writeText(text);
+  }else{
+   const field=document.createElement("textarea");
+   field.value=text;
+   field.style.position="fixed";
+   field.style.opacity="0";
+   document.body.appendChild(field);
+   field.focus();
+   field.select();
+   const ok=document.execCommand("copy");
+   field.remove();
+   if(!ok)throw new Error("কপি করা যায়নি");
+  }
+  alert("সংবাদের লিংক কপি হয়েছে");
+ }catch(err){
+  window.prompt("এই লিংকটি কপি করুন:",text);
+ }
+}
+
+async function uploadImage(file){
+ if(!file)return "";
+ if(!file.type.startsWith("image/"))throw new Error("শুধু ছবির ফাইল নির্বাচন করুন");
+ if(file.size>15*1024*1024)throw new Error("মূল ছবির সাইজ 15 MB-এর বেশি। ছোট ছবি নির্বাচন করুন।");
+ show("status","ছবি ছোট করে আপলোডের জন্য প্রস্তুত করা হচ্ছে...");
+ const source=await new Promise((resolve,reject)=>{
+  const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error("ছবি খোলা যাচ্ছে না"));img.src=r.result;};r.onerror=()=>reject(new Error("ছবি পড়া যায়নি"));r.readAsDataURL(file);
+ });
+ const scale=Math.min(1,1600/Math.max(source.naturalWidth,source.naturalHeight));
+ const canvas=document.createElement("canvas");
+ canvas.width=Math.max(1,Math.round(source.naturalWidth*scale));
+ canvas.height=Math.max(1,Math.round(source.naturalHeight*scale));
+ const ctx=canvas.getContext("2d");if(!ctx)throw new Error("ছবি প্রস্তুত করা যাচ্ছে না");
+ ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(source,0,0,canvas.width,canvas.height);
+ const blobFor=quality=>new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",quality));
+ let blob=null;
+ for(const quality of [0.84,0.76,0.68,0.60,0.52,0.45]){blob=await blobFor(quality);if(blob&&blob.size<=850*1024)break;}
+ if(!blob||blob.size>900*1024)throw new Error("ছবিটি ছোট করা যায়নি। অন্য ছবি নির্বাচন করুন।");
+ const base=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result).split(",")[1]);r.onerror=()=>reject(new Error("ছবি প্রস্তুত করা যায়নি"));r.readAsDataURL(blob);});
+ const path="images/news/news-"+Date.now()+".jpg";
+ const r=await fetch(api(path),{method:"PUT",headers:{...getHeaders(),"Content-Type":"application/json"},body:JSON.stringify({message:"Upload compressed news photo",content:base,branch:BRANCH})});
+ if(!r.ok)throw new Error(await errorText(r));
+ return path;
+}
+
+async function loadNews(){
+ $("newsList").textContent="সংবাদ লোড হচ্ছে...";
+ try{
+  cachedNews=await readJSON(NEWS);
+  if(!cachedNews.length){
+   $("newsList").textContent="কোনো সংবাদ পাওয়া যায়নি।";
+   return;
+  }
+  $("newsList").innerHTML=cachedNews.map((n,i)=>`
+   <div class="card">
+   <strong>${esc(n.title)}</strong>
+   <p>${esc(n.category)} | ${esc(n.date)} ${n.breaking===true?"| 🔴 ব্রেকিং নিউজ":""}</p>
+   ${n.image?`<img src="${/^https?:\/\//i.test(n.image)?esc(n.image):"../"+esc(n.image)}" alt="সংবাদ ছবি">`:""}
+   <div class="actions">
+   <button class="blue" data-a="edit" data-i="${i}">এডিট</button>
+   <button class="red" data-a="delete" data-i="${i}">ডিলিট</button>
+   <button class="gray" data-a="copy" data-i="${i}">লিংক কপি</button>
+   <button class="facebook" data-a="facebook" data-i="${i}">Facebook</button>
+   <button class="whatsapp" data-a="whatsapp" data-i="${i}">WhatsApp</button>
+   <button data-a="print" data-i="${i}">সংবাদ প্রিন্ট</button>
+   </div></div>`).join("");
+ }catch(e){$("newsList").textContent=e.message}
+}
+
+$("newsList").addEventListener("click",async e=>{
+ const b=e.target.closest("button[data-a]");
+ if(!b)return;
+ const n=cachedNews[Number(b.dataset.i)];
+ if(!n)return;
+ const url=articleUrl(n);
+
+ try{
+  switch(b.dataset.a){
+   case "edit":
+    $("title").value=n.title;
+    $("category").value=n.category;
+    $("breaking").checked=n.breaking===true;
+    $("body").value=n.body;
+    $("image").value=/^https?:\/\//i.test(n.image||"")?n.image:"";
+    $("caption").value=n.caption||"";
+    editingSlug=n.slug;
+    $("publishBtn").textContent="সংবাদ আপডেট করুন";
+    $("cancelEdit").hidden=false;
+    window.scrollTo({top:0,behavior:"smooth"});
+    break;
+   case "delete":
+    if(!confirm("এই সংবাদ ডিলিট করবেন?"))return;
+    b.disabled=true;
+    const latest=await readJSON(NEWS);
+    const remaining=latest.filter(x=>x.slug!==n.slug);
+    await saveFile(NEWS,JSON.stringify(remaining,null,2),"Delete news");
+    await removeFile("articles/"+n.slug+".html");
+    await saveSitemap(remaining);
+    show("status","সংবাদ ডিলিট হয়েছে");
+    await loadNews();
+    break;
+   case "copy":
+    await copyLink(url);
+    break;
+   case "facebook":
+    window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url),"_blank");
+    break;
+   case "whatsapp":
+    window.open("https://wa.me/?text="+encodeURIComponent(n.title+" "+url),"_blank");
+    break;
+   case "print":
+    window.open(url,"_blank");
+    break;
+  }
+ }catch(err){alert(err.message);b.disabled=false}
+});
+
+$("cancelEdit").onclick=()=>{
+ editingSlug=null;
+ $("newsForm").reset();
+ $("breaking").checked=false;
+ $("publishBtn").textContent="সংবাদ প্রকাশ করুন";
+ $("cancelEdit").hidden=true;
+};
+
+async function ensureArticleTemplate(){
+ if(typeof window.articleHTML==="function")return;
+ const script=document.createElement("script");
+ script.src=new URL("./article-template.js?v=20261113i",location.href).href;
+ await new Promise((resolve,reject)=>{
+  script.onload=resolve;
+  script.onerror=()=>reject(new Error("মূল সংবাদ টেমপ্লেট লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।"));
+  document.head.appendChild(script);
+ });
+ if(typeof window.articleHTML!=="function"){
+  throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। বিকল্প পুরোনো টেমপ্লেট ব্যবহার না করে প্রকাশ বন্ধ রাখা হয়েছে।");
+ }
+}
+function validateArticlePage(html){
+ const required=["downloadNewsPhotoCard","printNewsPhotoCard","copyNewsPhotoCard","copyArticleText","copyArticleLink","shareToYouTube","printAdPanel","printAdFile","printAdPosition","printAdOutput-top","printAdOutput-headline","printAdOutput-middle","printAdOutput-bottom","bdAddPrintAd","bdClearPrintAds"];
+ const missing=required.filter(key=>!html.includes(key));
+ if(missing.length)throw new Error("নিউজ পেজে প্রয়োজনীয় অপশন নেই: "+missing.join(", "));
+ const articleAt=html.indexOf('class="article"'),buttonsAt=html.indexOf('class="buttons"'),adPanelAt=html.indexOf('id="printAdPanel"');
+ if(articleAt<0||buttonsAt<articleAt||adPanelAt<articleAt)throw new Error("নিউজের অপশনগুলো নিচে বসানোর টেমপ্লেট যাচাই করা যায়নি।");
+ return html;
+}
+
+$("newsForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const btn=$("publishBtn");
+ btn.disabled=true;
+ show("status","সংবাদ প্রকাশ হচ্ছে...");
+ try{
+  const title=$("title").value.trim();
+  const category=$("category").value;
+  const body=$("body").value.trim();
+  const latest=await readJSON(NEWS);
+  const old=editingSlug?latest.find(x=>x.slug===editingSlug):null;
+  if(editingSlug&&!old)throw new Error("সম্পাদনার সংবাদ পাওয়া যায়নি");
+
+  let image=$("image").value.trim()||old?.image||"";
+  if($("imageFile").files[0])
+   image=await uploadImage($("imageFile").files[0]);
+
+  const n={
+   title,category,body,image,
+   caption:$("caption").value.trim(),
+   breaking:$("breaking").checked,
+   date:old?.date||new Date().toISOString(),
+   modifiedAt:new Date().toISOString(),
+   slug:old?.slug||makeSlug(title)
+  };
+
+  const updated=old
+   ?latest.map(x=>x.slug===editingSlug?n:x)
+   :[n,...latest];
+
+  await ensureArticleTemplate();
+  const articlePage=validateArticlePage(window.articleHTML(n));
+  await saveFile("articles/"+n.slug+".html",articlePage,"Publish article page");
+  await saveFile(NEWS,JSON.stringify(updated,null,2),old?"Update news":"Publish news");
+  await saveSitemap(updated);
+
+  editingSlug=null;
+  $("newsForm").reset();
+  $("breaking").checked=false;
+  $("publishBtn").textContent="সংবাদ প্রকাশ করুন";
+  $("cancelEdit").hidden=true;
+  show("status","সফল! সংবাদ ও HTML পেজ প্রকাশ হয়েছে।");
+  await loadNews();
+ }catch(err){show("status","সমস্যা: "+err.message,true)}
+ finally{btn.disabled=false}
+});
+
+$("loadNews").onclick=loadNews;
+
+$("refreshArticlePages").onclick=async()=>{
+ const btn=$("refreshArticlePages");
+ if(!confirm("প্রকাশিত সব সংবাদ পেজ নতুন ডিজাইনে আপডেট করবেন?"))return;
+ btn.disabled=true;
+ try{
+  await ensureArticleTemplate();
+  const items=await readJSON(NEWS);
+  if(!items.length)throw new Error("কোনো প্রকাশিত সংবাদ পাওয়া যায়নি");
+  let done=0;
+  for(const n of items){
+   if(!n||!n.slug||!n.title)continue;
+   const articlePage=validateArticlePage(window.articleHTML(n));
+   await saveFile("articles/"+n.slug+".html",articlePage,"Refresh article page design");
+   done++;
+   show("status","নতুন ডিজাইন আপডেট হচ্ছে: "+done+" / "+items.length);
+  }
+  show("status","সফল! "+done+"টি সংবাদ পেজে নতুন ফটোকার্ড, ডাউনলোড, প্রিন্ট ও কপি অপশন যুক্ত হয়েছে।");
+ }catch(err){show("status","সমস্যা: "+err.message,true)}
+ finally{btn.disabled=false}
+};
+
+/* VIDEO NEWS */
+
+async function loadVideos(){
+ try{
+  const videos=await readJSON(VIDEOS);
+  $("videoList").innerHTML=videos.length?videos.map(v=>`
+   <div class="card"><strong>${esc(v.title)}</strong>
+   <p><a href="${esc(v.url)}" target="_blank" rel="noopener">ভিডিও দেখুন</a></p></div>
+  `).join(""):"কোনো ভিডিও নেই";
+ }catch(e){$("videoList").textContent=e.message}
+}
+
+$("videoPlatform").addEventListener("change",()=>{
+ const facebook=$("videoPlatform").value==="facebook";
+ $("videoUrlLabel").textContent=facebook?"Facebook ভিডিও লিংক":"YouTube ভিডিও লিংক";
+ $("videoUrl").placeholder=facebook?"Facebook ভিডিও Share URL দিন":"YouTube ভিডিও URL দিন";
+});
+
+$("loadVideos").onclick=loadVideos;
+
+/* LIVE STREAM SETTINGS */
+async function loadLive(){
+ try{
+  const file=await readFile("live.json");
+  const live=file.data?JSON.parse(file.data):{active:false,title:"",url:""};
+  $("liveTitleInput").value=live.title||"";
+  $("liveUrlInput").value=live.url||"";
+  $("liveActive").checked=live.active===true;
+  show("liveStatus",live.active?"লাইভ চালু আছে।":"লাইভ বর্তমানে বন্ধ আছে।");
+ }catch(e){show("liveStatus",e.message,true)}
+}
+$("loadLive").onclick=loadLive;
+$("liveForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const btn=e.submitter;btn.disabled=true;
+ try{
+  const title=$("liveTitleInput").value.trim()||"BD Barguna News লাইভ";
+  const url=$("liveUrlInput").value.trim();
+  const u=new URL(url);
+  const host=u.hostname.toLowerCase();
+  let platform="";
+  if(["facebook.com","www.facebook.com","m.facebook.com","web.facebook.com","fb.watch"].includes(host)){
+   if(u.pathname==="/"||u.pathname.length<2)throw new Error("নির্দিষ্ট Facebook Live ভিডিওর লিংক দিন, শুধু পেজের লিংক নয়");
+   platform="facebook";
+  }else if(["youtube.com","www.youtube.com","youtu.be","m.youtube.com","music.youtube.com"].includes(host)){
+   const id=(host==="youtu.be"?u.pathname.split("/").filter(Boolean)[0]:(u.searchParams.get("v")||u.pathname.split("/").filter(Boolean).slice(-1)[0]));
+   if(!id||! /^[A-Za-z0-9_-]{6,}$/.test(id))throw new Error("YouTube ভিডিও/লাইভ আইডি পাওয়া যায়নি");
+   platform="youtube";
+  }else throw new Error("সঠিক Facebook Live বা YouTube Live ভিডিও লিংক দিন");
+  const config={active:$("liveActive").checked,title,url,platform,date:new Date().toISOString()};
+  await saveFile("live.json",JSON.stringify(config,null,2),"Update live stream settings");
+  show("liveStatus",config.active?"সফল! ওয়েবসাইটে লাইভ চালু করার সেটিং সংরক্ষিত হয়েছে।":"লাইভ বন্ধ করার সেটিং সংরক্ষিত হয়েছে।");
+ }catch(err){show("liveStatus",err.message,true)}
+ finally{btn.disabled=false}
+});
+
+
+$("videoForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const btn=e.submitter;
+ btn.disabled=true;
+ try{
+  const title=$("videoTitle").value.trim();
+  const url=$("videoUrl").value.trim();
+  const u=new URL(url);
+  const host=u.hostname.toLowerCase().replace(/^www\./,"");
+  const platform=$("videoPlatform").value;
+  if(platform==="youtube"){
+   if(!["youtube.com","youtu.be","m.youtube.com","music.youtube.com"].includes(host))
+    throw new Error("সঠিক YouTube ভিডিও URL দিন");
+  }else if(platform==="facebook"){
+   if(!["facebook.com","m.facebook.com","web.facebook.com","fb.watch"].includes(host))
+    throw new Error("সঠিক Facebook ভিডিও URL দিন");
+   if(u.pathname==="/"||u.pathname.length<2)
+    throw new Error("নির্দিষ্ট Facebook ভিডিওর শেয়ার লিংক দিন, শুধু পেজের লিংক নয়");
+  }else throw new Error("ভিডিও প্ল্যাটফর্ম নির্বাচন করুন");
+  const videos=await readJSON(VIDEOS);
+  videos.unshift({title,url,platform,date:new Date().toISOString()});
+  await saveFile(VIDEOS,JSON.stringify(videos,null,2),"Publish video news");
+  $("videoForm").reset();
+  show("videoStatus","ভিডিও নিউজ প্রকাশ হয়েছে");
+  await loadVideos();
+ }catch(err){show("videoStatus",err.message,true)}
+ finally{btn.disabled=false}
+});
+</script>
+</body>
+</html>
