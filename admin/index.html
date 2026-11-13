@@ -608,8 +608,21 @@ function decode64(str){
  );
 }
 
+async function githubFetch(url,options={},label="GitHub"){
+ let lastError;
+ for(let attempt=1;attempt<=3;attempt++){
+  try{
+   const response=await fetch(url,{...options,cache:"no-store"});
+   return response;
+  }catch(error){
+   lastError=error;
+   if(attempt<3)await new Promise(resolve=>setTimeout(resolve,900*attempt));
+  }
+ }
+ throw new Error(label+"-এ সংযোগ করা যাচ্ছে না। ইন্টারনেট/VPN বদলে আবার চেষ্টা করুন। (৩ বার চেষ্টা ব্যর্থ)");
+}
 async function readFile(path){
- const r=await fetch(api(path),{headers:getHeaders(),cache:"no-store"});
+ const r=await githubFetch(api(path),{headers:getHeaders()},"GitHub API");
  if(r.status===404)return {data:null,sha:null};
  if(!r.ok)throw new Error(await errorText(r));
  const d=await r.json();
@@ -631,7 +644,7 @@ async function saveFile(path,content,message){
  };
  if(old.sha)payload.sha=old.sha;
 
- const r=await fetch(api(path),{
+ const r=await githubFetch(api(path),{
   method:"PUT",
   headers:{...getHeaders(),"Content-Type":"application/json"},
   body:JSON.stringify(payload)
@@ -643,7 +656,7 @@ async function saveFile(path,content,message){
 async function removeFile(path){
  const old=await readFile(path);
  if(!old.sha)return;
- const r=await fetch(api(path),{
+ const r=await githubFetch(api(path),{
   method:"DELETE",
   headers:{...getHeaders(),"Content-Type":"application/json"},
   body:JSON.stringify({
@@ -837,7 +850,7 @@ async function ensureArticleTemplate(){
  if(typeof window.articleHTML==="function")return;
 
  const sources=[
-  new URL("./article-template.js?v=20261113k&retry="+Date.now(),location.href).href,
+  new URL("./article-template.js?v=20261113m&retry="+Date.now(),location.href).href,
   "https://raw.githubusercontent.com/"+OWNER+"/"+REPO+"/"+BRANCH+"/admin/article-template.js?retry="+Date.now()
  ];
  const failures=[];
