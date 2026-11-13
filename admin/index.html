@@ -148,6 +148,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 
 <script>
 // Article-page HTML template used by the admin publisher.
+// Article-page HTML template used by the admin publisher.
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -204,7 +205,7 @@ window.articleHTML = function articleHTML(n){
 <meta name="twitter:title" content="${esc(n.title)}">
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${esc(imageUrl)}">
-<script type="application/ld+json">${articleSchema}<\/script>
+<script type="application/ld+json">${articleSchema}</script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Arial,sans-serif;line-height:1.9}
@@ -362,7 +363,7 @@ ${image}
 <script>
 document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅\s*প্রকাশিত:\s*/,''):'';});
 window.buildNewsPhotoCard=async function(){
- const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1200;
+ const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1600;
  const ctx=canvas.getContext('2d');if(!ctx)throw new Error('ফটোকার্ড তৈরি করা যাচ্ছে না।');
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const category=(document.querySelector('.cat,.category')?.textContent||'সর্বশেষ সংবাদ').trim();
@@ -388,7 +389,7 @@ window.buildNewsPhotoCard=async function(){
  else{const pg=ctx.createLinearGradient(48,170,1152,705);pg.addColorStop(0,'#334b6c');pg.addColorStop(1,'#0f172a');ctx.fillStyle=pg;ctx.fillRect(48,170,1104,535);ctx.fillStyle='rgba(255,255,255,.14)';ctx.font='bold 64px Arial';ctx.fillText('BD BARGUNA NEWS',100,440);}
  const shade=ctx.createLinearGradient(0,430,0,705);shade.addColorStop(0,'rgba(5,12,24,0)');shade.addColorStop(1,'rgba(5,12,24,.82)');ctx.fillStyle=shade;ctx.fillRect(48,420,1104,285);
  ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText('সত্যের খবর, সবার আগে',82,665);ctx.restore();
- ctx.save();rr(48,675,1104,390,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
+ ctx.save();rr(48,675,1104,790,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
  ctx.fillStyle='#c51b36';rr(82,710,250,52,16);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 23px "Noto Sans Bengali",Arial';ctx.fillText(category.slice(0,18),104,745);
  ctx.fillStyle='#64748b';ctx.font='bold 22px "Noto Sans Bengali",Arial';ctx.textAlign='right';ctx.fillText(dayText,1115,745);ctx.textAlign='left';
  const wrap=(text,maxWidth,font)=>{ctx.font=font;const words=String(text||'').trim().split(/\s+/),lines=[];let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>maxWidth&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);return lines;};
@@ -397,8 +398,8 @@ window.buildNewsPhotoCard=async function(){
  titleLines=titleLines.length?titleLines:wrap(title,1025,'bold 24px Arial');
  ctx.fillStyle='#111827';ctx.font='bold '+titleSize+'px "Noto Sans Bengali",Arial';let y=790;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=titleSize+12;});
  
- ctx.fillStyle='#e2e8f0';ctx.fillRect(82,1000,1036,2);ctx.fillStyle='#d6a84f';ctx.fillRect(82,1000,1036,4);
- ctx.fillStyle='#f8fafc';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,1035);ctx.textAlign='right';ctx.fillStyle='#f5d58a';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,1035);ctx.textAlign='left';
+ ctx.fillStyle='#e2e8f0';ctx.fillRect(82,1450,1036,2);ctx.fillStyle='#d6a84f';ctx.fillRect(82,1450,1036,4);
+ ctx.fillStyle='#f8fafc';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,1485);ctx.textAlign='right';ctx.fillStyle='#f5d58a';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,1485);ctx.textAlign='left';
  return canvas;
 };
 window.downloadNewsPhotoCard=async function(){
@@ -473,27 +474,33 @@ document.getElementById("articleComments").src="https://www.facebook.com/plugins
 })();
 <\/script>
 <script id="bd-print-ad-script">
+const BD_AD_KEY='bd-barguna-print-ads:'+location.pathname;
+function bdRenderPrintAd(ad){
+ const out=document.getElementById('printAdOutput-'+ad.position);if(!out)return;
+ const item=document.createElement('div');item.className='print-ad-item';item.dataset.position=ad.position;
+ if(ad.src){const img=document.createElement('img');img.src=ad.src;img.alt='বিজ্ঞাপন';item.appendChild(img);}
+ if(ad.copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=ad.copy;item.appendChild(p);}
+ const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';
+ rm.onclick=()=>{item.remove();bdSavePrintAds();bdUpdatePrintAdCount();};item.appendChild(rm);out.appendChild(item);
+}
+function bdGetPrintAds(){try{return JSON.parse(localStorage.getItem(BD_AD_KEY)||'[]');}catch(e){return [];}}
+function bdSavePrintAds(){try{const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({position:item.dataset.position,src:item.querySelector('img')?.src||'',copy:item.querySelector('.ad-copy')?.textContent||''}));localStorage.setItem(BD_AD_KEY,JSON.stringify(ads));}catch(e){console.warn('বিজ্ঞাপন এই ডিভাইসে সংরক্ষণ করা যায়নি',e);}}
+function bdRestorePrintAds(){bdGetPrintAds().forEach(bdRenderPrintAd);bdUpdatePrintAdCount();}
 window.bdAddPrintAd=async function(){
  const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),position=document.getElementById('printAdPosition');
  const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',copy=txt?txt.value.trim():'';
  if(!files.length&&!link&&!copy){alert('বিজ্ঞাপনের ছবি অথবা লেখা দিন।');return;}
- const start=(position&&position.value)||'top',slots=['top','headline','middle','bottom'];
- const sources=[];
+ const start=(position&&position.value)||'top',slots=['top','headline','middle','bottom'],sources=[];
  for(const f of files)sources.push(await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('ছবি পড়া যায়নি'));r.readAsDataURL(f);}));
  if(!sources.length&&link)sources.push(link);if(!sources.length)sources.push('');
- sources.forEach((src,index)=>{
-  const target=slots[(slots.indexOf(start)+index)%slots.length],out=document.getElementById('printAdOutput-'+target);
-  if(!out)throw new Error('বিজ্ঞাপন বসানোর জায়গা পাওয়া যায়নি।');
-  const item=document.createElement('div');item.className='print-ad-item';item.dataset.position=target;
-  if(src){const img=document.createElement('img');img.src=src;img.alt='বিজ্ঞাপন';item.appendChild(img);}
-  if(copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=copy;item.appendChild(p);}
-  const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';rm.onclick=()=>{item.remove();bdUpdatePrintAdCount();};item.appendChild(rm);out.appendChild(item);
- });
+ const ads=bdGetPrintAds();
+ sources.forEach((src,index)=>{const target=slots[(slots.indexOf(start)+index)%slots.length];const ad={position:target,src,copy};ads.push(ad);bdRenderPrintAd(ad);});
+ try{localStorage.setItem(BD_AD_KEY,JSON.stringify(ads));}catch(e){alert('বিজ্ঞাপন যোগ হয়েছে, তবে ছবির আকার বেশি হওয়ায় এই ডিভাইসে সংরক্ষণ করা যায়নি।');}
  if(file)file.value='';if(url)url.value='';if(txt)txt.value='';bdUpdatePrintAdCount();
 };
 window.bdUpdatePrintAdCount=function(){const count=document.getElementById('printAdCount'),total=document.querySelectorAll('.print-ad-item').length;if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+total.toLocaleString('bn-BD')+'টি';};
-window.bdClearPrintAds=function(){document.querySelectorAll('.print-ad-output').forEach(out=>out.replaceChildren());bdUpdatePrintAdCount();};
-<\/script>
+window.bdClearPrintAds=function(){document.querySelectorAll('.print-ad-output').forEach(out=>out.replaceChildren());try{localStorage.removeItem(BD_AD_KEY);}catch(e){}bdUpdatePrintAdCount();};
+document.addEventListener('DOMContentLoaded',bdRestorePrintAds);</script>
 </body>
 </html>`;
 };
