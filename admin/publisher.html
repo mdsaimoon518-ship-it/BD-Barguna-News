@@ -343,7 +343,7 @@ ${image}
  <select id="printAdPosition"><option value="top">পত্রিকার একদম শুরুতে</option><option value="headline">শিরোনাম ও তারিখের নিচে</option><option value="middle">ছবির পরে / খবরের আগে</option><option value="bottom">খবরের শেষে</option></select>
  <label>বিজ্ঞাপনের আলাদা নাম</label><input id="printAdName" type="text" placeholder="যেমন: রহমান ট্রেডার্স / বিজ্ঞাপন ১"><label>বিজ্ঞাপনের ছবি (ফোন থেকে একসঙ্গে অনেকগুলো নির্বাচন করুন)</label><input id="printAdFile" type="file" accept="image/*" multiple>
  <label>অথবা বিজ্ঞাপনের ছবির লিংক</label><input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
- <label>বিজ্ঞাপনের লেখা / যোগাযোগ (ঐচ্ছিক)</label><textarea id="printAdText" rows="2" placeholder="প্রতিষ্ঠানের নাম, অফার, ফোন নম্বর"></textarea>
+
  <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">＋ বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
  <p id="printAdCount" aria-live="polite">যোগ করা বিজ্ঞাপন: ০টি</p><small>প্রতিটি বিজ্ঞাপন আলাদাভাবে মুছতে পারবেন। একই স্থানে বা ভিন্ন স্থানে যত খুশি বিজ্ঞাপন যোগ করুন।</small>
 </section>
@@ -499,12 +499,11 @@ function bdRenderPrintAd(ad){
  const nameLabel=document.createElement('div');nameLabel.className='ad-name';nameLabel.textContent=ad.name||'বিজ্ঞাপন';item.appendChild(nameLabel);
  const nameInput=document.createElement('input');nameInput.type='text';nameInput.className='print-ad-name';nameInput.value=ad.name||'বিজ্ঞাপন';nameInput.setAttribute('aria-label','বিজ্ঞাপনের নাম');nameInput.oninput=()=>{nameLabel.textContent=nameInput.value.trim()||'বিজ্ঞাপন';bdSavePrintAds();};item.appendChild(nameInput);
  if(ad.src){const img=document.createElement('img');img.src=ad.src;img.alt=ad.name||'বিজ্ঞাপন';item.appendChild(img);}
- if(ad.copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=ad.copy;item.appendChild(p);}
  const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';rm.onclick=()=>{item.remove();bdSavePrintAds();bdUpdatePrintAdCount();};item.appendChild(rm);
  out.appendChild(item);out.style.display='block';
 }
 function bdSavePrintAds(){
- const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({name:item.querySelector('.print-ad-name')?.value.trim()||'বিজ্ঞাপন',position:item.dataset.position,src:item.querySelector('img')?.src||'',copy:item.querySelector('.ad-copy')?.textContent||''}));
+ const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({name:item.querySelector('.print-ad-name')?.value.trim()||'বিজ্ঞাপন',position:item.dataset.position,src:item.querySelector('img')?.src||''}));
  try{localStorage.setItem(BD_AD_KEY,JSON.stringify(ads));return true;}catch(e){return false;}
 }
 function bdUpdatePrintAdCount(){const count=document.getElementById('printAdCount'),total=document.querySelectorAll('.print-ad-item').length;if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+total.toLocaleString('bn-BD')+'টি';}
@@ -516,15 +515,15 @@ async function bdCompressAdFile(file){
  canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/jpeg',.78);
 }
 window.bdAddPrintAd=async function(){
- const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),position=document.getElementById('printAdPosition'),nameField=document.getElementById('printAdName');
- const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',copy=txt?txt.value.trim():'',baseName=nameField&&nameField.value.trim()?nameField.value.trim():'বিজ্ঞাপন';
- if(!files.length&&!link&&!copy){alert('বিজ্ঞাপনের ছবি নির্বাচন করুন অথবা বিজ্ঞাপনের লিংক/লেখা দিন।');return;}
+ const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),position=document.getElementById('printAdPosition'),nameField=document.getElementById('printAdName');
+ const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',baseName=nameField&&nameField.value.trim()?nameField.value.trim():'বিজ্ঞাপন';
+ if(!files.length&&!link){alert('বিজ্ঞাপনের ছবি নির্বাচন করুন অথবা বিজ্ঞাপনের ছবির লিংক দিন।');return;}
  const start=(position&&position.value)||'top',slots=['top','headline','middle','bottom'],sources=[];
  for(const f of files)sources.push(await bdCompressAdFile(f));
  if(!sources.length&&link)sources.push(link);if(!sources.length)sources.push('');
- const ads=bdGetPrintAds(),newAds=sources.map((src,index)=>({name:sources.length>1?baseName+' '+(index+1):baseName,position:slots[(slots.indexOf(start)+index)%slots.length],src,copy}));
+ const ads=bdGetPrintAds(),newAds=sources.map((src,index)=>({name:sources.length>1?baseName+' '+(index+1):baseName,position:slots[(slots.indexOf(start)+index)%slots.length],src})));
  newAds.forEach(bdRenderPrintAd);const saved=bdSavePrintAds();bdUpdatePrintAdCount();
- if(file)file.value='';if(url)url.value='';if(txt)txt.value='';if(nameField)nameField.value='';
+ if(file)file.value='';if(url)url.value='';if(nameField)nameField.value='';
  if(!saved)alert('বিজ্ঞাপন এই পেজে যোগ হয়েছে, তবে ব্রাউজারের জায়গা কম থাকায় সংরক্ষণ হয়নি।');
  else alert(newAds.length+'টি বিজ্ঞাপন যোগ হয়েছে। এখন সংবাদ প্রিন্ট চাপুন।');
 };
