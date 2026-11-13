@@ -252,7 +252,7 @@ async function saveFile(path,content,message){
  };
  if(old.sha)payload.sha=old.sha;
 
- const r=await fetch(api(path),{
+ const r=await githubFetch(api(path),{
   method:"PUT",
   headers:{...getHeaders(),"Content-Type":"application/json"},
   body:JSON.stringify(payload)
@@ -264,7 +264,7 @@ async function saveFile(path,content,message){
 async function removeFile(path){
  const old=await readFile(path);
  if(!old.sha)return;
- const r=await fetch(api(path),{
+ const r=await githubFetch(api(path),{
   method:"DELETE",
   headers:{...getHeaders(),"Content-Type":"application/json"},
   body:JSON.stringify({
