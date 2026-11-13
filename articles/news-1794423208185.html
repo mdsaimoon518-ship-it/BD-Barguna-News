@@ -45,7 +45,7 @@ async function makeCard(){
  if(logo){x.fillStyle='#fff';x.fillRect(55,45,90,90);x.drawImage(logo,65,55,70,70);}
  x.fillStyle='#fff';x.font='bold 36px Arial';x.fillText('BD BARGUNA NEWS',170,88);x.font='22px Arial';x.fillStyle='#dbe4ef';x.fillText('সত্যের সন্ধানে, মানুষের পাশে।',170,126);
  x.save();x.beginPath();x.roundRect(48,165,1104,600,24);x.clip();
- if(photo){const sc=Math.max(1104/photo.naturalWidth,600/photo.naturalHeight),sw=1104/sc,sh=600/sc;x.drawImage(photo,(photo.naturalWidth-sw)/2,(photo.naturalHeight-sh)/2,sw,sh,48,165,1104,600);}
+ if(photo){x.fillStyle='#172b40';x.fillRect(48,165,1104,600);const sc=Math.min(1104/photo.naturalWidth,600/photo.naturalHeight),w=photo.naturalWidth*sc,h=photo.naturalHeight*sc;x.drawImage(photo,48+(1104-w)/2,165+(600-h)/2,w,h);}
  else{x.fillStyle='#475569';x.fillRect(48,165,1104,600);x.fillStyle='#fff';x.font='bold 44px Arial';x.fillText('BD BARGUNA NEWS',100,470);}
  x.restore();
  x.fillStyle='#fff';x.fillRect(48,790,1104,300);x.fillStyle='#bd1834';x.fillRect(80,815,190,48);x.fillStyle='#fff';x.font='bold 22px Arial';x.fillText(category.slice(0,16),98,848);
