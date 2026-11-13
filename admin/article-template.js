@@ -114,12 +114,46 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  a{color:inherit!important;text-decoration:none!important}
 }
 </style>
+<style id="bd-print-ad-style">
+.print-ad-panel{margin:16px 0;padding:14px;border:2px dashed #b5122b;border-radius:10px;background:#fff8f0;color:#202936;font:14px Arial,sans-serif}
+.print-ad-panel strong{display:block;color:#b5122b;font-size:17px;margin-bottom:9px}
+.print-ad-panel label{display:block;font-weight:700;margin:8px 0 4px}
+.print-ad-panel input,.print-ad-panel textarea{display:block;width:100%;box-sizing:border-box;padding:9px;border:1px solid #cbd5e1;border-radius:6px;background:white;color:#111;font:14px Arial,sans-serif}
+.print-ad-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.print-ad-actions button{border:0;border-radius:6px;padding:9px 13px;background:#b5122b;color:#fff;font-weight:bold}
+.print-ad-actions button+button{background:#475569}
+.print-ad-panel small{display:block;margin-top:8px;color:#475569}
+.print-ad-output:empty{display:none}
+.print-ad-item{margin:3mm 0;padding:2mm;border:1px solid #b5122b;background:#fff8e8;text-align:center;break-inside:avoid}
+.print-ad-item img{display:block;max-width:100%;max-height:65mm;width:auto;height:auto;object-fit:contain;margin:0 auto}
+.print-ad-item .ad-copy{font-size:10pt;font-weight:bold;color:#9b1730;margin-top:1.5mm}
+@media print{
+ *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+ html,body{color-adjust:exact!important}
+ .print-ad-panel{display:none!important}
+ .print-ad-output:not(:empty){display:block!important;column-span:all!important;break-inside:avoid!important}
+ .print-ad-item{background:#fff1cf!important;border:1.5px solid #b5122b!important;color:#9b1730!important}
+ .print-ad-item .ad-copy{color:#9b1730!important}
+ .print-brand,.bd-print-masthead .name{color:#b5122b!important}
+ .print-rule,.bd-print-masthead .rule{border-top:2px solid #b5122b!important;border-bottom:2px solid #0b8068!important}
+}
+</style>
 </head>
 <body>
-<main class="paper">
+<main class="paper"><section class="print-ad-panel" id="printAdPanel">
+ <strong>প্রিন্ট বিজ্ঞাপন যোগ করুন</strong>
+ <label>বিজ্ঞাপনের ছবি (ফোন থেকে নির্বাচন করুন)</label>
+ <input id="printAdFile" type="file" accept="image/*">
+ <label>অথবা ছবির লিংক দিন</label>
+ <input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
+ <label>বিজ্ঞাপনের লেখা (ঐচ্ছিক)</label>
+ <textarea id="printAdText" rows="2" placeholder="বিজ্ঞাপনের শিরোনাম / যোগাযোগ"></textarea>
+ <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
+ <small>বিজ্ঞাপন যোগ করে তারপর “সংবাদ প্রিন্ট” চাপুন। বিজ্ঞাপনটি শুধু এই প্রিন্টে থাকবে।</small>
+</section><div id="printAdOutput" class="print-ad-output"></div>
 <div class="print-masthead">
  <div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span class="print-date"></span></div>
- <div class="print-brand">বিডি বরগুনা নিউজ</div>
+ <div class="print-brand">BD BARGUNA NEWS</div>
  <div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div>
  <div class="print-rule"></div>
  <div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div>
@@ -266,6 +300,20 @@ const count=document.getElementById("articleViewCount");
 firebase.auth().signInAnonymously().then(()=>firebase.database().ref("articleViews/${esc(n.slug)}").transaction(v=>(Number(v)||0)+1)).then(()=>firebase.database().ref("articleViews/${esc(n.slug)}").once("value")).then(s=>{count.textContent="👁️ মোট পাঠ: "+String(s.val()||0).replace(/[0-9]/g,d=>"০১২৩৪৫৬৭৮৯"[Number(d)]);}).catch(()=>{count.textContent="👁️ ভিউ তথ্য এখন পাওয়া যাচ্ছে না";});
 document.getElementById("articleComments").src="https://www.facebook.com/plugins/comments.php?href="+encodeURIComponent(location.href)+"&width=100%25&numposts=10&order_by=reverse_time";
 })();
+<\/script>
+<script id="bd-print-ad-script">
+window.bdAddPrintAd=async function(){
+ const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),out=document.getElementById('printAdOutput');
+ const chosen=file&&file.files&&file.files[0],src=chosen?await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(chosen);}):(url&&url.value.trim());
+ const copy=txt?txt.value.trim():'';
+ if(!src&&!copy){alert('বিজ্ঞাপনের ছবি অথবা লেখা দিন।');return;}
+ const item=document.createElement('div');item.className='print-ad-item';
+ if(src){const img=document.createElement('img');img.src=src;img.alt='বিজ্ঞাপন';item.appendChild(img);}
+ if(copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=copy;item.appendChild(p);}
+ out.appendChild(item);
+ if(file)file.value='';if(url)url.value='';if(txt)txt.value='';
+};
+window.bdClearPrintAds=function(){const out=document.getElementById('printAdOutput');if(out)out.replaceChildren();};
 <\/script>
 </body>
 </html>`;
