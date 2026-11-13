@@ -156,17 +156,17 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 </div>
 </header>
 ${articleNav}
-<div id="printAdSlot-top"></div>
+<div id="printAdOutput-top" class="print-ad-output"></div>
 <div class="category">${esc(n.category)}</div>
 <h1>${esc(n.title)}</h1>
 <div class="date">📅 প্রকাশিত: ${dateText}</div>
-<div id="printAdSlot-headline"></div>
+<div id="printAdOutput-headline" class="print-ad-output"></div>
 <div id="articleViewCount" class="date" aria-live="polite">👁️ পাঠসংখ্যা লোড হচ্ছে...</div>
 ${image}
-<div id="printAdSlot-middle"></div>
+<div id="printAdOutput-middle" class="print-ad-output"></div>
 <section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
 <div class="article">${esc(n.body)}</div>
-<div id="printAdSlot-bottom"></div>
+<div id="printAdOutput-bottom" class="print-ad-output"></div>
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
@@ -191,7 +191,6 @@ ${image}
  <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">＋ বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
  <p id="printAdCount" aria-live="polite">যোগ করা বিজ্ঞাপন: ০টি</p><small>প্রতিটি বিজ্ঞাপন আলাদাভাবে মুছতে পারবেন। একই স্থানে বা ভিন্ন স্থানে যত খুশি বিজ্ঞাপন যোগ করুন।</small>
 </section>
-<div id="printAdOutput-top" class="print-ad-output"></div><div id="printAdOutput-headline" class="print-ad-output"></div><div id="printAdOutput-middle" class="print-ad-output"></div><div id="printAdOutput-bottom" class="print-ad-output"></div>
 <div class="buttons">
 <button onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
 <button class="gray" onclick="printNewsPhotoCard()">🖨️ ফটোকার্ড প্রিন্ট</button>
