@@ -137,7 +137,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  .print-brand,.bd-print-masthead .name{color:#b5122b!important}
  .print-rule,.bd-print-masthead .rule{border-top:2px solid #b5122b!important;border-bottom:2px solid #0b8068!important}
 }
-</style>
+@media print{#printAdPanel{display:none!important}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}</style>
 </head>
 <body>
 <main class="paper">
