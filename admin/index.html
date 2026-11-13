@@ -146,7 +146,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <p class="note">BD Barguna News | সত্যের সন্ধানে, মানুষের পাশে।</p>
 </main>
 
-<script src="./article-template.js?v=20261113i"></script>
+<script src="./article-template.js?v=20261113j"></script>
 <script>
 "use strict";
 
@@ -444,16 +444,32 @@ $("cancelEdit").onclick=()=>{
 
 async function ensureArticleTemplate(){
  if(typeof window.articleHTML==="function")return;
+
+ // Retry with a fresh URL so GitHub Pages/CDN/browser caches cannot keep
+ // serving a stale or failed template response.
  const script=document.createElement("script");
- script.src=new URL("./article-template.js?v=20261113i",location.href).href;
+ const templateUrl=new URL("./article-template.js",location.href);
+ templateUrl.searchParams.set("v","20261113j");
+ templateUrl.searchParams.set("retry",String(Date.now()));
+ script.src=templateUrl.href;
+ script.async=false;
+
  await new Promise((resolve,reject)=>{
-  script.onload=resolve;
-  script.onerror=()=>reject(new Error("মূল সংবাদ টেমপ্লেট লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।"));
+  const timeout=setTimeout(()=>reject(new Error("মূল সংবাদ টেমপ্লেট লোড হতে সময় লাগছে। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।")),20000);
+  script.onload=()=>{
+   clearTimeout(timeout);
+   if(typeof window.articleHTML==="function")resolve();
+   else reject(new Error("মূল সংবাদ টেমপ্লেট ফাইল এসেছে, কিন্তু articleHTML ফাংশন চালু হয়নি।"));
+  };
+  script.onerror=()=>{
+   clearTimeout(timeout);
+   reject(new Error("মূল সংবাদ টেমপ্লেট ফাইল পাওয়া যাচ্ছে না। admin/article-template.js ফাইলের ঠিকানা বা নেটওয়ার্ক পরীক্ষা করুন।"));
+  };
   document.head.appendChild(script);
  });
+
  if(typeof window.articleHTML!=="function"){
-  throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। বিকল্প পুরোনো টেমপ্লেট ব্যবহার না করে প্রকাশ বন্ধ রাখা হয়েছে।");
- }
+  throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। প্রকাশ বন্ধ রাখা হয়েছে; পুরোনো টেমপ্লেট ব্যবহার করা হয়নি।");
 }
 function validateArticlePage(html){
  const required=["downloadNewsPhotoCard","printNewsPhotoCard","copyNewsPhotoCard","copyArticleText","copyArticleLink","shareToYouTube","printAdPanel","printAdFile","printAdPosition","printAdOutput-top","printAdOutput-headline","printAdOutput-middle","printAdOutput-bottom","bdAddPrintAd","bdClearPrintAds"];
