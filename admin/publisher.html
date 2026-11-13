@@ -108,8 +108,8 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <hr>
 <h3>📚 প্রকাশিত সংবাদ পরিচালনা</h3>
 <button id="loadNews" class="blue" type="button">সংবাদের তালিকা দেখুন</button>
-<button id="refreshArticlePages" type="button">🔄 পুরোনো সংবাদ পেজগুলো নতুন ডিজাইনে আপডেট করুন</button>
-<p class="note">একবার চাপলে প্রকাশিত সব সংবাদের পেজে নতুন ফটোকার্ড, ডাউনলোড, প্রিন্ট ও কপি অপশন যুক্ত হবে।</p>
+<button id="refreshArticlePages" type="button">🔄 পুরোনো সব নিউজে বিজ্ঞাপন অপশন যুক্ত / আপডেট করুন</button>
+<p class="note">একবার চাপলে প্রকাশিত প্রতিটি পুরোনো নিউজে একাধিক বিজ্ঞাপন, প্রতিটি বিজ্ঞাপনের আলাদা নাম, আলাদা অবস্থান নির্বাচন, বিজ্ঞাপন সম্পাদনা ও মুছে ফেলার অপশনসহ ফটোকার্ড, ডাউনলোড, প্রিন্ট ও কপি সুবিধা যুক্ত হবে। GitHub-এ সব পুরোনো নিউজ পেজ আপডেট হবে।</p>
 <div id="newsList"></div>
 
 <hr>
@@ -527,7 +527,7 @@ $("loadNews").onclick=loadNews;
 
 $("refreshArticlePages").onclick=async()=>{
  const btn=$("refreshArticlePages");
- if(!confirm("প্রকাশিত সব সংবাদ পেজ নতুন ডিজাইনে আপডেট করবেন?"))return;
+ if(!confirm("প্রকাশিত সব পুরোনো নিউজে বিজ্ঞাপন পরিচালনার অপশনসহ নতুন টেমপ্লেট যুক্ত করবেন? সব নিউজ পেজ GitHub-এ আপডেট হবে।"))return;
  btn.disabled=true;
  try{
   await ensureArticleTemplate();
@@ -541,7 +541,7 @@ $("refreshArticlePages").onclick=async()=>{
    done++;
    show("status","নতুন ডিজাইন আপডেট হচ্ছে: "+done+" / "+items.length);
   }
-  show("status","সফল! "+done+"টি সংবাদ পেজে নতুন ফটোকার্ড, ডাউনলোড, প্রিন্ট ও কপি অপশন যুক্ত হয়েছে।");
+  show("status","সফল! "+done+"টি পুরোনো নিউজে একাধিক বিজ্ঞাপন, আলাদা নাম, অবস্থান নির্বাচন, সম্পাদনা/মুছে ফেলা এবং ফটোকার্ড-প্রিন্ট অপশন যুক্ত হয়েছে।");
  }catch(err){show("status","সমস্যা: "+err.message,true)}
  finally{btn.disabled=false}
 };
