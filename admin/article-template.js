@@ -69,7 +69,7 @@ body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Ari
 .article-nav a:hover{background:#79091c}.article-subnav a:hover{color:#a90e27}
 .article-nav::-webkit-scrollbar,.article-subnav::-webkit-scrollbar{display:none}
 
-.logo{width:65px;height:65px;object-fit:contain}
+.logo{display:block;flex:0 0 82px;width:82px;height:82px;object-fit:contain;background:#082d27;border:2px solid #d6a84f;border-radius:14px;padding:3px}
 .brand{color:#b5122b;font-size:24px;font-weight:bold;margin:0}
 .tagline{font-size:13px;color:#667085;margin:0}
 .category{display:inline-block;background:#fff0f1;color:#b5122b;padding:5px 13px;border-radius:20px;margin-top:20px}
@@ -156,7 +156,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  <div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div>
 </div>
 <header class="masthead">
-<img class="logo" src="../images/app-icon.svg" alt="BD Barguna News Logo">
+<img class="logo" src="../images/app-icon.svg?v=7" alt="BD Barguna News Logo" onerror="this.style.display='none'">
 <div>
 <p class="brand">BD Barguna News</p>
 <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
@@ -247,7 +247,7 @@ window.buildNewsPhotoCard=async function(){
  const photoEl=document.querySelector('#newsImage,.photo-card img,.article-image,figure img,.photo img');
  const rawPhotoUrl=photoEl?.getAttribute('src')||photoEl?.currentSrc||photoEl?.src||'';
  const photoUrl=rawPhotoUrl?new URL(rawPhotoUrl,document.baseURI).href:'';
- const logoUrl=new URL('../images/app-icon.svg',location.href).href;
+ const logoUrl=new URL('../images/app-icon.svg?v=7',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();try{if(new URL(src,location.href).origin!==location.origin)im.crossOrigin='anonymous';}catch(e){}im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
  const [photo,logo]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl)]);
  const rr=(x,y,w,h,r)=>{ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();};
