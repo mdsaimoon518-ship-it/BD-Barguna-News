@@ -115,7 +115,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 }
 </style>
 <style id="bd-print-ad-style">
-.print-ad-panel{margin:16px 0;padding:14px;border:2px dashed #b5122b;border-radius:10px;background:#fff8f0;color:#202936;font:14px Arial,sans-serif}
+#printAdPanel{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:5!important;margin:18px 0!important;padding:16px!important;background:#fff8f0!important;border:2px solid #b5122b!important;border-radius:10px!important;color:#202936!important} .print-ad-panel{margin:16px 0;padding:14px;border:2px dashed #b5122b;border-radius:10px;background:#fff8f0;color:#202936;font:14px Arial,sans-serif}
 .print-ad-panel strong{display:block;color:#b5122b;font-size:17px;margin-bottom:9px}
 .print-ad-panel label{display:block;font-weight:700;margin:8px 0 4px}
 .print-ad-panel input,.print-ad-panel textarea{display:block;width:100%;box-sizing:border-box;padding:9px;border:1px solid #cbd5e1;border-radius:6px;background:white;color:#111;font:14px Arial,sans-serif}
@@ -140,17 +140,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 </style>
 </head>
 <body>
-<main class="paper"><section class="print-ad-panel" id="printAdPanel">
- <strong>প্রিন্ট বিজ্ঞাপন যোগ করুন</strong>
- <label>বিজ্ঞাপনের ছবি (ফোন থেকে নির্বাচন করুন)</label>
- <input id="printAdFile" type="file" accept="image/*">
- <label>অথবা ছবির লিংক দিন</label>
- <input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
- <label>বিজ্ঞাপনের লেখা (ঐচ্ছিক)</label>
- <textarea id="printAdText" rows="2" placeholder="বিজ্ঞাপনের শিরোনাম / যোগাযোগ"></textarea>
- <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
- <small>বিজ্ঞাপন যোগ করে তারপর “সংবাদ প্রিন্ট” চাপুন। বিজ্ঞাপনটি শুধু এই প্রিন্টে থাকবে।</small>
-</section><div id="printAdOutput" class="print-ad-output"></div>
+<main class="paper">
 <div class="print-masthead">
  <div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span class="print-date"></span></div>
  <div class="print-brand">BD BARGUNA NEWS</div>
@@ -186,7 +176,17 @@ ${image}
 <p>ইমেইল: <a href="mailto:mdsaimoon518@gmail.com">mdsaimoon518@gmail.com</a></p>
 </div>
 </footer>
-<div class="buttons">
+<section class="print-ad-panel" id="printAdPanel">
+ <strong>প্রিন্ট বিজ্ঞাপন যোগ করুন</strong>
+ <label>বিজ্ঞাপনের ছবি (ফোন থেকে নির্বাচন করুন)</label>
+ <input id="printAdFile" type="file" accept="image/*">
+ <label>অথবা ছবির লিংক দিন</label>
+ <input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
+ <label>বিজ্ঞাপনের লেখা (ঐচ্ছিক)</label>
+ <textarea id="printAdText" rows="2" placeholder="বিজ্ঞাপনের শিরোনাম / যোগাযোগ"></textarea>
+ <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
+ <small>বিজ্ঞাপন যোগ করে তারপর “সংবাদ প্রিন্ট” চাপুন। বিজ্ঞাপনটি শুধু এই প্রিন্টে থাকবে।</small>
+</section><div id="printAdOutput" class="print-ad-output"></div><div class="buttons">
 <button onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
 <button class="gray" onclick="printNewsPhotoCard()">🖨️ ফটোকার্ড প্রিন্ট</button>
 <button class="gray" onclick="copyNewsPhotoCard()">📋 ফটোকার্ড কপি</button>
