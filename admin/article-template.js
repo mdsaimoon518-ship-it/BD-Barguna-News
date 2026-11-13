@@ -36,6 +36,7 @@ window.articleHTML = function articleHTML(n){
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"><\\/script>
 <meta name="description" content="${esc(n.body.slice(0,150))}">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1816426000436287" crossorigin="anonymous"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"><\/script>
@@ -86,7 +87,7 @@ h1{font-size:30px;line-height:1.5}
 .publisher-info a{color:#b5122b;font-weight:700}
 @media(max-width:500px){.article-nav,.article-subnav{margin-left:-15px;margin-right:-15px}.article-nav a,.article-subnav a{padding:9px 10px;font-size:12px}}
 
-.photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.youtube{background:#e62117}
+.photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.article-qr{display:flex;align-items:center;gap:14px;max-width:430px;margin:22px auto;padding:12px;border:1px solid #d8dee8;border-radius:12px;background:#fff}.article-qr img{width:112px;height:112px;object-fit:contain;background:#fff}.article-qr strong{display:block;color:#b5122b;font-size:16px}.article-qr span{display:block;color:#475569;font-size:13px}.article-qr small{display:block;color:#64748b;font-size:11px;overflow-wrap:anywhere}@media print{.article-qr{display:flex!important;margin:4mm auto!important;break-inside:avoid!important;border:1px solid #555!important;background:#fff!important}.article-qr img{width:25mm!important;height:25mm!important}}.youtube{background:#e62117}
 .buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
@@ -171,7 +172,8 @@ ${articleNav}
 <div id="articleViewCount" class="date" aria-live="polite">👁️ পাঠসংখ্যা লোড হচ্ছে...</div>
 ${image}
 <div id="printAdOutput-middle" class="print-ad-output"></div>
-<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
+<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো, প্রকাশের তারিখ ও এই নিউজের নিজস্ব QR স্ক্যানারসহ ফটোকার্ড</p></section>
+<section class="article-qr" aria-label="এই সংবাদের QR কোড"><img id="articleQrImage" alt="এই সংবাদের QR কোড"><div><strong>এই নিউজটি স্ক্যান করুন</strong><span>মোবাইল ক্যামেরা দিয়ে QR কোড স্ক্যান করলে সরাসরি এই সংবাদটি খুলবে</span><small>${canonical}</small></div></section>
 <div class="article">${esc(n.body)}</div>
 <div id="printAdOutput-bottom" class="print-ad-output"></div>
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
@@ -214,6 +216,8 @@ ${image}
 <script>
 document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅\s*প্রকাশিত:\s*/,''):'';});
 window.buildNewsPhotoCard=async function(){
+ const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
+ const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:"M"}):"";
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const wrap=(value,maxWidth,font)=>{
   ctx.font=font;const result=[];let line='';
@@ -237,7 +241,7 @@ window.buildNewsPhotoCard=async function(){
  for(;titleSize>24;titleSize-=2){titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');if(titleLines.length<=18&&titleLines.length*(titleSize+14)<=900)break;}
  titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');
  const footerY=Math.max(1160,850+titleLines.length*(titleSize+14)+105);
- canvas.width=1200;canvas.height=footerY+145;
+ canvas.width=1200;canvas.height=footerY+245;
  const category=(document.querySelector('.cat,.category')?.textContent||'সর্বশেষ সংবাদ').trim();
  const detail=(document.querySelector('.article')?.textContent||'').replace(/\s+/g,' ').trim().slice(0,145);
  const dateRaw=document.querySelector('meta[property="article:published_time"]')?.content||document.querySelector('.date:not(#articleViewCount)')?.getAttribute('datetime')||document.querySelector('.date:not(#articleViewCount)')?.textContent||new Date().toISOString();
@@ -249,7 +253,7 @@ window.buildNewsPhotoCard=async function(){
  const photoUrl=rawPhotoUrl?new URL(rawPhotoUrl,document.baseURI).href:'';
  const logoUrl=new URL('../images/app-icon.svg?v=7',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();try{if(new URL(src,location.href).origin!==location.origin)im.crossOrigin='anonymous';}catch(e){}im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
- const [photo,logo]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl)]);
+ const [photo,logo,qrImage]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl),loadImage(qrDataUrl)]);
  const rr=(x,y,w,h,r)=>{ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();};
  const bg=ctx.createLinearGradient(0,0,1200,1200);bg.addColorStop(0,'#071a2e');bg.addColorStop(.52,'#163653');bg.addColorStop(1,'#35172a');ctx.fillStyle=bg;ctx.fillRect(0,0,1200,1200);ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=3;rr(24,24,1152,1152,34);ctx.stroke();ctx.fillStyle='#d6a84f';ctx.fillRect(48,18,1104,7);
  ctx.fillStyle='#c51b36';ctx.fillRect(0,0,1200,18);ctx.fillStyle='rgba(255,255,255,.06)';ctx.beginPath();ctx.arc(1110,105,190,0,Math.PI*2);ctx.fill();
@@ -267,7 +271,8 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#111827';ctx.font='bold '+titleSize+'px "Noto Sans Bengali",Arial';let y=850;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=titleSize+14;});
  
  ctx.fillStyle='#e2e8f0';ctx.fillRect(82,footerY,1036,2);ctx.fillStyle='#d6a84f';ctx.fillRect(82,footerY,1036,4);
- ctx.fillStyle='#334155';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,footerY+35);ctx.textAlign='left';rr(82,footerY+55,1036,52,14);ctx.fillStyle='#c51b36';ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮ | ০৯৬৫৮৫৯৩২৪৩',600,footerY+89);ctx.textAlign='left';
+ ctx.fillStyle='#334155';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,footerY+35);ctx.textAlign='left';rr(82,footerY+55,1036,52,14);ctx.fillStyle='#c51b36';ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮ | ০৯৬৫৮৫৯৩২৪৩',485,footerY+89);ctx.textAlign='left';
+ if(qrImage){ctx.save();ctx.fillStyle="#fff";ctx.fillRect(955,footerY+42,165,165);ctx.strokeStyle="#c51b36";ctx.lineWidth=4;ctx.strokeRect(955,footerY+42,165,165);ctx.drawImage(qrImage,970,footerY+57,135,135);ctx.fillStyle="#334155";ctx.font="bold 14px Arial";ctx.textAlign="center";ctx.fillText("SCAN THIS NEWS",1037,footerY+222);ctx.restore();}
  return canvas;
 };
 window.downloadNewsPhotoCard=async function(){
@@ -332,7 +337,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
-window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');if(!preview||!window.buildNewsPhotoCard)return;try{const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}catch(e){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');const note=preview.parentElement?.querySelector('.preview-note');if(note)note.textContent='ফটোকার্ড তৈরি হয়নি। ছবির URL পরীক্ষা করে আবার চেষ্টা করুন।';console.error('BD Barguna photo card error:',e);}});
+window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');try{const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';const qrEl=document.getElementById('articleQrImage');if(qrEl&&qr)qrEl.src=qr;if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}const note=preview?.parentElement?.querySelector('.preview-note');if(note)note.textContent='QR/ফটোকার্ড তৈরি হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।';console.error('BD Barguna QR/photo card error:',e);}});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
