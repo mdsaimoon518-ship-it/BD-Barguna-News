@@ -1,4 +1,5 @@
 // Article-page HTML template used by the admin publisher.
+window.articleTemplateVersion="qr-20261114";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -36,7 +37,7 @@ window.articleHTML = function articleHTML(n){
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"><\\/script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"><\/script>
 <meta name="description" content="${esc(n.body.slice(0,150))}">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1816426000436287" crossorigin="anonymous"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"><\/script>
@@ -283,7 +284,7 @@ window.printNewsPaper=async function(){
  try{
   const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
   outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
-  const images=Array.from(document.querySelectorAll('.print-ad-output img'));
+  const images=Array.from(document.querySelectorAll('.print-ad-output img,#articleQrImage'));
   await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,8000);})));
   window.print();
  }catch(e){window.print();}
