@@ -112,13 +112,14 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  .footer{font-size:8pt!important;border-top:2px double #222!important;margin-top:4mm!important;padding-top:1.5mm!important;color:#222!important;break-inside:avoid!important;text-align:center!important}
  .footer>strong{font-size:12pt!important;color:#111!important}
  .print-ad-output:not(:empty){display:block!important;column-span:all!important;width:100%!important;break-inside:avoid!important;margin:2.5mm 0!important}
- .print-ad-item{margin:2mm 0!important;padding:1.5mm!important;border:1px solid #444!important;background:#fffdf4!important;color:#171717!important;text-align:center!important;break-inside:avoid!important}
+ .print-ad-item{margin:2mm 0!important;padding:1.5mm!important;border:1px solid #444!important;background:#fffdf4!important;color:#171717!important;text-align:center!important;break-inside:avoid!important}.print-ad-item .ad-name{font-size:8pt!important;font-weight:700!important;color:#444!important;margin-bottom:1mm!important}.print-ad-item .print-ad-name,.print-ad-item .print-ad-remove{display:none!important}
  .print-ad-item img{display:block!important;max-width:100%!important;max-height:42mm!important;width:auto!important;height:auto!important;object-fit:contain!important;margin:0 auto!important}
  .print-ad-item .ad-copy{font-size:8.5pt!important;font-weight:700!important;color:#171717!important;margin-top:1mm!important}
  a{color:inherit!important;text-decoration:none!important}
 }
 </style>
 <style id="bd-print-ad-style">
+.print-ad-item .ad-name{font-weight:700;color:#8b1529;margin:0 0 5px}.print-ad-item .print-ad-name{display:block;width:100%;padding:7px;border:1px dashed #b5122b;border-radius:5px;margin:4px 0}.print-ad-item .print-ad-remove{margin-top:5px;background:#b42318;color:#fff}
 #printAdPanel{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:5!important;margin:18px 0!important;padding:16px!important;background:#fff8f0!important;border:2px solid #b5122b!important;border-radius:10px!important;color:#202936!important} .print-ad-panel{margin:16px 0;padding:14px;border:2px dashed #b5122b;border-radius:10px;background:#fff8f0;color:#202936;font:14px Arial,sans-serif}
 .print-ad-panel strong{display:block;color:#b5122b;font-size:17px;margin-bottom:9px}
 .print-ad-panel label{display:block;font-weight:700;margin:8px 0 4px}
@@ -191,7 +192,7 @@ ${image}
  <p>একই সংবাদে একাধিক বিজ্ঞাপন যোগ করুন এবং পত্রিকার যে স্থানে চান সেখানে বসান।</p>
  <label for="printAdPosition">বিজ্ঞাপন কোথায় বসাবেন?</label>
  <select id="printAdPosition"><option value="top">পত্রিকার একদম শুরুতে</option><option value="headline">শিরোনাম ও তারিখের নিচে</option><option value="middle">ছবির পরে / খবরের আগে</option><option value="bottom">খবরের শেষে</option></select>
- <label>বিজ্ঞাপনের ছবি (ফোন থেকে একসঙ্গে অনেকগুলো নির্বাচন করুন)</label><input id="printAdFile" type="file" accept="image/*" multiple>
+ <label>বিজ্ঞাপনের আলাদা নাম</label><input id="printAdName" type="text" placeholder="যেমন: রহমান ট্রেডার্স / বিজ্ঞাপন ১"><label>বিজ্ঞাপনের ছবি (ফোন থেকে একসঙ্গে অনেকগুলো নির্বাচন করুন)</label><input id="printAdFile" type="file" accept="image/*" multiple>
  <label>অথবা বিজ্ঞাপনের ছবির লিংক</label><input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
  <label>বিজ্ঞাপনের লেখা / যোগাযোগ (ঐচ্ছিক)</label><textarea id="printAdText" rows="2" placeholder="প্রতিষ্ঠানের নাম, অফার, ফোন নম্বর"></textarea>
  <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">＋ বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
@@ -346,13 +347,15 @@ function bdGetPrintAds(){try{return JSON.parse(localStorage.getItem(BD_AD_KEY)||
 function bdRenderPrintAd(ad){
  const out=document.getElementById('printAdOutput-'+ad.position);if(!out)return;
  const item=document.createElement('div');item.className='print-ad-item';item.dataset.position=ad.position;
- if(ad.src){const img=document.createElement('img');img.src=ad.src;img.alt='বিজ্ঞাপন';item.appendChild(img);}
+ const nameLabel=document.createElement('div');nameLabel.className='ad-name';nameLabel.textContent=ad.name||'বিজ্ঞাপন';item.appendChild(nameLabel);
+ const nameInput=document.createElement('input');nameInput.type='text';nameInput.className='print-ad-name';nameInput.value=ad.name||'বিজ্ঞাপন';nameInput.setAttribute('aria-label','বিজ্ঞাপনের নাম');nameInput.oninput=()=>{nameLabel.textContent=nameInput.value.trim()||'বিজ্ঞাপন';bdSavePrintAds();};item.appendChild(nameInput);
+ if(ad.src){const img=document.createElement('img');img.src=ad.src;img.alt=ad.name||'বিজ্ঞাপন';item.appendChild(img);}
  if(ad.copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=ad.copy;item.appendChild(p);}
  const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';rm.onclick=()=>{item.remove();bdSavePrintAds();bdUpdatePrintAdCount();};item.appendChild(rm);
  out.appendChild(item);out.style.display='block';
 }
 function bdSavePrintAds(){
- const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({position:item.dataset.position,src:item.querySelector('img')?.src||'',copy:item.querySelector('.ad-copy')?.textContent||''}));
+ const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({name:item.querySelector('.print-ad-name')?.value.trim()||'বিজ্ঞাপন',position:item.dataset.position,src:item.querySelector('img')?.src||'',copy:item.querySelector('.ad-copy')?.textContent||''}));
  try{localStorage.setItem(BD_AD_KEY,JSON.stringify(ads));return true;}catch(e){return false;}
 }
 function bdUpdatePrintAdCount(){const count=document.getElementById('printAdCount'),total=document.querySelectorAll('.print-ad-item').length;if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+total.toLocaleString('bn-BD')+'টি';}
@@ -364,15 +367,15 @@ async function bdCompressAdFile(file){
  canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/jpeg',.78);
 }
 window.bdAddPrintAd=async function(){
- const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),position=document.getElementById('printAdPosition');
- const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',copy=txt?txt.value.trim():'';
+ const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),position=document.getElementById('printAdPosition'),nameField=document.getElementById('printAdName');
+ const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',copy=txt?txt.value.trim():'',baseName=nameField&&nameField.value.trim()?nameField.value.trim():'বিজ্ঞাপন';
  if(!files.length&&!link&&!copy){alert('বিজ্ঞাপনের ছবি নির্বাচন করুন অথবা বিজ্ঞাপনের লিংক/লেখা দিন।');return;}
  const start=(position&&position.value)||'top',slots=['top','headline','middle','bottom'],sources=[];
  for(const f of files)sources.push(await bdCompressAdFile(f));
  if(!sources.length&&link)sources.push(link);if(!sources.length)sources.push('');
- const ads=bdGetPrintAds(),newAds=sources.map((src,index)=>({position:slots[(slots.indexOf(start)+index)%slots.length],src,copy}));
+ const ads=bdGetPrintAds(),newAds=sources.map((src,index)=>({name:sources.length>1?baseName+' '+(index+1):baseName,position:slots[(slots.indexOf(start)+index)%slots.length],src,copy}));
  newAds.forEach(bdRenderPrintAd);const saved=bdSavePrintAds();bdUpdatePrintAdCount();
- if(file)file.value='';if(url)url.value='';if(txt)txt.value='';
+ if(file)file.value='';if(url)url.value='';if(txt)txt.value='';if(nameField)nameField.value='';
  if(!saved)alert('বিজ্ঞাপন এই পেজে যোগ হয়েছে, তবে ব্রাউজারের জায়গা কম থাকায় সংরক্ষণ হয়নি।');
  else alert(newAds.length+'টি বিজ্ঞাপন যোগ হয়েছে। এখন সংবাদ প্রিন্ট চাপুন।');
 };
