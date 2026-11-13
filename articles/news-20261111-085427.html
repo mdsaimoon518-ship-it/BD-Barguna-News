@@ -102,15 +102,8 @@ window.bdAddPrintAd=async function(){
  for(const f of files){sources.push(await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f);}));}
  if(!sources.length&&link)sources.push(link);
  if(!sources.length)sources.push('');
- sources.forEach(src=>{
-  const item=document.createElement('div');item.className='print-ad-item';
-  if(src){const img=document.createElement('img');img.src=src;img.alt='বিজ্ঞাপন';item.appendChild(img);}
-  if(copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=copy;item.appendChild(p);}
-  const remove=document.createElement('button');remove.type='button';remove.className='print-ad-remove';remove.textContent='এই বিজ্ঞাপন মুছুন';remove.onclick=()=>{item.remove();bdUpdatePrintAdCount();};item.appendChild(remove);
-  out.appendChild(item);
- });
- if(file)file.value='';if(url)url.value='';if(txt)txt.value='';
- bdUpdatePrintAdCount();
+ sources.forEach(src=>{const item=document.createElement('div');item.className='print-ad-item';if(src){const img=document.createElement('img');img.src=src;img.alt='বিজ্ঞাপন';item.appendChild(img);}if(copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=copy;item.appendChild(p);}const remove=document.createElement('button');remove.type='button';remove.className='print-ad-remove';remove.textContent='এই বিজ্ঞাপন মুছুন';remove.onclick=()=>{item.remove();bdUpdatePrintAdCount();};item.appendChild(remove);out.appendChild(item);});
+ if(file)file.value='';if(url)url.value='';if(txt)txt.value='';bdUpdatePrintAdCount();
 };
 window.bdUpdatePrintAdCount=function(){const out=document.getElementById('printAdOutput'),count=document.getElementById('printAdCount');if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+((out&&out.querySelectorAll('.print-ad-item').length)||0)+'টি';};
 window.bdClearPrintAds=function(){const out=document.getElementById('printAdOutput');if(out)out.replaceChildren();bdUpdatePrintAdCount();};
