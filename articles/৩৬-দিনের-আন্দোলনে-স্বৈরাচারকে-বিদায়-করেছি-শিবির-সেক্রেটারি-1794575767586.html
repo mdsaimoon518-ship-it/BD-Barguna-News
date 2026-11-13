@@ -402,7 +402,7 @@ function bdRenderPrintAd(ad){
  out.appendChild(item);out.style.display='block';
 }
 function bdSavePrintAds(){
- const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({name:item.querySelector('.print-ad-name')?.value.trim()||item.dataset.name||'বিজ্ঞাপন',position:item.dataset.position,src:item.querySelector('img')?.src||'',copy:item.querySelector('.ad-copy')?.textContent||''}));
+ const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({name:item.querySelector('.print-ad-name')?.value.trim()||'বিজ্ঞাপন',position:item.dataset.position,src:item.querySelector('img')?.src||'',copy:item.querySelector('.ad-copy')?.textContent||''}));
  try{localStorage.setItem(BD_AD_KEY,JSON.stringify(ads));return true;}catch(e){return false;}
 }
 function bdUpdatePrintAdCount(){const count=document.getElementById('printAdCount'),total=document.querySelectorAll('.print-ad-item').length;if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+total.toLocaleString('bn-BD')+'টি';}
