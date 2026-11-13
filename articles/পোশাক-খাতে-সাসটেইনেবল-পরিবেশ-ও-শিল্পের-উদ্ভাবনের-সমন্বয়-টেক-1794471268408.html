@@ -225,10 +225,10 @@ window.buildNewsPhotoCard=async function(){
  let titleSize=46,titleLines=[];
  for(;titleSize>=24;titleSize-=2){titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');if(titleLines.length<=5&&titleLines.length*(titleSize+12)<=205)break;}
  titleLines=titleLines.length?titleLines:wrap(title,1025,'bold 24px Arial');
- ctx.fillStyle='#111827';ctx.font='bold '+titleSize+'px "Noto Sans Bengali",Arial';let y=790;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=titleSize+12;});
+ ctx.fillStyle='#111827';ctx.font='bold '+titleSize+'px "Noto Sans Bengali",Arial';let y=835;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=titleSize+12;});
  
  ctx.fillStyle='#e2e8f0';ctx.fillRect(82,1000,1036,2);ctx.fillStyle='#d6a84f';ctx.fillRect(82,1000,1036,4);
- ctx.fillStyle='#f8fafc';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,1035);ctx.textAlign='right';ctx.fillStyle='#f5d58a';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,1035);ctx.textAlign='left';
+ ctx.fillStyle='#334155';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,1035);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,1035);ctx.textAlign='left';ctx.fillStyle='#c51b36';ctx.fillRect(82,1055,1036,48);ctx.fillStyle='#fff';ctx.font='bold 25px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮',600,1087);ctx.textAlign='left';
  return canvas;
 };
 window.downloadNewsPhotoCard=async function(){
