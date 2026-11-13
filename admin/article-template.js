@@ -148,7 +148,7 @@ window.buildNewsPhotoCard=async function(){
  const parsed=new Date(dateRaw),safeDate=isNaN(parsed.getTime())?new Date():parsed;
  const dateText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(safeDate);
  const dayText=new Intl.DateTimeFormat('bn-BD',{weekday:'long',timeZone:'Asia/Dhaka'}).format(safeDate);
- const photoEl=document.querySelector('.photo-card img,.article-image,figure img,.photo img');
+ const photoEl=document.querySelector('#newsImage,.photo-card img,.article-image,figure img,.photo img');
  const rawPhotoUrl=photoEl?.getAttribute('src')||photoEl?.currentSrc||photoEl?.src||'';
  const photoUrl=rawPhotoUrl?new URL(rawPhotoUrl,document.baseURI).href:'';
  const logoUrl=new URL('../images/app-icon.svg',location.href).href;
