@@ -331,7 +331,7 @@ window.bdAddPrintAd=async function(){
 };
 window.bdUpdatePrintAdCount=function(){const count=document.getElementById('printAdCount'),total=document.querySelectorAll('.print-ad-item').length;if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+total.toLocaleString('bn-BD')+'টি';};
 window.bdClearPrintAds=function(){document.querySelectorAll('.print-ad-output').forEach(out=>out.replaceChildren());bdUpdatePrintAdCount();};
-</script>>
+</script>
 </body>
 </html>`;
 };
