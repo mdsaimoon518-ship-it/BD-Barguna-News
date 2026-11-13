@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <meta name="description" content="প্রকাশ : ১৩ নভেম্বর ২০২৬, ১৮: ২৩
 আপডেট : ১৩ নভেম্বর ২০২৬, ১৮: ২৪
 
@@ -41,7 +42,7 @@ body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Ari
 .article-nav a:hover{background:#79091c}.article-subnav a:hover{color:#a90e27}
 .article-nav::-webkit-scrollbar,.article-subnav::-webkit-scrollbar{display:none}
 
-.logo{width:65px;height:65px;object-fit:contain}
+.logo{display:block;flex:0 0 82px;width:82px;height:82px;object-fit:contain;background:#082d27;border:2px solid #d6a84f;border-radius:14px;padding:3px}
 .brand{color:#b5122b;font-size:24px;font-weight:bold;margin:0}
 .tagline{font-size:13px;color:#667085;margin:0}
 .category{display:inline-block;background:#fff0f1;color:#b5122b;padding:5px 13px;border-radius:20px;margin-top:20px}
@@ -58,7 +59,7 @@ h1{font-size:30px;line-height:1.5}
 .publisher-info a{color:#b5122b;font-weight:700}
 @media(max-width:500px){.article-nav,.article-subnav{margin-left:-15px;margin-right:-15px}.article-nav a,.article-subnav a{padding:9px 10px;font-size:12px}}
 
-.photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.youtube{background:#e62117}
+.photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.article-qr{display:flex;align-items:center;gap:14px;max-width:430px;margin:22px auto;padding:12px;border:1px solid #d8dee8;border-radius:12px;background:#fff}.article-qr img{width:112px;height:112px;object-fit:contain;background:#fff}.article-qr strong{display:block;color:#b5122b;font-size:16px}.article-qr span{display:block;color:#475569;font-size:13px}.article-qr small{display:block;color:#64748b;font-size:11px;overflow-wrap:anywhere}@media print{.article-qr{display:flex!important;margin:4mm auto!important;break-inside:avoid!important;border:1px solid #555!important;background:#fff!important}.article-qr img{width:25mm!important;height:25mm!important}}.youtube{background:#e62117}
 .buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
@@ -89,7 +90,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  .print-ad-item .ad-copy{font-size:8.5pt!important;font-weight:700!important;color:#171717!important;margin-top:1mm!important}
  a{color:inherit!important;text-decoration:none!important}
 }
-</style>
+.logo-mark{box-sizing:border-box;display:flex!important;flex:0 0 82px;width:82px;height:82px;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:linear-gradient(145deg,#06452f,#111d2b)!important;border:3px solid #d9ad4b!important;border-radius:13px!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);color:#fff!important;line-height:1!important;padding:5px!important;text-align:center}.logo-mark span{font:bold 32px/1 Arial,sans-serif;color:#ffe08a!important}.logo-mark b{font:bold 10px/1 Arial,sans-serif;letter-spacing:1px;color:#fff!important}.logo-mark i{font:bold normal 10px/1 Arial,sans-serif;letter-spacing:2px;color:#fff!important;background:#b5122b;padding:3px 10px;border-radius:10px}</style>
 <style id="bd-print-ad-style">
 .print-ad-item .ad-name{font-weight:700;color:#8b1529;margin:0 0 5px}.print-ad-item .print-ad-name{display:block;width:100%;padding:7px;border:1px dashed #b5122b;border-radius:5px;margin:4px 0}.print-ad-item .print-ad-remove{margin-top:5px;background:#b42318;color:#fff}
 #printAdPanel{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:5!important;margin:18px 0!important;padding:16px!important;background:#fff8f0!important;border:2px solid #b5122b!important;border-radius:10px!important;color:#202936!important} .print-ad-panel{margin:16px 0;padding:14px;border:2px dashed #b5122b;border-radius:10px;background:#fff8f0;color:#202936;font:14px Arial,sans-serif}
@@ -146,7 +147,8 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  <div class="caption">ছবি - সংগৃহীত</div>
  </div>
 <div id="printAdOutput-middle" class="print-ad-output"></div>
-<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
+<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো, প্রকাশের তারিখ ও এই নিউজের নিজস্ব QR স্ক্যানারসহ ফটোকার্ড</p></section>
+<section class="article-qr" aria-label="এই সংবাদের QR কোড"><img id="articleQrImage" alt="এই সংবাদের QR কোড"><div><strong>এই নিউজটি স্ক্যান করুন</strong><span>মোবাইল ক্যামেরা দিয়ে QR কোড স্ক্যান করলে সরাসরি এই সংবাদটি খুলবে</span><small>https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/articles/%E0%A7%A9%E0%A7%AC-%E0%A6%A6%E0%A6%BF%E0%A6%A8%E0%A7%87%E0%A6%B0-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A6%E0%A7%8B%E0%A6%B2%E0%A6%A8%E0%A7%87-%E0%A6%B8%E0%A7%8D%E0%A6%AC%E0%A7%88%E0%A6%B0%E0%A6%BE%E0%A6%9A%E0%A6%BE%E0%A6%B0%E0%A6%95%E0%A7%87-%E0%A6%AC%E0%A6%BF%E0%A6%A6%E0%A6%BE%E0%A7%9F-%E0%A6%95%E0%A6%B0%E0%A7%87%E0%A6%9B%E0%A6%BF-%E0%A6%B6%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0-%E0%A6%B8%E0%A7%87%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A7%87%E0%A6%9F%E0%A6%BE%E0%A6%B0%E0%A6%BF-1794575767586.html</small></div></section>
 <div class="article">প্রকাশ : ১৩ নভেম্বর ২০২৬, ১৮: ২৩
 আপডেট : ১৩ নভেম্বর ২০২৬, ১৮: ২৪
 
@@ -241,7 +243,7 @@ fb_group</div>
  <select id="printAdPosition"><option value="top">পত্রিকার একদম শুরুতে</option><option value="headline">শিরোনাম ও তারিখের নিচে</option><option value="middle">ছবির পরে / খবরের আগে</option><option value="bottom">খবরের শেষে</option></select>
  <label>বিজ্ঞাপনের আলাদা নাম</label><input id="printAdName" type="text" placeholder="যেমন: রহমান ট্রেডার্স / বিজ্ঞাপন ১"><label>বিজ্ঞাপনের ছবি (ফোন থেকে একসঙ্গে অনেকগুলো নির্বাচন করুন)</label><input id="printAdFile" type="file" accept="image/*" multiple>
  <label>অথবা বিজ্ঞাপনের ছবির লিংক</label><input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
- <label>বিজ্ঞাপনের লেখা / যোগাযোগ (ঐচ্ছিক)</label><textarea id="printAdText" rows="2" placeholder="প্রতিষ্ঠানের নাম, অফার, ফোন নম্বর"></textarea>
+
  <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">＋ বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
  <p id="printAdCount" aria-live="polite">যোগ করা বিজ্ঞাপন: ০টি</p><small>প্রতিটি বিজ্ঞাপন আলাদাভাবে মুছতে পারবেন। একই স্থানে বা ভিন্ন স্থানে যত খুশি বিজ্ঞাপন যোগ করুন।</small>
 </section>
@@ -261,6 +263,8 @@ fb_group</div>
 <script>
 document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅s*প্রকাশিত:s*/,''):'';});
 window.buildNewsPhotoCard=async function(){
+ const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
+ const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:"M"}):"";
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const wrap=(value,maxWidth,font)=>{
   ctx.font=font;const result=[];let line='';
@@ -284,7 +288,7 @@ window.buildNewsPhotoCard=async function(){
  for(;titleSize>24;titleSize-=2){titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');if(titleLines.length<=18&&titleLines.length*(titleSize+14)<=900)break;}
  titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');
  const footerY=Math.max(1160,850+titleLines.length*(titleSize+14)+105);
- canvas.width=1200;canvas.height=footerY+145;
+ canvas.width=1200;canvas.height=footerY+245;
  const category=(document.querySelector('.cat,.category')?.textContent||'সর্বশেষ সংবাদ').trim();
  const detail=(document.querySelector('.article')?.textContent||'').replace(/s+/g,' ').trim().slice(0,145);
  const dateRaw=document.querySelector('meta[property="article:published_time"]')?.content||document.querySelector('.date:not(#articleViewCount)')?.getAttribute('datetime')||document.querySelector('.date:not(#articleViewCount)')?.textContent||new Date().toISOString();
@@ -294,9 +298,9 @@ window.buildNewsPhotoCard=async function(){
  const photoEl=document.querySelector('#newsImage,.photo-card img,.article-image,figure img,.photo img');
  const rawPhotoUrl=photoEl?.getAttribute('src')||photoEl?.currentSrc||photoEl?.src||'';
  const photoUrl=rawPhotoUrl?new URL(rawPhotoUrl,document.baseURI).href:'';
- const logoUrl=new URL('../images/app-icon.svg',location.href).href;
+ const logoUrl=new URL('../images/app-icon.svg?v=7',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();try{if(new URL(src,location.href).origin!==location.origin)im.crossOrigin='anonymous';}catch(e){}im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
- const [photo,logo]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl)]);
+ const [photo,logo,qrImage]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl),loadImage(qrDataUrl)]);
  const rr=(x,y,w,h,r)=>{ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();};
  const bg=ctx.createLinearGradient(0,0,1200,1200);bg.addColorStop(0,'#071a2e');bg.addColorStop(.52,'#163653');bg.addColorStop(1,'#35172a');ctx.fillStyle=bg;ctx.fillRect(0,0,1200,1200);ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=3;rr(24,24,1152,1152,34);ctx.stroke();ctx.fillStyle='#d6a84f';ctx.fillRect(48,18,1104,7);
  ctx.fillStyle='#c51b36';ctx.fillRect(0,0,1200,18);ctx.fillStyle='rgba(255,255,255,.06)';ctx.beginPath();ctx.arc(1110,105,190,0,Math.PI*2);ctx.fill();
@@ -314,7 +318,8 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#111827';ctx.font='bold '+titleSize+'px "Noto Sans Bengali",Arial';let y=850;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=titleSize+14;});
  
  ctx.fillStyle='#e2e8f0';ctx.fillRect(82,footerY,1036,2);ctx.fillStyle='#d6a84f';ctx.fillRect(82,footerY,1036,4);
- ctx.fillStyle='#334155';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,footerY+35);ctx.textAlign='left';rr(82,footerY+55,1036,52,14);ctx.fillStyle='#c51b36';ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮ | ০৯৬৫৮৫৯৩২৪৩',600,footerY+89);ctx.textAlign='left';
+ ctx.fillStyle='#334155';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,footerY+35);ctx.textAlign='left';rr(82,footerY+55,1036,52,14);ctx.fillStyle='#c51b36';ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮ | ০৯৬৫৮৫৯৩২৪৩',485,footerY+89);ctx.textAlign='left';
+ if(qrImage){ctx.save();ctx.fillStyle="#fff";ctx.fillRect(955,footerY+42,165,165);ctx.strokeStyle="#c51b36";ctx.lineWidth=4;ctx.strokeRect(955,footerY+42,165,165);ctx.drawImage(qrImage,970,footerY+57,135,135);ctx.fillStyle="#334155";ctx.font="bold 14px Arial";ctx.textAlign="center";ctx.fillText("SCAN THIS NEWS",1037,footerY+222);ctx.restore();}
  return canvas;
 };
 window.downloadNewsPhotoCard=async function(){
@@ -325,7 +330,7 @@ window.printNewsPaper=async function(){
  try{
   const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
   outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
-  const images=Array.from(document.querySelectorAll('.print-ad-output img'));
+  const images=Array.from(document.querySelectorAll('.print-ad-output img,#articleQrImage'));
   await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,8000);})));
   window.print();
  }catch(e){window.print();}
@@ -379,7 +384,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
-window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');if(!preview||!window.buildNewsPhotoCard)return;try{const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}catch(e){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');const note=preview.parentElement?.querySelector('.preview-note');if(note)note.textContent='ফটোকার্ড তৈরি হয়নি। ছবির URL পরীক্ষা করে আবার চেষ্টা করুন।';console.error('BD Barguna photo card error:',e);}});
+window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');try{const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';const qrEl=document.getElementById('articleQrImage');if(qrEl&&qr)qrEl.src=qr;if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}const note=preview?.parentElement?.querySelector('.preview-note');if(note)note.textContent='QR/ফটোকার্ড তৈরি হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।';console.error('BD Barguna QR/photo card error:',e);}});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
@@ -397,12 +402,11 @@ function bdRenderPrintAd(ad){
  const nameLabel=document.createElement('div');nameLabel.className='ad-name';nameLabel.textContent=ad.name||'বিজ্ঞাপন';item.appendChild(nameLabel);
  const nameInput=document.createElement('input');nameInput.type='text';nameInput.className='print-ad-name';nameInput.value=ad.name||'বিজ্ঞাপন';nameInput.setAttribute('aria-label','বিজ্ঞাপনের নাম');nameInput.oninput=()=>{nameLabel.textContent=nameInput.value.trim()||'বিজ্ঞাপন';bdSavePrintAds();};item.appendChild(nameInput);
  if(ad.src){const img=document.createElement('img');img.src=ad.src;img.alt=ad.name||'বিজ্ঞাপন';item.appendChild(img);}
- if(ad.copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=ad.copy;item.appendChild(p);}
  const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';rm.onclick=()=>{item.remove();bdSavePrintAds();bdUpdatePrintAdCount();};item.appendChild(rm);
  out.appendChild(item);out.style.display='block';
 }
 function bdSavePrintAds(){
- const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({name:item.querySelector('.print-ad-name')?.value.trim()||item.dataset.name||'বিজ্ঞাপন',position:item.dataset.position,src:item.querySelector('img')?.src||'',copy:item.querySelector('.ad-copy')?.textContent||''}));
+ const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({name:item.querySelector('.print-ad-name')?.value.trim()||'বিজ্ঞাপন',position:item.dataset.position,src:item.querySelector('img')?.src||''}));
  try{localStorage.setItem(BD_AD_KEY,JSON.stringify(ads));return true;}catch(e){return false;}
 }
 function bdUpdatePrintAdCount(){const count=document.getElementById('printAdCount'),total=document.querySelectorAll('.print-ad-item').length;if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+total.toLocaleString('bn-BD')+'টি';}
@@ -414,15 +418,15 @@ async function bdCompressAdFile(file){
  canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/jpeg',.78);
 }
 window.bdAddPrintAd=async function(){
- const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),position=document.getElementById('printAdPosition'),nameField=document.getElementById('printAdName');
- const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',copy=txt?txt.value.trim():'',baseName=nameField&&nameField.value.trim()?nameField.value.trim():'বিজ্ঞাপন';
- if(!files.length&&!link&&!copy){alert('বিজ্ঞাপনের ছবি নির্বাচন করুন অথবা বিজ্ঞাপনের লিংক/লেখা দিন।');return;}
+ const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),position=document.getElementById('printAdPosition'),nameField=document.getElementById('printAdName');
+ const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',baseName=nameField&&nameField.value.trim()?nameField.value.trim():'বিজ্ঞাপন';
+ if(!files.length&&!link){alert('বিজ্ঞাপনের ছবি নির্বাচন করুন অথবা বিজ্ঞাপনের ছবির লিংক দিন।');return;}
  const start=(position&&position.value)||'top',slots=['top','headline','middle','bottom'],sources=[];
  for(const f of files)sources.push(await bdCompressAdFile(f));
  if(!sources.length&&link)sources.push(link);if(!sources.length)sources.push('');
- const ads=bdGetPrintAds(),newAds=sources.map((src,index)=>({name:sources.length>1?baseName+' '+(index+1):baseName,position:slots[(slots.indexOf(start)+index)%slots.length],src,copy}));
+ const ads=bdGetPrintAds(),newAds=sources.map((src,index)=>({name:sources.length>1?baseName+' '+(index+1):baseName,position:slots[(slots.indexOf(start)+index)%slots.length],src})));
  newAds.forEach(bdRenderPrintAd);const saved=bdSavePrintAds();bdUpdatePrintAdCount();
- if(file)file.value='';if(url)url.value='';if(txt)txt.value='';if(nameField)nameField.value='';
+ if(file)file.value='';if(url)url.value='';if(nameField)nameField.value='';
  if(!saved)alert('বিজ্ঞাপন এই পেজে যোগ হয়েছে, তবে ব্রাউজারের জায়গা কম থাকায় সংরক্ষণ হয়নি।');
  else alert(newAds.length+'টি বিজ্ঞাপন যোগ হয়েছে। এখন সংবাদ প্রিন্ট চাপুন।');
 };
