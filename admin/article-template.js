@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="qr-20261114c";
+window.articleTemplateVersion="qr-20261114d";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -218,7 +218,7 @@ ${image}
 document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅\s*প্রকাশিত:\s*/,''):'';});
 window.buildNewsPhotoCard=async function(){
  const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
- const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:"M"}):"";
+ const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:"M"}):"https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=1&data="+encodeURIComponent(articleLink);
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const wrap=(value,maxWidth,font)=>{
   ctx.font=font;const result=[];let line='';
