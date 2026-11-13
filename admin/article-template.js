@@ -156,13 +156,17 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 </div>
 </header>
 ${articleNav}
+<div id="printAdSlot-top"></div>
 <div class="category">${esc(n.category)}</div>
 <h1>${esc(n.title)}</h1>
 <div class="date">📅 প্রকাশিত: ${dateText}</div>
+<div id="printAdSlot-headline"></div>
 <div id="articleViewCount" class="date" aria-live="polite">👁️ পাঠসংখ্যা লোড হচ্ছে...</div>
 ${image}
+<div id="printAdSlot-middle"></div>
 <section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
 <div class="article">${esc(n.body)}</div>
+<div id="printAdSlot-bottom"></div>
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
@@ -177,17 +181,18 @@ ${image}
 </div>
 </footer>
 <section class="print-ad-panel" id="printAdPanel">
- <strong>প্রিন্ট বিজ্ঞাপন যোগ করুন</strong>
- <label>বিজ্ঞাপনের ছবি (ফোন থেকে নির্বাচন করুন)</label>
- <input id="printAdFile" type="file" accept="image/*" multiple>
- <small>একসঙ্গে অনেকগুলো বিজ্ঞাপনের ছবি নির্বাচন করতে পারবেন। বারবারও বিজ্ঞাপন যোগ করতে পারবেন।</small>
- <label>অথবা ছবির লিংক দিন</label>
- <input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
- <label>বিজ্ঞাপনের লেখা (ঐচ্ছিক)</label>
- <textarea id="printAdText" rows="2" placeholder="বিজ্ঞাপনের শিরোনাম / যোগাযোগ"></textarea>
- <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">নির্বাচিত বিজ্ঞাপনগুলো যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
- <p id="printAdCount" aria-live="polite">যোগ করা বিজ্ঞাপন: ০টি</p><small>প্রতিটি বিজ্ঞাপন আলাদাভাবে মুছতে পারবেন।</small>
-</section><div id="printAdOutput" class="print-ad-output"></div><div class="buttons">
+ <strong>📢 বিজ্ঞাপন পরিচালনা</strong>
+ <p>একই সংবাদে একাধিক বিজ্ঞাপন যোগ করুন এবং পত্রিকার যে স্থানে চান সেখানে বসান।</p>
+ <label for="printAdPosition">বিজ্ঞাপন কোথায় বসাবেন?</label>
+ <select id="printAdPosition"><option value="top">পত্রিকার একদম শুরুতে</option><option value="headline">শিরোনাম ও তারিখের নিচে</option><option value="middle">ছবির পরে / খবরের আগে</option><option value="bottom">খবরের শেষে</option></select>
+ <label>বিজ্ঞাপনের ছবি (ফোন থেকে একসঙ্গে অনেকগুলো নির্বাচন করুন)</label><input id="printAdFile" type="file" accept="image/*" multiple>
+ <label>অথবা বিজ্ঞাপনের ছবির লিংক</label><input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
+ <label>বিজ্ঞাপনের লেখা / যোগাযোগ (ঐচ্ছিক)</label><textarea id="printAdText" rows="2" placeholder="প্রতিষ্ঠানের নাম, অফার, ফোন নম্বর"></textarea>
+ <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">＋ বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
+ <p id="printAdCount" aria-live="polite">যোগ করা বিজ্ঞাপন: ০টি</p><small>প্রতিটি বিজ্ঞাপন আলাদাভাবে মুছতে পারবেন। একই স্থানে বা ভিন্ন স্থানে যত খুশি বিজ্ঞাপন যোগ করুন।</small>
+</section>
+<div id="printAdOutput-top" class="print-ad-output"></div><div id="printAdOutput-headline" class="print-ad-output"></div><div id="printAdOutput-middle" class="print-ad-output"></div><div id="printAdOutput-bottom" class="print-ad-output"></div>
+<div class="buttons">
 <button onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
 <button class="gray" onclick="printNewsPhotoCard()">🖨️ ফটোকার্ড প্রিন্ট</button>
 <button class="gray" onclick="copyNewsPhotoCard()">📋 ফটোকার্ড কপি</button>
@@ -304,18 +309,20 @@ document.getElementById("articleComments").src="https://www.facebook.com/plugins
 <\/script>
 <script id="bd-print-ad-script">
 window.bdAddPrintAd=async function(){
- const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),out=document.getElementById('printAdOutput');
+ const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),txt=document.getElementById('printAdText'),position=document.getElementById('printAdPosition');
  const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',copy=txt?txt.value.trim():'';
  if(!files.length&&!link&&!copy){alert('বিজ্ঞাপনের ছবি অথবা লেখা দিন।');return;}
+ const target=(position&&position.value)||'bottom',out=document.getElementById('printAdOutput-'+target);
+ if(!out){alert('বিজ্ঞাপন বসানোর জায়গা পাওয়া যায়নি।');return;}
  const sources=[];
- for(const f of files)sources.push(await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f);}));
+ for(const f of files)sources.push(await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('ছবি পড়া যায়নি'));r.readAsDataURL(f);}));
  if(!sources.length&&link)sources.push(link);if(!sources.length)sources.push('');
- sources.forEach(src=>{const item=document.createElement('div');item.className='print-ad-item';if(src){const img=document.createElement('img');img.src=src;img.alt='বিজ্ঞাপন';item.appendChild(img);}if(copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=copy;item.appendChild(p);}const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';rm.onclick=()=>{item.remove();bdUpdatePrintAdCount();};item.appendChild(rm);out.appendChild(item);});
+ sources.forEach(src=>{const item=document.createElement('div');item.className='print-ad-item';item.dataset.position=target;if(src){const img=document.createElement('img');img.src=src;img.alt='বিজ্ঞাপন';item.appendChild(img);}if(copy){const p=document.createElement('div');p.className='ad-copy';p.textContent=copy;item.appendChild(p);}const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';rm.onclick=()=>{item.remove();bdUpdatePrintAdCount();};item.appendChild(rm);out.appendChild(item);});
  if(file)file.value='';if(url)url.value='';if(txt)txt.value='';bdUpdatePrintAdCount();
 };
-window.bdUpdatePrintAdCount=function(){const out=document.getElementById('printAdOutput'),count=document.getElementById('printAdCount');if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+((out&&out.querySelectorAll('.print-ad-item').length)||0)+'টি';};
-window.bdClearPrintAds=function(){const out=document.getElementById('printAdOutput');if(out)out.replaceChildren();bdUpdatePrintAdCount();};
-<\/script>
+window.bdUpdatePrintAdCount=function(){const count=document.getElementById('printAdCount'),total=document.querySelectorAll('.print-ad-item').length;if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+total.toLocaleString('bn-BD')+'টি';};
+window.bdClearPrintAds=function(){document.querySelectorAll('.print-ad-output').forEach(out=>out.replaceChildren());bdUpdatePrintAdCount();};
+</script>>
 </body>
 </html>`;
 };
