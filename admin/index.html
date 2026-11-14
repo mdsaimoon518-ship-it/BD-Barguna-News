@@ -850,7 +850,7 @@ async function ensureArticleTemplate(){
  if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="newspaper-print-20261114qr4")return;
 
  const sources=[
-  new URL("./article-template.js?v=20261114qr4&retry="+Date.now(),location.href).href,
+  new URL("./article-template.js?v=20261114qr5&retry="+Date.now(),location.href).href,
   "https://raw.githubusercontent.com/"+OWNER+"/"+REPO+"/"+BRANCH+"/admin/article-template.js?retry="+Date.now()
  ];
  const failures=[];
