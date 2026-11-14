@@ -848,10 +848,10 @@ $("cancelEdit").onclick=()=>{
 };
 
 async function ensureArticleTemplate(){
- if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114gallery3")return;
+ if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114gallery4")return;
 
  const sources=[
-  new URL("./article-template.js?v=20261114classicheader1&retry="+Date.now(),location.href).href,
+  new URL("./article-template.js?v=20261114gallery4&retry="+Date.now(),location.href).href,
   "https://raw.githubusercontent.com/"+OWNER+"/"+REPO+"/"+BRANCH+"/admin/article-template.js?retry="+Date.now()
  ];
  const failures=[];
