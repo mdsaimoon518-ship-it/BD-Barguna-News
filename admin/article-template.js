@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="20261114gallery4";
+window.articleTemplateVersion="20261114gallery5";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -213,11 +213,12 @@ window.buildNewsPhotoCard=async function(){
  const dayText=new Intl.DateTimeFormat('bn-BD',{weekday:'long',timeZone:'Asia/Dhaka'}).format(safeDate);
  const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
  const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:'M'}):'';
- const photoEl=document.querySelector('.photo-card img,.article-image,figure img');
- const photoUrl=photoEl?.currentSrc||photoEl?.src||'';
+ const photoEls=Array.from(document.querySelectorAll('.photo-gallery img,.photo-card img,.article-image,figure img')).filter(el=>!el.closest('.photo-card-preview')).slice(0,3);
+ const photoUrls=[...new Set(photoEls.map(el=>el.currentSrc||el.src||el.getAttribute('src')).filter(Boolean))].slice(0,3);
  const logoUrl=new URL('../images/app-icon.svg',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
- const [photo,logo,qr]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl),loadImage(qrDataUrl)]);
+ const [photos,logo,qr]=await Promise.all([Promise.all(photoUrls.map(loadImage)),loadImage(logoUrl),loadImage(qrDataUrl)]);
+ const usablePhotos=photos.filter(Boolean);
  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
  if(!ctx)throw new Error('ফটোকার্ড তৈরি করা যাচ্ছে না।');
  const titleFont=title.length>125?38:title.length>85?42:46;
@@ -233,10 +234,19 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText('BD BARGUNA NEWS',174,88);ctx.fillStyle='#cbd5e1';ctx.font='23px Arial';ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',174,126);
  ctx.fillStyle='#f8fafc';ctx.font='bold 19px Arial';ctx.textAlign='right';ctx.fillText('NEWS • বরগুনা',1138,95);ctx.textAlign='left';
  ctx.save();rr(48,170,1104,535,28);ctx.clip();
- if(photo){const scale=Math.min(1104/photo.naturalWidth,535/photo.naturalHeight),dw=photo.naturalWidth*scale,dh=photo.naturalHeight*scale;ctx.fillStyle='#e8edf3';ctx.fillRect(48,170,1104,535);ctx.drawImage(photo,48+(1104-dw)/2,170+(535-dh)/2,dw,dh);}
+ const drawCrop=(im,x,y,w,h)=>{if(!im)return;const sc=Math.max(w/im.naturalWidth,h/im.naturalHeight),sw=w/sc,sh=h/sc;ctx.drawImage(im,(im.naturalWidth-sw)/2,(im.naturalHeight-sh)/2,sw,sh,x,y,w,h);};
+ ctx.fillStyle='#e8edf3';ctx.fillRect(48,170,1104,535);
+ if(usablePhotos.length>=3){
+  drawCrop(usablePhotos[0],48,170,720,535);
+  ctx.fillStyle='#fff';ctx.fillRect(778,170,6,535);
+  drawCrop(usablePhotos[1],784,170,368,264);
+  ctx.fillStyle='#fff';ctx.fillRect(784,437,368,6);
+  drawCrop(usablePhotos[2],784,443,368,262);
+ }else if(usablePhotos.length===2){
+  drawCrop(usablePhotos[0],48,170,720,535);ctx.fillStyle='#fff';ctx.fillRect(778,170,6,535);drawCrop(usablePhotos[1],784,170,368,535);
+ }else if(usablePhotos.length===1){drawCrop(usablePhotos[0],48,170,1104,535);}
  else{const pg=ctx.createLinearGradient(48,170,1152,705);pg.addColorStop(0,'#334b6c');pg.addColorStop(1,'#0f172a');ctx.fillStyle=pg;ctx.fillRect(48,170,1104,535);ctx.fillStyle='rgba(255,255,255,.14)';ctx.font='bold 64px Arial';ctx.fillText('BD BARGUNA NEWS',100,440);}
- const shade=ctx.createLinearGradient(0,430,0,705);shade.addColorStop(0,'rgba(5,12,24,0)');shade.addColorStop(1,'rgba(5,12,24,.82)');ctx.fillStyle=shade;ctx.fillRect(48,420,1104,285);
- ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText('সত্যের খবর, সবার আগে',82,665);ctx.restore();
+ ctx.restore();
  const panelHeight=390+extraHeight;ctx.save();rr(48,675,1104,panelHeight,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
  ctx.fillStyle='#c51b36';rr(82,710,250,52,16);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 23px "Noto Sans Bengali",Arial';ctx.fillText(category.slice(0,18),104,745);
  ctx.fillStyle='#64748b';ctx.font='bold 22px "Noto Sans Bengali",Arial';ctx.textAlign='right';ctx.fillText(dayText,1115,745);ctx.textAlign='left';
