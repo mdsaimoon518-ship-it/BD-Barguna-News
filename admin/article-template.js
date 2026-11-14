@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="20261114pdf1";
+window.articleTemplateVersion="20261114photo-copy2";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -359,16 +359,16 @@ window.printNewsPhotoCard=async function(){
 };
 window.copyNewsPhotoCard=async function(){
  try{const canvas=await window.buildNewsPhotoCard();const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('ছবি তৈরি করা যায়নি।');if(!navigator.clipboard||!window.ClipboardItem)throw new Error('এই ব্রাউজারে ছবি কপি সুবিধা নেই—ডাউনলোড বাটন ব্যবহার করুন।');await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);alert('ফটোকার্ড কপি হয়েছে। এখন Facebook পোস্টে পেস্ট করতে পারবেন।');}
- catch(e){alert(e.message||'ফটোকার্ড কপি করা যায়নি।');}
-};
-window.copyArticleText=async function(){
+ catch(e){alert(e.message||'ফটোকার্ড কপি করা যায়নি।'window.copyArticleText=async function(){
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
- const category=(document.querySelector('.category')?.textContent||'').trim();
- const date=(document.querySelector('.date')?.textContent||'').trim();
  const body=(document.querySelector('.article')?.textContent||'').trim();
- const value=[title,category,date,body,'সংবাদের লিংক: '+location.href].filter(Boolean).join('\\n\\n');
- try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(value);else{const field=document.createElement('textarea');field.value=value;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.focus();field.select();const ok=document.execCommand('copy');field.remove();if(!ok)throw new Error('কপি করা যায়নি');}alert('সম্পূর্ণ সংবাদ কপি হয়েছে।');}
- catch(e){window.prompt('সংবাদটি কপি করুন:',value);}
+ const text=[title,body].filter(Boolean).join('\n\n');
+ try{
+  if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+  else{const field=document.createElement('textarea');field.value=text;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.focus();field.select();const ok=document.execCommand('copy');field.remove();if(!ok)throw new Error('কপি করা যায়নি');}
+  alert('শুধু শিরোনাম ও নিউজের লেখা কপি হয়েছে।');
+ }catch(e){window.prompt('শুধু শিরোনাম ও নিউজের লেখা কপি করুন:',text);}
+};e);}
 };
 window.copyArticleLink=async function(){
  const text=location.href;
