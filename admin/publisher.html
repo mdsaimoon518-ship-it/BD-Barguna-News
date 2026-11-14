@@ -926,7 +926,7 @@ $("loadNews").onclick=loadNews;
 
 $("refreshArticlePages").onclick=async()=>{
  const btn=$("refreshArticlePages");
- if(!confirm("প্রকাশিত সব পুরোনো নিউজ থেকে স্ক্যানার সরিয়ে নতুন টেমপ্লেট বসাবেন? সব নিউজ পেজ GitHub-এ আপডেট হবে।"))return;
+ if(!confirm("প্রকাশিত সব পুরোনো নিউজে নতুন সংবাদপত্র-ধাঁচের ডিজাইন ও নিচের বাটনগুলো বসাবেন? সব নিউজ পেজ GitHub-এ আপডেট হবে।"))return;
  btn.disabled=true;
  try{
   await ensureArticleTemplate();
@@ -940,7 +940,7 @@ $("refreshArticlePages").onclick=async()=>{
    done++;
    show("status","নতুন ডিজাইন আপডেট হচ্ছে: "+done+" / "+items.length);
   }
-  show("status","সফল! "+done+"টি পুরোনো নিউজে একাধিক বিজ্ঞাপন, আলাদা নাম, অবস্থান নির্বাচন, সম্পাদনা/মুছে ফেলা এবং ফটোকার্ড-প্রিন্ট অপশন যুক্ত হয়েছে।");
+  show("status","সফল! "+done+"টি পুরোনো নিউজে নতুন ডিজাইন ও ফটোকার্ড ডাউনলোড, নিউজ প্রিন্ট, কপি লিংক, Facebook এবং WhatsApp শেয়ার বাটন যুক্ত হয়েছে।");
  }catch(err){show("status","সমস্যা: "+err.message,true)}
  finally{btn.disabled=false}
 };
