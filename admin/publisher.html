@@ -94,7 +94,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <label>ছবির URL (ঐচ্ছিক)</label>
 <input id="image" type="url" placeholder="https://example.com/photo.jpg">
 
-<label style="display:flex;align-items:center;gap:9px;margin:12px 0"><input id="replaceImages" type="checkbox" style="width:auto;margin:0"> 🔄 পুরোনো ছবি বাদ দিয়ে নতুন ছবি বসান</label>
+<label style="display:flex;align-items:center;gap:9px;margin:12px 0"><input id="replaceImages" type="checkbox" style="width:auto;margin:0" onchange="if(this.checked)document.getElementById('image').value=''"> 🔄 পুরোনো ছবি বাদ দিয়ে নতুন ছবি বসান</label>
 <p class="note">নিউজ সম্পাদনার সময় এই অপশনে টিক দিয়ে নতুন URL বা ছবি নির্বাচন করলে আগের সব ছবি বদলে যাবে। টিক না দিলে নতুন ছবি আগের ছবির সঙ্গে যোগ হবে।</p>
 <label>মোবাইল থেকে একসঙ্গে একাধিক ছবি আপলোড (প্রতি ছবি 15 MB পর্যন্ত; স্বয়ংক্রিয়ভাবে ছোট হবে)</label>
 <input id="imageFiles" type="file" accept="image/*" multiple>
