@@ -1,8 +1,8 @@
-const CACHE_NAME='bd-barguna-news-shell-v11';
+const CACHE_NAME='bd-barguna-news-shell-v12';
 const APP_ROOT='/BD-Barguna-News/';
 const SHELL=[APP_ROOT,APP_ROOT+'manifest.webmanifest',APP_ROOT+'images/bd-barguna-logo.webp?v=20261117'];
 const STATIC_FILE=/\.(?:css|js|mjs|svg|png|jpe?g|webp|gif|ico|woff2?|ttf)$/i;
-function cacheKey(url){return new Request(url.origin+url.pathname,{method:'GET'});}
+function cacheKey(url){return new Request(url.href,{method:'GET'});}
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).catch(()=>{}));
  self.skipWaiting();
