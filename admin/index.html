@@ -401,12 +401,12 @@ ${image}
 </footer>
 <div class="buttons">
 <button onclick="window.print()">🖨️ সংবাদ প্রিন্ট</button>
-<button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটো কার্ড ডাউনলোড</button>
 <button class="gray" onclick="copyArticleLink()">🔗 লিংক কপি</button>
 <button class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
 <button class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
 </div>
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
+<div class="buttons bd-photo-download-end"><button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটো কার্ড ডাউনলোড</button></div>
 </main>
 <script>
 window.downloadNewsPhotoCard=async function(){
