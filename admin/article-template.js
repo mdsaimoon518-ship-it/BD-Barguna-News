@@ -153,7 +153,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 <div class="print-masthead">
  <div class="print-topline"><span>দৈনিক অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span class="print-date"></span></div>
  <div class="print-head-grid">
-  <div class="print-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&amp;margin=5&amp;data=${encodeURIComponent(canonical)}" alt="এই সংবাদটি স্ক্যান করুন"></div>
+  <div class="print-qr"><img id="printQrImage" alt="এই সংবাদটি স্ক্যান করুন"></div>
   <div class="print-brand-wrap"><div class="print-brand">BD BARGUNA NEWS</div><div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div></div>
   <div class="print-issue"><b>বিশেষ সংবাদ</b><span>প্রকাশিত সংবাদ</span><span>বরগুনা</span></div>
  </div>
@@ -340,7 +340,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
-window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');try{const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}const note=preview?.parentElement?.querySelector('.preview-note');if(note)note.textContent='QR/ফটোকার্ড তৈরি হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।';console.error('BD Barguna QR/photo card error:',e);}});
+window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');try{const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';const printQr=document.getElementById('printQrImage');if(printQr&&qr)printQr.src=qr;if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}const note=preview?.parentElement?.querySelector('.preview-note');if(note)note.textContent='QR/ফটোকার্ড তৈরি হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।';console.error('BD Barguna QR/photo card error:',e);}});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
