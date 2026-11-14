@@ -546,7 +546,7 @@ function renderEditImages(){
  const wrap=$("editImageManager"),slots=$("editImageSlots");
  if(!editingSlug){wrap.hidden=true;slots.innerHTML="";return;}
  wrap.hidden=false;
- slots.innerHTML=editingImages.map((item,i)=>`<div class="card"><p><strong>ছবি ${i+1}</strong></p><img src="${esc(/^https?:\\/\\//i.test(item.path)?item.path:"../"+item.path.replace(/^\\/+/, ""))}" alt="বর্তমান ছবি"><label>এই ছবির বদলে নতুন ছবি দিন</label><input type="file" accept="image/*" data-replace-slot="${i}"><button type="button" class="red" data-remove-slot="${i}">এই ছবি মুছুন</button></div>`).join("")||"<p>কোনো ছবি নেই। নিচের ফিল্ড থেকে নতুন ছবি যোগ করুন।</p>";
+ slots.innerHTML=editingImages.map((item,i)=>`<div class="card"><p><strong>ছবি ${i+1}</strong></p><img src="${esc(item.path.startsWith("http")?item.path:"../"+item.path.replace(/^\\/+/, ""))}" alt="বর্তমান ছবি"><label>এই ছবির বদলে নতুন ছবি দিন</label><input type="file" accept="image/*" data-replace-slot="${i}"><button type="button" class="red" data-remove-slot="${i}">এই ছবি মুছুন</button></div>`).join("")||"<p>কোনো ছবি নেই। নিচের ফিল্ড থেকে নতুন ছবি যোগ করুন।</p>";
 }
 
 // Optional token memory: saved only in this browser on this device.
@@ -912,13 +912,17 @@ $("newsForm").addEventListener("submit",async e=>{
   const images=old?(editingImages||[]).map(x=>x.path):[];
   const imageUrl=$("image").value.trim();
   if(imageUrl){if(images.length)images[0]=imageUrl;else images.push(imageUrl);}
+  const replacements=Array.from($("editImageSlots").querySelectorAll("input[data-replace-slot]")).filter(input=>input.files&&input.files[0]);
+  for(const input of replacements){
+   const slot=Number(input.dataset.replaceSlot);
+   if(images[slot]){images[slot]=await uploadImage(input.files[0],"replace-"+(slot+1));show("status","ছবি পরিবর্তন হচ্ছে: "+(slot+1));}
+  }
   const selectedFiles=Array.from($("imageFiles").files||[]);
-  if(images.length>3)images.splice(3);
-  if(selectedFiles.length>3-images.length)throw new Error("প্রতি নিউজে সর্বোচ্চ ৩টি ছবি দেওয়া যাবে। আগে থাকা "+images.length+"টি ছবির সঙ্গে আর "+(3-images.length)+"টি ছবি যোগ করতে পারবেন।");
+  if(images.length+selectedFiles.length>3)throw new Error("প্রতি নিউজে সর্বোচ্চ ৩টি ছবি রাখা যাবে। আগে ছবি মুছে তারপর নতুন ছবি যোগ করুন।");
   for(let i=0;i<selectedFiles.length;i++){
    const uploaded=await uploadImage(selectedFiles[i],i+1);
    images.push(uploaded);
-   show("status","ছবি আপলোড হচ্ছে: "+(i+1)+" / "+selectedFiles.length);
+   show("status","নতুন ছবি আপলোড হচ্ছে: "+(i+1)+" / "+selectedFiles.length);
   }
   const uniqueImages=[...new Set(images.filter(Boolean))];
   const image=uniqueImages[0]||"";
