@@ -867,11 +867,18 @@ async function ensureArticleTemplate(){
  throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। বিকল্প পুরোনো টেমপ্লেট ব্যবহার না করে প্রকাশ বন্ধ রাখা হয়েছে। "+errors.join(" | "));
 }
 function validateArticlePage(html){
+ // Older/cached templates may not contain the new action block. Add it before returning the page.
+ if(!html.includes('class="bd-article-actions"')){
+  const actions='<section class="bd-article-actions" aria-label="সংবাদ ব্যবহার ও শেয়ার"><h2>সংবাদটি সংরক্ষণ ও শেয়ার করুন</h2><div class="buttons"><button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button><button type="button" onclick="window.print()">🖨️ নিউজ প্রিন্ট</button><button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button><button type="button" class="facebook" onclick="window.open(\'https://www.facebook.com/sharer/sharer.php?u=\'+encodeURIComponent(location.href),\'_blank\',\'noopener\')">Facebook শেয়ার</button><button type="button" class="whatsapp" onclick="window.open(\'https://wa.me/?text=\'+encodeURIComponent(document.title+\' \'+location.href),\'_blank\',\'noopener\')">WhatsApp শেয়ার</button></div></section>';
+  if(html.includes('<p class="home">')) html=html.replace('<p class="home">',actions+'<p class="home">');
+  else if(html.includes('</main>')) html=html.replace('</main>',actions+'</main>');
+  else throw new Error("সংবাদের শেষে বাটন বসানোর জায়গা পাওয়া যায়নি।");
+ }
  const required=["downloadNewsPhotoCard","copyArticleLink","buildNewsPhotoCard","bd-article-actions","Facebook শেয়ার","WhatsApp শেয়ার","নিউজ প্রিন্ট"];
  const missing=required.filter(key=>!html.includes(key));
  if(missing.length)throw new Error("নিউজ পেজে প্রয়োজনীয় অপশন নেই: "+missing.join(", "));
  const articleAt=html.indexOf('class="article"'),actionsAt=html.indexOf('class="bd-article-actions"');
- if(articleAt<0||actionsAt<articleAt)throw new Error("সংবাদের নিচে শেয়ার ও প্রিন্ট অপশন যাচাই করা যায়নি।");
+ if(articleAt<0||actionsAt<articleAt)throw new Error("সংবাদের নিচে শেয়ার ও প্রিন্ট অপশন বসানো যায়নি।");
  return html;
 }
 
