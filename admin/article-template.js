@@ -64,6 +64,7 @@ window.articleHTML = function articleHTML(n){
 <meta name="twitter:image" content="${esc(imageUrl)}">
 <script type="application/ld+json">${articleSchema}</script>
 <style>
+.photo-card-preview,#photoCardPreview,#newsPhotoCardPreview{display:none!important}
 *{box-sizing:border-box}
 body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Arial,sans-serif;line-height:1.9}
 .paper{max-width:850px;margin:auto;background:white;padding:25px;border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 20px #0001}
