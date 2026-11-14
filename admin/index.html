@@ -108,7 +108,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <hr>
 <h3>📚 প্রকাশিত সংবাদ পরিচালনা</h3>
 <button id="loadNews" class="blue" type="button">সংবাদের তালিকা দেখুন</button>
-<button id="refreshArticlePages" type="button">🔄 সব পুরোনো নিউজে QR স্ক্যানার, ফটোকার্ড ও বিজ্ঞাপন আপডেট করুন</button>
+<button id="refreshArticlePages" type="button">🔄 পুরোনো সব নিউজ থেকে স্ক্যানার মুছে আপডেট করুন</button>
 <p class="note">একবার চাপলে প্রকাশিত সব পুরোনো নিউজে একাধিক বিজ্ঞাপন, প্রতিটি বিজ্ঞাপনের আলাদা নাম, আলাদা অবস্থান নির্বাচন, বিজ্ঞাপন সম্পাদনা ও মুছে ফেলার অপশনসহ ফটোকার্ড, ডাউনলোড, প্রিন্ট ও কপি সুবিধা যুক্ত হবে। GitHub-এ সব পুরোনো নিউজ পেজ আপডেট হবে।</p>
 <div id="newsList"></div>
 
@@ -847,10 +847,10 @@ $("cancelEdit").onclick=()=>{
 };
 
 async function ensureArticleTemplate(){
- if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="newspaper-print-20261114qr6")return;
+ if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="newspaper-print-20261114noscanner2")return;
 
  const sources=[
-  new URL("./article-template.js?v=20261114qr6&retry="+Date.now(),location.href).href,
+  new URL("./article-template.js?v=20261114noscanner2&retry="+Date.now(),location.href).href,
   "https://raw.githubusercontent.com/"+OWNER+"/"+REPO+"/"+BRANCH+"/admin/article-template.js?retry="+Date.now()
  ];
  const failures=[];
@@ -948,7 +948,7 @@ $("loadNews").onclick=loadNews;
 
 $("refreshArticlePages").onclick=async()=>{
  const btn=$("refreshArticlePages");
- if(!confirm("প্রকাশিত সব সংবাদ পেজ নতুন ডিজাইনে আপডেট করবেন?"))return;
+ if(!confirm("প্রকাশিত সব সংবাদ পেজ থেকে স্ক্যানার সরিয়ে নতুন ডিজাইনে আপডেট করবেন?"))return;
  btn.disabled=true;
  try{
   await ensureArticleTemplate();
