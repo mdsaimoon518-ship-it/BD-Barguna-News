@@ -181,7 +181,26 @@ window.downloadNewsPhotoCard=async function(){
  catch(e){alert(e.message||'ফটোকার্ড তৈরি করা যায়নি।');}
 };
 window.printNewsPhotoCard=async function(){
- try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
+ try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}
+/* Newspaper masthead and article reading layout */
+body{background:#efefed!important;color:#171717!important;font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important}
+.paper{max-width:900px!important;background:#fff!important;border:1px solid #c9c9c9!important;border-radius:0!important;box-shadow:none!important}
+.masthead{border-bottom:4px double #222!important;padding-bottom:14px!important}
+.masthead .brand{font-family:"Noto Serif Bengali",serif!important;font-size:30px!important;font-weight:900!important;color:#a30d25!important}
+.masthead .tagline{font-family:"Noto Serif Bengali",serif!important;color:#444!important}
+.article-nav,.article-subnav{border-radius:0!important;box-shadow:none!important}
+.article-nav{background:#a30d25!important}
+.article-nav a,.article-subnav a{font-family:"Noto Sans Bengali",sans-serif!important}
+.category{display:inline-block!important;background:transparent!important;color:#a30d25!important;padding:3px 0!important;border-radius:0!important;border-bottom:2px solid #a30d25!important;font-weight:800!important}
+h1{font-family:"Noto Serif Bengali",serif!important;font-size:clamp(28px,4vw,40px)!important;line-height:1.42!important;font-weight:900!important;text-align:center!important;color:#111!important;border-top:3px double #222!important;border-bottom:3px double #222!important;padding:14px 8px 18px!important;margin:15px 0!important}
+.article{font-family:"Noto Serif Bengali",serif!important;font-size:18px!important;line-height:1.95!important;text-align:justify!important;color:#222!important;column-count:2!important;column-gap:30px!important;column-rule:1px solid #ccc!important}
+.photo-card{border-radius:0!important;box-shadow:none!important}
+.date{font-family:"Noto Sans Bengali",sans-serif!important;color:#555!important}
+.footer{border-radius:0!important;background:#202020!important}
+@media(max-width:650px){.paper{padding:14px!important}.masthead .brand{font-size:23px!important}h1{font-size:27px!important;line-height:1.5!important;padding:10px 4px!important}.article{font-size:17px!important;column-count:1!important;column-gap:0!important;column-rule:0!important}}
+@media print{body{background:#fff!important}.paper{max-width:none!important;border:0!important;padding:0!important}.article{column-count:2!important;column-gap:7mm!important}h1{font-size:25pt!important}}
+
+</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
  catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
 window.copyNewsPhotoCard=async function(){
