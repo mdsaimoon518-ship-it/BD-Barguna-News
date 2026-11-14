@@ -3,18 +3,20 @@ window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
  const articleNav='<nav class="article-nav" aria-label="প্রধান মেনু">'+mainMenu.map((x,i)=>'<a href="../'+(i===0?'':'#latest')+'">'+esc(x)+'</a>').join('')+'</nav><nav class="article-subnav" aria-label="দ্বিতীয় মেনু">'+subMenu.map(x=>'<a href="../#latest">'+esc(x)+'</a>').join('')+'</nav>';
- const image=n.image?
- `<div class="photo-card">
- <img src="${/^https?:\/\//i.test(n.image)?esc(n.image):"../"+esc(n.image).replace(/^\/+/,"")}" alt="${esc(n.title)}">
- <div class="caption">${esc(n.caption||"ছবি: BD Barguna News")}</div>
- </div>`:"";
+ const imageEntries=(Array.isArray(n.images)?n.images:[]).map((item,i)=>({
+  url:typeof item==="string"?item:(item&&item.url)||"",
+  caption:(Array.isArray(n.imageCaptions)?n.imageCaptions[i]:"")||(item&&item.caption)||""
+ })).filter(item=>item.url);
+ if(n.image&&!imageEntries.some(item=>item.url===n.image))imageEntries.unshift({url:n.image,caption:n.caption||""});
+ const imageUrls=imageEntries.map(item=>/^https?:\/\//i.test(item.url)?item.url:"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/"+String(item.url).replace(/^\/+/, ""));
+ const image=imageEntries.length?`<div class="photo-gallery" aria-label="সংবাদের ছবির গ্যালারি">${imageEntries.map((item,i)=>`<figure class="photo-card"><img src="${/^https?:\/\//i.test(item.url)?esc(item.url):"../"+esc(item.url).replace(/^\/+/, "")}" alt="${esc(n.title)} - ছবি ${i+1}" loading="lazy"><figcaption class="caption">${esc(item.caption||"ছবি: BD Barguna News")}</figcaption></figure>`).join("")}</div>`:"";
 
  const date=new Date(n.date);
  const dateText=Number.isNaN(date.getTime())?esc(n.date):
  date.toLocaleString("bn-BD",{dateStyle:"long",timeStyle:"short"});
  const canonical="https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/articles/"+encodeURIComponent(n.slug)+".html";
  const description=String(n.body||n.title).replace(/\s+/g," ").trim().slice(0,160);
- const imageUrl=n.image?(/^https?:\/\//i.test(n.image)?n.image:"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/"+String(n.image).replace(/^\/+/, "")):"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/site-logo.svg";
+ const imageUrl=imageUrls[0]||"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/site-logo.svg";
  const publishedDate=Number.isNaN(date.getTime())?new Date().toISOString():date.toISOString();
  const modifiedDate=n.modifiedAt||publishedDate;
  const articleSchema=JSON.stringify({
@@ -23,7 +25,7 @@ window.articleHTML = function articleHTML(n){
   "mainEntityOfPage":{"@type":"WebPage","@id":canonical},
   "headline":n.title,
   "description":description,
-  "image":[imageUrl],
+  "image":imageUrls.length?imageUrls:[imageUrl],
   "datePublished":publishedDate,
   "dateModified":modifiedDate,
   "inLanguage":"bn-BD",
@@ -262,6 +264,20 @@ h1{font-family:"Noto Serif Bengali",serif!important;font-size:clamp(28px,4vw,40p
 @media(max-width:650px){.paper{padding:14px!important}.masthead .brand{font-size:23px!important}h1{font-size:27px!important;line-height:1.5!important;padding:10px 4px!important}.article{font-size:17px!important;column-count:1!important;column-gap:0!important;column-rule:0!important}}
 @media print{body{background:#fff!important}.paper{max-width:none!important;border:0!important;padding:0!important}.article{column-count:2!important;column-gap:7mm!important}h1{font-size:25pt!important}}
 
+</style>
+<style id="bd-multi-photo-gallery">
+.photo-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0}
+.photo-gallery .photo-card{min-width:0;margin:0;padding:8px;border:1px solid #e1e1e1;background:#fafafa}
+.photo-gallery .photo-card img{width:100%;height:auto;max-height:430px;object-fit:contain}
+.photo-gallery .caption{font-size:13px;line-height:1.5}
+@media(max-width:600px){.photo-gallery{grid-template-columns:1fr;gap:12px}.photo-gallery .photo-card img{max-height:360px}}
+@media print{
+ .photo-gallery{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:2mm!important;margin:2mm 0!important}
+ .photo-gallery .photo-card{float:none!important;width:auto!important;margin:0!important;padding:1mm!important;border:1px solid #888!important;break-inside:avoid!important}
+ .photo-gallery .photo-card img{width:100%!important;max-width:100%!important;height:auto!important;max-height:30mm!important;object-fit:contain!important}
+ .photo-gallery .caption{font-size:6.5pt!important;padding-top:1mm!important}
+ .article{font-size:9pt!important;line-height:1.35!important;column-count:2!important;column-gap:4mm!important}
+}
 </style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
  catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
