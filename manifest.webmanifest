@@ -11,15 +11,15 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/BD-Barguna-News/images/app-icon.jpg?v=8?v=7",
+      "src": "/BD-Barguna-News/images/channel-logo.svg?v=20261115",
       "sizes": "any",
-      "type": "image/jpeg",
+      "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/BD-Barguna-News/images/app-icon.jpg?v=8?v=7",
+      "src": "/BD-Barguna-News/images/channel-logo.svg?v=20261115",
       "sizes": "any",
-      "type": "image/jpeg",
+      "type": "image/svg+xml",
       "purpose": "maskable"
     }
   ]
