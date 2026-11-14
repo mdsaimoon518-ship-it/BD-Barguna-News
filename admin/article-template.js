@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="newspaper-print-20261114noscanner2";
+window.articleTemplateVersion="newspaper-onepage-20261114v1";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -118,6 +118,24 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  .print-ad-item img{display:block!important;max-width:100%!important;max-height:42mm!important;width:auto!important;height:auto!important;object-fit:contain!important;margin:0 auto!important}
  .print-ad-item .ad-copy{font-size:8.5pt!important;font-weight:700!important;color:#171717!important;margin-top:1mm!important}
  a{color:inherit!important;text-decoration:none!important}
+}
+/* One-sheet A4 newspaper printing: fit the complete article onto one page. */
+.bd-print-fit{zoom:var(--bd-print-zoom,1)}
+.bd-print-fit .print-masthead{display:block!important}
+.bd-print-fit .masthead,.bd-print-fit .article-nav,.bd-print-fit .article-subnav,
+.bd-print-fit #articleViewCount,.bd-print-fit .photo-card-preview,
+.bd-print-fit section[style*="margin-top:28px"],.bd-print-fit .buttons,
+.bd-print-fit .home,.bd-print-fit .publisher-info,.bd-print-fit #printAdPanel{display:none!important}
+@media print{
+ @page{size:A4 portrait;margin:5mm}
+ html,body{width:100%!important;height:287mm!important;max-height:287mm!important;overflow:hidden!important;margin:0!important;padding:0!important}
+ .paper{width:100%!important;height:auto!important;max-height:287mm!important;overflow:hidden!important;break-after:avoid!important;page-break-after:avoid!important}
+ .article{font-size:8pt!important;line-height:1.22!important;column-count:3!important;column-gap:3mm!important}
+ .photo-card img{max-height:55mm!important}
+ .print-masthead{margin-bottom:1.5mm!important;padding-bottom:1mm!important}
+ h1{font-size:22pt!important;line-height:1.05!important;margin:1mm 0!important;padding-bottom:1mm!important}
+ .date{padding-bottom:1mm!important;margin-bottom:1mm!important}
+ .footer{margin-top:2mm!important;padding-top:1mm!important}
 }
 .logo-mark{box-sizing:border-box;display:flex!important;flex:0 0 82px;width:82px;height:82px;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:linear-gradient(145deg,#06452f,#111d2b)!important;border:3px solid #d9ad4b!important;border-radius:13px!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);color:#fff!important;line-height:1!important;padding:5px!important;text-align:center}.logo-mark span{font:bold 32px/1 Arial,sans-serif;color:#ffe08a!important}.logo-mark b{font:bold 10px/1 Arial,sans-serif;letter-spacing:1px;color:#fff!important}.logo-mark i{font:bold normal 10px/1 Arial,sans-serif;letter-spacing:2px;color:#fff!important;background:#b5122b;padding:3px 10px;border-radius:10px}</style>
 <style id="bd-print-ad-style">
@@ -280,13 +298,24 @@ window.downloadNewsPhotoCard=async function(){
  catch(e){alert(e.message||'ফটোকার্ড তৈরি করা যায়নি।');}
 };
 window.printNewsPaper=async function(){
+ const paper=document.querySelector('.paper');
  try{
-const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
+  const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
   outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
   const images=Array.from(document.querySelectorAll('.print-ad-output img'));
   await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,8000);})));
+  if(paper){
+   paper.classList.add('bd-print-fit');
+   paper.style.setProperty('--bd-print-zoom','1');
+   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+   const available=1080;
+   const measured=Math.max(1,paper.scrollHeight);
+   const scale=Math.min(1,available/measured);
+   paper.style.setProperty('--bd-print-zoom',String(scale));
+  }
   window.print();
  }catch(e){window.print();}
+ finally{setTimeout(()=>{if(paper){paper.classList.remove('bd-print-fit');paper.style.removeProperty('--bd-print-zoom');}},1000);}
 };
 window.printNewsPhotoCard=async function(){
  try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
