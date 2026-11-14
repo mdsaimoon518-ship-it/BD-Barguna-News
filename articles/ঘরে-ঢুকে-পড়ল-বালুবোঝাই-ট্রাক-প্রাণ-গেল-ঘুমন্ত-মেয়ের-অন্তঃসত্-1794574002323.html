@@ -238,14 +238,7 @@ BD Barguna News ডিজিটাল রিপোর্ট
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
 সত্যের সন্ধানে, মানুষের পাশে।
-<div class="publisher-info">
-<h2>মোঃ সাইমুন মিয়া</h2>
-<strong>প্রকাশক ও সম্পাদক</strong> · BD Barguna News
-<p>বরগুনা ও বাংলাদেশের স্থানীয়, জাতীয় এবং গুরুত্বপূর্ণ খবর পাঠকের কাছে তুলে ধরাই আমাদের লক্ষ্য। তথ্যভিত্তিক, স্পষ্ট ও পাঠকবান্ধব সংবাদ প্রকাশে আমরা কাজ করি।</p>
-<p>অফিস: শের-ই বাংলা সড়ক, বরগুনা</p>
-<p>মোবাইল: <a href="tel:+8801609320308">০১৬০৯৩২০৩০৮</a></p>
-<p>ইমেইল: <a href="mailto:mdsaimoon518@gmail.com">mdsaimoon518@gmail.com</a></p>
-</div>
+
 </footer>
 <section class="bd-article-actions" aria-label="সংবাদ ব্যবহার ও শেয়ার">
 <h2>সংবাদটি সংরক্ষণ ও শেয়ার করুন</h2>
@@ -282,7 +275,7 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText('BD BARGUNA NEWS',174,88);ctx.fillStyle='#cbd5e1';ctx.font='23px Arial';ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',174,126);
  ctx.fillStyle='#f8fafc';ctx.font='bold 19px Arial';ctx.textAlign='right';ctx.fillText('NEWS • বরগুনা',1138,95);ctx.textAlign='left';
  ctx.save();rr(48,170,1104,535,28);ctx.clip();
- if(photo){const scale=Math.max(1104/photo.naturalWidth,535/photo.naturalHeight),sw=1104/scale,sh=535/scale;ctx.drawImage(photo,(photo.naturalWidth-sw)/2,(photo.naturalHeight-sh)/2,sw,sh,48,170,1104,535);}
+ if(photo){const scale=Math.min(1104/photo.naturalWidth,535/photo.naturalHeight),sw=1104/scale,sh=535/scale;ctx.drawImage(photo,(photo.naturalWidth-sw)/2,(photo.naturalHeight-sh)/2,sw,sh,48,170,1104,535);}
  else{const pg=ctx.createLinearGradient(48,170,1152,705);pg.addColorStop(0,'#334b6c');pg.addColorStop(1,'#0f172a');ctx.fillStyle=pg;ctx.fillRect(48,170,1104,535);ctx.fillStyle='rgba(255,255,255,.14)';ctx.font='bold 64px Arial';ctx.fillText('BD BARGUNA NEWS',100,440);}
  const shade=ctx.createLinearGradient(0,430,0,705);shade.addColorStop(0,'rgba(5,12,24,0)');shade.addColorStop(1,'rgba(5,12,24,.82)');ctx.fillStyle=shade;ctx.fillRect(48,420,1104,285);
  ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText('সত্যের খবর, সবার আগে',82,665);ctx.restore();
