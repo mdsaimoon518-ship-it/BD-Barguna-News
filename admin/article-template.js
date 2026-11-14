@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="newspaper-print-20261114qr1";
+window.articleTemplateVersion="newspaper-print-20261114qr2";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -81,6 +81,7 @@ h1{font-size:30px;line-height:1.5}
 .photo-card img{display:block;width:100%;max-height:480px;object-fit:contain;border-radius:8px}
 .caption{text-align:center;color:#667085;font-size:13px;padding-top:9px}
 .article{white-space:pre-wrap;overflow-wrap:anywhere;text-align:justify;font-size:18px}
+.article-qr{display:flex;align-items:center;gap:14px;max-width:460px;margin:22px auto;padding:14px;border:2px solid #d8dee8;border-radius:12px;background:#fff}.article-qr img{display:block;flex:0 0 150px;width:150px;height:150px;object-fit:contain;background:#fff}.article-qr strong{display:block;color:#b5122b;font-size:17px}.article-qr span{display:block;color:#475569;font-size:14px;line-height:1.6}.article-qr small{display:block;color:#64748b;font-size:10px;overflow-wrap:anywhere}@media(max-width:420px){.article-qr{gap:10px;padding:10px}.article-qr img{flex-basis:120px;width:120px;height:120px}}@media print{.article-qr{display:flex!important;break-inside:avoid!important;margin:3mm auto!important;border:1px solid #555!important}.article-qr img{width:25mm!important;height:25mm!important;flex-basis:25mm!important}}
 .footer{text-align:center;border-top:3px solid #b5122b;margin-top:30px;padding-top:14px;color:#667085}
 .publisher-info{max-width:680px;margin:18px auto 0;padding:16px 12px 0;border-top:1px solid #ddd;line-height:1.7}
 .publisher-info h2{margin:0 0 4px;color:#202936;font-size:21px}
@@ -179,6 +180,8 @@ ${image}
 <section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"></section>
 <div class="article">${esc(n.body)}</div>
 <div id="printAdOutput-bottom" class="print-ad-output"></div>
+<section class="article-qr" aria-label="সংবাদের স্ক্যানযোগ্য QR কোড"><img id="articleQrImage" alt="এই সংবাদের স্ক্যানযোগ্য QR কোড"><div><strong>এই নিউজটি স্ক্যান করুন</strong><span>মোবাইল ক্যামেরা দিয়ে QR কোড স্ক্যান করলে সরাসরি এই সংবাদটি খুলবে</span><small id="articleQrUrl"></small></div></section>
+
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
@@ -340,7 +343,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
-window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');try{const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';const printQr=document.getElementById('printQrImage');if(printQr&&qr)printQr.src=qr;const articleQr=document.getElementById('articleQrImage');if(articleQr&&qr)articleQr.src=qr;if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}const note=preview?.parentElement?.querySelector('.preview-note');if(note)note.textContent='QR/ফটোকার্ড তৈরি হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।';console.error('BD Barguna QR/photo card error:',e);}});
+window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const fallbackQr='https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=2&data='+encodeURIComponent(canonical);try{const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:300,margin:2,errorCorrectionLevel:'H'}):fallbackQr;['printQrImage','articleQrImage'].forEach(id=>{const img=document.getElementById(id);if(img){img.src=qr||fallbackQr;img.alt='স্ক্যান করলে এই সংবাদ খুলবে';}});const qrUrl=document.getElementById('articleQrUrl');if(qrUrl)qrUrl.textContent=canonical;if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){['printQrImage','articleQrImage'].forEach(id=>{const img=document.getElementById(id);if(img)img.src=fallbackQr;});const qrUrl=document.getElementById('articleQrUrl');if(qrUrl)qrUrl.textContent=canonical;if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}console.error('BD Barguna QR/photo card error:',e);}});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
