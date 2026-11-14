@@ -806,6 +806,8 @@ $("newsList").addEventListener("click",async e=>{
     $("imageCaptions").value=(Array.isArray(n.imageCaptions)?n.imageCaptions:[]).join("\n");
     $("caption").value=n.caption||"";
     editingSlug=n.slug;
+    editingImages=(Array.isArray(n.images)?n.images:(n.image?[n.image]:[])).map(path=>({path})).slice(0,3);
+    renderEditImages();
     $("publishBtn").textContent="সংবাদ আপডেট করুন";
     $("cancelEdit").hidden=false;
     window.scrollTo({top:0,behavior:"smooth"});
@@ -839,6 +841,7 @@ $("newsList").addEventListener("click",async e=>{
 
 $("cancelEdit").onclick=()=>{
  editingSlug=null;
+ editingImages=[];renderEditImages();
  $("newsForm").reset();
  $("breaking").checked=false;
  $("publishBtn").textContent="সংবাদ প্রকাশ করুন";
@@ -948,6 +951,7 @@ $("newsForm").addEventListener("submit",async e=>{
   await saveSitemap(updated);
 
   editingSlug=null;
+  editingImages=[];renderEditImages();
   $("newsForm").reset();
   $("breaking").checked=false;
   $("publishBtn").textContent="সংবাদ প্রকাশ করুন";
