@@ -77,7 +77,10 @@ body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Ari
 .article-nav a:hover{background:#79091c}.article-subnav a:hover{color:#a90e27}
 .article-nav::-webkit-scrollbar,.article-subnav::-webkit-scrollbar{display:none}
 
-.logo{width:65px;height:65px;object-fit:contain}
+.logo-mark{box-sizing:border-box;display:flex;flex:0 0 65px;width:65px;height:65px;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:linear-gradient(145deg,#06452f,#111d2b);border:3px solid #d9ad4b;border-radius:13px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);color:#fff;line-height:1;padding:5px;text-align:center}
+.logo-mark span{font:bold 26px/1 Arial,sans-serif;color:#ffe08a}
+.logo-mark b{font:bold 9px/1 Arial,sans-serif;letter-spacing:1px;color:#fff}
+.logo-mark i{font:bold normal 9px/1 Arial,sans-serif;letter-spacing:2px;color:#fff;background:#b5122b;padding:3px 8px;border-radius:10px}
 .brand{color:#b5122b;font-size:24px;font-weight:bold;margin:0}
 .tagline{font-size:13px;color:#667085;margin:0}
 .category{display:inline-block;background:transparent;color:#a90e27;padding:5px 0;border-radius:0;margin-top:20px;font-size:14px;font-weight:800;letter-spacing:.2px;border-bottom:2px solid #a90e27}
@@ -129,6 +132,7 @@ body{background:#fff!important;padding:0!important}
 .print-masthead{display:none!important}
 .masthead{display:flex!important;align-items:center!important;gap:12px!important;padding:12px 0!important;border-bottom:1px solid #ddd!important;border-top:0!important}
 .masthead .logo,.masthead .logo-mark{width:46px!important;height:46px!important;flex:0 0 46px!important}
+.masthead .logo-mark span{font-size:19px!important}.masthead .logo-mark b,.masthead .logo-mark i{font-size:6px!important}.masthead .logo-mark i{padding:2px 5px!important}
 .masthead .brand{font-size:23px!important;color:#a30d25!important;font-weight:900!important;margin:0!important}
 .masthead .tagline{font-size:12px!important;color:#555!important;margin:0!important}
 .article-nav{display:flex!important;overflow-x:auto!important;white-space:nowrap!important;gap:0!important;margin:0!important;padding:0!important;border-radius:0!important}
@@ -208,7 +212,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <main class="paper">
 <div class="print-masthead"><div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span>${dateText}</span></div><div class="print-brand"><img class="print-logo" src="../images/site-logo.svg" alt="BD Barguna News">BD BARGUNA NEWS</div><div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div><div class="print-rule"></div><div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div></div>
 <header class="masthead">
-<img class="logo" src="../images/site-logo.svg" alt="BD Barguna News Logo">
+<div class="logo-mark" role="img" aria-label="BD Barguna News"><span>BD</span><b>BARGUNA</b><i>NEWS</i></div>
 <div>
 <p class="brand">BD Barguna News</p>
 <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
