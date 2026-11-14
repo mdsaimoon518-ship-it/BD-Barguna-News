@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="20261114gallery3";
+window.articleTemplateVersion="20261114gallery4";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -45,6 +45,7 @@ window.articleHTML = function articleHTML(n){
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"><\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"><\/script>
 <title>${esc(n.title)} | BD Barguna News</title>
 <link rel="canonical" href="${canonical}">
 <meta property="og:type" content="article">
@@ -180,6 +181,8 @@ ${articleNav}
 <div class="date">📅 প্রকাশিত: ${dateText}</div>
 <div id="articleViewCount" class="date" aria-live="polite">👁️ পাঠসংখ্যা লোড হচ্ছে...</div>
 ${image}
+<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো, প্রকাশের তারিখ ও এই নিউজের নিজস্ব QR স্ক্যানারসহ ফটোকার্ড</p></section>
+<section class="article-qr" aria-label="সংবাদের QR কোড"><img id="articleQrImage" alt="সংবাদের QR কোড"></section>
 <div class="article">${esc(n.body)}</div>
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
 <footer class="footer">
@@ -208,11 +211,13 @@ window.buildNewsPhotoCard=async function(){
  const parsed=new Date(dateRaw),safeDate=isNaN(parsed.getTime())?new Date():parsed;
  const dateText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(safeDate);
  const dayText=new Intl.DateTimeFormat('bn-BD',{weekday:'long',timeZone:'Asia/Dhaka'}).format(safeDate);
+ const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
+ const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:'M'}):'';
  const photoEl=document.querySelector('.photo-card img,.article-image,figure img');
  const photoUrl=photoEl?.currentSrc||photoEl?.src||'';
  const logoUrl=new URL('../images/app-icon.svg',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
- const [photo,logo]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl)]);
+ const [photo,logo,qr]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl),loadImage(qrDataUrl)]);
  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
  if(!ctx)throw new Error('ফটোকার্ড তৈরি করা যাচ্ছে না।');
  const titleFont=title.length>125?38:title.length>85?42:46;
@@ -237,7 +242,8 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#64748b';ctx.font='bold 22px "Noto Sans Bengali",Arial';ctx.textAlign='right';ctx.fillText(dayText,1115,745);ctx.textAlign='left';
  ctx.fillStyle='#111827';ctx.font='bold '+titleFont+'px "Noto Sans Bengali",Arial';let y=825;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=lineHeight;});
  const footerY=1000+extraHeight;ctx.fillStyle='#e2e8f0';ctx.fillRect(82,footerY,1036,2);ctx.fillStyle='#c51b36';ctx.fillRect(82,footerY,140,5);
- ctx.fillStyle='#475569';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.font='20px "Noto Sans Bengali",Arial';ctx.fillText(dateText,1118,footerY+35);ctx.textAlign='left';
+ ctx.fillStyle='#475569';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.font='20px "Noto Sans Bengali",Arial';ctx.fillText(dateText,930,footerY+35);ctx.textAlign='left';
+ if(qr){ctx.fillStyle='#fff';ctx.fillRect(980,footerY+48,142,142);ctx.drawImage(qr,986,footerY+54,130,130);}
  return canvas;
 };
 window.downloadNewsPhotoCard=async function(){
@@ -295,6 +301,15 @@ window.shareToYouTube=async function(){
  window.open('https://www.youtube.com/','_blank','noopener');
 };
 
+window.addEventListener('load',async function(){
+ const preview=document.getElementById('newsPhotoCardPreview');
+ try{
+  const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;
+  const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';
+  const qrEl=document.getElementById('articleQrImage');if(qrEl&&qr)qrEl.src=qr;
+  if(preview){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');}
+ }catch(error){if(preview){preview.alt='ফটোকার্ড তৈরি হয়নি: '+(error.message||'ছবি লোড করা যায়নি');}console.error('BD Barguna photo card:',error);}
+});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
