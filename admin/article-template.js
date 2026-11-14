@@ -352,66 +352,7 @@ window.downloadNewsPhotoCard=async function(){
   else save(canvas.toDataURL('image/png'));
  }catch(e){alert(e.message||'ফটোকার্ড ডাউনলোড করা যায়নি।');}
 };
-window.printNewsPhotoCard=async function(){
- try{
-  const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');
-  if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}
-  w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');
-  w.document.close();
- }catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
-};
-window.copyNewsPhotoCard=async function(){
- try{
-  const canvas=await window.buildNewsPhotoCard();
-  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
-  if(!blob)throw new Error('ছবি তৈরি করা যায়নি।');
-  if(!navigator.clipboard||!window.ClipboardItem)throw new Error('এই ব্রাউজারে ছবি কপি সুবিধা নেই—ডাউনলোড বাটন ব্যবহার করুন।');
-  await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-  alert('ফটোকার্ড কপি হয়েছে। এখন Facebook পোস্টে পেস্ট করতে পারবেন।');
- }catch(e){alert(e.message||'ফটোকার্ড কপি করা যায়নি।');}
-};
-window.copyArticleLink=async function(){
- const text=location.href;
- try{
-  if(navigator.clipboard && window.isSecureContext){
-   await navigator.clipboard.writeText(text);
-  }else{
-   const field=document.createElement("textarea");
-   field.value=text;
-   field.style.position="fixed";
-   field.style.opacity="0";
-   document.body.appendChild(field);
-   field.focus();
-   field.select();
-   const ok=document.execCommand("copy");
-   field.remove();
-   if(!ok)throw new Error("কপি করা যায়নি");
-  }
-  alert("সংবাদের লিংক কপি হয়েছে");
- }catch(e){window.prompt("এই লিংকটি কপি করুন:",text);}
-};
-window.shareToYouTube=async function(){
- const link=location.href;
- try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
- window.open('https://www.youtube.com/','_blank','noopener');
-};
 
-window.addEventListener('load',async function(){
- const preview=document.getElementById('newsPhotoCardPreview');
- try{
-  const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;
-  const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';
-  const qrEl=document.getElementById('articleQrImage');if(qrEl&&qr)qrEl.src=qr;
-  if(preview){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');}
- }catch(error){if(preview){preview.alt='ফটোকার্ড তৈরি হয়নি: '+(error.message||'ছবি লোড করা যায়নি');}console.error('BD Barguna photo card:',error);}
-});
-(function(){
-const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
-if(!firebase.apps.length)firebase.initializeApp(config);
-const count=document.getElementById("articleViewCount");
-firebase.auth().signInAnonymously().then(()=>firebase.database().ref("articleViews/${esc(n.slug)}").transaction(v=>(Number(v)||0)+1)).then(()=>firebase.database().ref("articleViews/${esc(n.slug)}").once("value")).then(s=>{count.textContent="👁️ মোট পাঠ: "+String(s.val()||0).replace(/[0-9]/g,d=>"০১২৩৪৫৬৭৮৯"[Number(d)]);}).catch(()=>{count.textContent="👁️ ভিউ তথ্য এখন পাওয়া যাচ্ছে না";});
-document.getElementById("articleComments").src="https://www.facebook.com/plugins/comments.php?href="+encodeURIComponent(location.href)+"&width=100%25&numposts=10&order_by=reverse_time";
-})();
 <\/script>
 </body>
 </html>`;
