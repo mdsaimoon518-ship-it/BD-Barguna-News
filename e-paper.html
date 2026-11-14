@@ -27,11 +27,11 @@
 @media(max-width:760px){.paper{margin:0;padding:14px}.news-grid{column-count:2;column-gap:14px}.story h2{font-size:18px}}
 @media(max-width:480px){.news-grid{column-count:1}.toolbar{position:static;flex-wrap:wrap}}
 @media print{
- @page{size:A4 portrait;margin:10mm}
+ @page{size:A4 landscape;margin:5mm}
  body{background:white!important}.toolbar,#status{display:none!important}
- .paper{max-width:none;margin:0;padding:0;box-shadow:none}
+ .paper{max-width:none;width:100%;margin:0;padding:0;box-shadow:none;transform-origin:top left}
  .masthead{break-after:avoid}.masthead h1{font-size:38pt}
- .news-grid{column-count:3;column-gap:5mm;column-rule:.35pt solid #aaa}
+ .news-grid{column-count:4;column-gap:4mm;column-rule:.35pt solid #aaa}
  .story{break-inside:avoid-column;margin-bottom:4mm;padding-bottom:2mm}
  .story h2{font-size:15pt;line-height:1.18}
  .story .body{font-size:8.5pt;line-height:1.35}
@@ -42,7 +42,7 @@
 </style>
 </head>
 <body>
-<div class="toolbar"><a href="./">← প্রচ্ছদ</a><button type="button" onclick="window.print()">🖨️ সব নিউজ একসাথে প্রিন্ট</button></div>
+<div class="toolbar"><a href="./">← প্রচ্ছদ</a><button type="button" onclick="printAllNewsOneSheet()">🖨️ সব নিউজ এক কাগজে প্রিন্ট</button></div>
 <div id="status">প্রকাশিত সব সংবাদ সংগ্রহ করা হচ্ছে…</div>
 <main class="paper">
 <header class="masthead">
@@ -69,5 +69,21 @@
   document.getElementById('editionDate').textContent=new Date().toLocaleDateString('bn-BD',{dateStyle:'long'});
  }catch(e){status.textContent='সংবাদ লোড করা যায়নি: '+e.message;grid.innerHTML='<div class="empty">সাইটম্যাপ বা সংবাদ পেজ লোডে সমস্যা হয়েছে।</div>';}
 })();
+
+async function printAllNewsOneSheet(){
+ const paper=document.querySelector('.paper');
+ const images=[...paper.querySelectorAll('img')];
+ await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,5000)})));
+ paper.classList.add('one-sheet-print');
+ const old=document.getElementById('oneSheetPrintStyle');if(old)old.remove();
+ const style=document.createElement('style');style.id='oneSheetPrintStyle';
+ style.textContent='@media print{@page{size:A4 landscape;margin:5mm}.paper{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;transform-origin:top left!important}.news-grid{column-count:4!important;column-gap:4mm!important}.story{break-inside:avoid!important}.story h2{font-size:10pt!important}.story .body{font-size:6pt!important;line-height:1.15!important}.story .meta,.story .category{font-size:5pt!important}.story img{max-height:22mm!important}}';
+ document.head.appendChild(style);
+ const previous=paper.style.transform;
+ const measure=()=>{const availableW=1050,availableH=700;const w=paper.scrollWidth,h=paper.scrollHeight;const scale=Math.min(1,availableW/w,availableH/h);paper.style.transform='scale('+scale+')';paper.style.width=(100/scale)+'%';};
+ measure();
+ window.addEventListener('afterprint',function cleanup(){paper.style.transform=previous;paper.style.width='';paper.classList.remove('one-sheet-print');style.remove();window.removeEventListener('afterprint',cleanup);},{once:true});
+ window.print();
+}
 </script>
 </body></html>
