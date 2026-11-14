@@ -46,6 +46,8 @@ window.articleHTML = function articleHTML(n){
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"><\/script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"><\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
 <title>${esc(n.title)} | BD Barguna News</title>
 <link rel="canonical" href="${canonical}">
 <meta property="og:type" content="article">
@@ -177,7 +179,7 @@ h1{font-size:17pt!important;line-height:1.25!important;margin:1mm 0 2mm!importan
 .photo-gallery .photo-card{margin:0!important;padding:1mm!important;border:1px solid #aaa!important;break-inside:avoid!important}
 .photo-gallery .photo-card img{width:100%!important;height:27mm!important;max-height:27mm!important;object-fit:contain!important}
 .photo-gallery .caption{display:block!important;font-size:6.5pt!important;line-height:1.2!important;padding:1mm 0 0!important;color:#111!important}
-.article{font-size:8.2pt!important;line-height:1.35!important;column-count:2!important;column-gap:5mm!important;column-rule:0.2mm solid #ddd!important;margin:2mm 0!important;white-space:pre-wrap!important}
+.article{font-size:9.2pt!important;line-height:1.4!important;column-count:2!important;column-gap:5mm!important;column-rule:0.2mm solid #ddd!important;margin:2mm 0!important;white-space:pre-wrap!important}
 .footer{font-size:7pt!important;margin-top:2mm!important;padding-top:1mm!important}
 }
 </style>
@@ -229,6 +231,7 @@ ${image}
 <button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
 <button type="button" onclick="copyArticleText()">📋 সম্পূর্ণ নিউজ কপি</button>
 <button type="button" onclick="window.print()">🖨️ নিউজ প্রিন্ট</button>
+<button type="button" onclick="downloadNewsPDF()">📄 PDF ডাউনলোড</button>
 <button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button>
 <button type="button" class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
 <button type="button" class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
@@ -237,6 +240,35 @@ ${image}
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
 </main>
 <script>
+window.downloadNewsPDF=async function(){
+ const button=Array.from(document.querySelectorAll('.bd-article-actions button')).find(b=>/PDF ডাউনলোড/.test(b.textContent));
+ const oldText=button?.textContent;
+ try{
+  if(!window.html2canvas||!window.jspdf?.jsPDF)throw new Error('PDF তৈরির লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ দিয়ে আবার চেষ্টা করুন।');
+  if(button){button.disabled=true;button.textContent='PDF তৈরি হচ্ছে…';}
+  if(document.fonts?.ready)await document.fonts.ready;
+  const source=document.querySelector('.paper');
+  if(!source)throw new Error('সংবাদ পেপার পাওয়া যায়নি।');
+  const clone=source.cloneNode(true);
+  clone.querySelectorAll('.masthead,.article-nav,.article-subnav,.bd-breadcrumb,.bd-story-tools,.buttons,.home,.photo-card-preview,#photoCardPreview,.article-qr,#articleViewCount,.bd-article-actions,iframe').forEach(el=>el.remove());
+  clone.style.cssText='display:block;width:794px;max-width:none;margin:0;padding:26px;background:#fff;color:#111;box-sizing:border-box;box-shadow:none;border:0;border-radius:0;font-family:Arial,sans-serif;';
+  const staging=document.createElement('div');
+  staging.style.cssText='position:fixed;left:-12000px;top:0;width:794px;background:#fff;z-index:-1;';
+  staging.appendChild(clone);document.body.appendChild(staging);
+  try{
+   await Promise.all(Array.from(clone.querySelectorAll('img')).map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;})));
+   const canvas=await html2canvas(clone,{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,windowWidth:850});
+   const pdf=new jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+   const pageW=196,pageH=283,ratio=Math.min(pageW/canvas.width,pageH/canvas.height);
+   const w=canvas.width*ratio,h=canvas.height*ratio;
+   const x=(210-w)/2,y=7;
+   pdf.addImage(canvas.toDataURL('image/jpeg',0.94),'JPEG',x,y,w,h,undefined,'FAST');
+   const base=(document.querySelector('h1')?.textContent||'BD-Barguna-News').replace(/[\\/:*?"<>|]/g,' ').trim().slice(0,70)||'BD-Barguna-News';
+   pdf.save(base+'.pdf');
+  }finally{staging.remove();}
+ }catch(error){alert(error.message||'PDF ডাউনলোড করা যায়নি।');}
+ finally{if(button){button.disabled=false;button.textContent=oldText;}}
+};
 window.buildNewsPhotoCard=async function(){
  const title=(document.querySelector('h1')?.textContent||document.title).replace(/\s+/g,' ').trim();
  const category=(document.querySelector('.cat,.category')?.textContent||'সর্বশেষ সংবাদ').trim();
