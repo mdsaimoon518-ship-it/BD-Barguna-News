@@ -250,7 +250,7 @@ window.buildNewsPhotoCard=async function(){
    const label=photoEntries[i]?.caption||('ছবি '+(i+1));
    ctx.save();ctx.beginPath();ctx.rect(x+10,510,colW-20,175);ctx.clip();
    ctx.fillStyle='#17212b';ctx.font='bold 22px "Noto Sans Bengali",Arial';ctx.textAlign='center';
-   const words=label.split(/\\s+/);let line='',lines=[],maxW=colW-28;
+   const words=label.split(/\s+/);let line='',lines=[],maxW=colW-28;
    for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width<=maxW){line=next;}else{if(line)lines.push(line);line=word;}}
    if(line)lines.push(line);
    lines.slice(0,4).forEach((txt,j)=>ctx.fillText(txt,x+colW/2,545+j*30));
