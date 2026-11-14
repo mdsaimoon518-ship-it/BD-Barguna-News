@@ -54,7 +54,7 @@ h1{font-size:30px;line-height:1.5}
 .publisher-info a{color:#b5122b;font-weight:700}
 @media(max-width:500px){.article-nav,.article-subnav{margin-left:-15px;margin-right:-15px}.article-nav a,.article-subnav a{padding:9px 10px;font-size:12px}}
 
-.photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.article-qr{display:flex;align-items:center;gap:14px;max-width:430px;margin:22px auto;padding:12px;border:1px solid #d8dee8;border-radius:12px;background:#fff}.article-qr img{width:112px;height:112px;object-fit:contain;background:#fff}.article-qr strong{display:block;color:#b5122b;font-size:16px}.article-qr span{display:block;color:#475569;font-size:13px}.article-qr small{display:block;color:#64748b;font-size:11px;overflow-wrap:anywhere}@media print{.article-qr{display:flex!important;margin:4mm auto!important;break-inside:avoid!important;border:1px solid #555!important;background:#fff!important}.article-qr img{width:25mm!important;height:25mm!important}}.youtube{background:#e62117}
+.photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.youtube{background:#e62117}
 .buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
@@ -143,7 +143,6 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  </div>
 <div id="printAdOutput-middle" class="print-ad-output"></div>
 <section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো, প্রকাশের তারিখ ও এই নিউজের নিজস্ব QR স্ক্যানারসহ ফটোকার্ড</p></section>
-<section class="article-qr" aria-label="এই সংবাদের QR কোড"><img id="articleQrImage" alt="এই সংবাদের QR কোড"><div><strong>এই নিউজটি স্ক্যান করুন</strong><span>মোবাইল ক্যামেরা দিয়ে QR কোড স্ক্যান করলে সরাসরি এই সংবাদটি খুলবে</span><small>https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/articles/%E0%A6%A6%E0%A7%81%E0%A6%B0%E0%A7%8D%E0%A6%98%E0%A6%9F%E0%A6%A8%E0%A6%BE%E0%A6%B0-%E0%A6%95%E0%A6%AC%E0%A6%B2%E0%A7%87-%E0%A6%8F%E0%A6%AE%E0%A6%AA%E0%A6%BF%E0%A6%B0-%E0%A6%97%E0%A6%BE%E0%A7%9C%E0%A6%BF%E0%A6%AC%E0%A6%B9%E0%A6%B0-%E0%A6%AC%E0%A6%BF%E0%A6%8F%E0%A6%A8%E0%A6%AA%E0%A6%BF-%E0%A6%A8%E0%A7%87%E0%A6%A4%E0%A6%BE%E0%A6%B0-%E0%A6%AE%E0%A7%83%E0%A6%A4%E0%A7%8D%E0%A6%AF%E0%A7%81-1794572360698.html</small></div></section>
 <div class="article">গোপালগঞ্জের মুকসুদপুরের ১৫ গাড়ির মধ্যে সংঘর্ষে রাঘদী ইউনিয়ন বিএনপির সদস্য সচিব ইলিয়াস ফকির নিহত হয়েছেন ও শতাধিক যাত্রী আহত হয়েছেন। এতে গোপালগঞ্জ-১ আসনের সংসদ সদস্য সেলিমুজ্জামান সেলিমের গাড়িবহরের দুটি গাড়িও ক্ষতিগ্রস্থ হয়। তবে তিনি অক্ষত রয়েছেন।
 
 বিজ্ঞাপন
@@ -324,7 +323,7 @@ window.printNewsPaper=async function(){
  try{
   const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
   outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
-  const images=Array.from(document.querySelectorAll('.print-ad-output img,#articleQrImage'));
+  const images=Array.from(document.querySelectorAll('.print-ad-output img'));
   await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,8000);})));
   window.print();
  }catch(e){window.print();}
