@@ -848,8 +848,10 @@ $("cancelEdit").onclick=()=>{
 };
 
 async function ensureArticleTemplate(){
- if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114pdf-fix6")return;
- const cacheKey="20261114pdf-fix6";
+ // publisher.html already contains a complete built-in article template.
+ // Prefer it directly: do not block publishing on GitHub Pages/raw GitHub cache or network.
+ if(typeof window.articleHTML==="function")return;
+ const cacheKey="20261114pdf-fix7";
  const sources=[
   new URL("./article-template.js?v="+cacheKey+"&retry="+Date.now(),location.href).href,
   "https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/admin/article-template.js?v="+cacheKey+"&retry="+Date.now()
@@ -865,7 +867,7 @@ async function ensureArticleTemplate(){
     script.onerror=()=>reject(new Error("স্ক্রিপ্ট ডাউনলোড ব্যর্থ: "+src));
     document.head.appendChild(script);
    });
-   if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114pdf-fix6")return;
+   if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114pdf-fix7")return;
    errors.push("টেমপ্লেটের সঠিক সংস্করণ লোড হয়নি: "+src+" (version: "+(window.articleTemplateVersion||"নেই")+")");
   }catch(error){errors.push(error.message);}
  }
