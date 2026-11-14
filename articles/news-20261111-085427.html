@@ -42,7 +42,7 @@ window.addEventListener('load',function(){try{var c=make(),p=document.getElement
  const photoEl=document.querySelector('article img,.photo-card img,.photo');
  const photoUrl=document.querySelector('meta[property="og:image"]')?.content||(photoEl?.currentSrc||photoEl?.src||'');
  const logoUrl=new URL('../images/site-logo.svg',location.href).href;
- const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
+ const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();try{const imageUrl=new URL(src,location.href);if(/^https?:$/.test(imageUrl.protocol)&&imageUrl.origin!==location.origin)im.crossOrigin='anonymous';}catch(e){}im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
  const [photo,logo]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl)]);
  ctx.fillStyle='#101827';ctx.fillRect(0,0,1200,1200);ctx.fillStyle='#f8fafc';ctx.beginPath();ctx.roundRect(28,28,1144,1144,34);ctx.fill();
  ctx.save();ctx.beginPath();ctx.roundRect(42,42,1116,1116,26);ctx.clip();
