@@ -73,13 +73,13 @@ body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Ari
 .brand{color:#b5122b;font-size:24px;font-weight:bold;margin:0}
 .tagline{font-size:13px;color:#667085;margin:0}
 .category{display:inline-block;background:transparent;color:#a90e27;padding:5px 0;border-radius:0;margin-top:20px;font-size:14px;font-weight:800;letter-spacing:.2px;border-bottom:2px solid #a90e27}
-h1{font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:34px;line-height:1.55;font-weight:900;color:#171717;text-align:center;margin:16px 0 18px;padding:0 0 18px;border-bottom:1px solid #b8b8b8}
+h1{font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:38px;line-height:1.48;font-weight:900;color:#111;text-align:center;margin:16px 0 18px;padding:4px 12px 20px;border-top:3px double #222;border-bottom:3px double #222}
 .date{color:#666;border-bottom:1px solid #ddd;padding-bottom:14px;font-size:14px}
 
 .photo-card{margin:22px 0;padding:10px;border:1px solid #ddd;border-radius:12px;background:#fafafa}
 .photo-card img{display:block;width:100%;max-height:480px;object-fit:contain;border-radius:8px}
 .caption{text-align:center;color:#667085;font-size:13px;padding-top:9px}
-.article{white-space:pre-wrap;overflow-wrap:anywhere;text-align:justify;text-justify:inter-word;font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:19px;line-height:2.05;letter-spacing:.05px;color:#202020;margin-top:22px}
+.article{white-space:pre-wrap;overflow-wrap:anywhere;text-align:justify;text-justify:inter-word;font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:18px;line-height:1.9;letter-spacing:0;color:#202020;margin-top:22px;column-count:2;column-gap:30px;column-rule:1px solid #d5d5d5}
 .article::first-letter{font-size:1.12em;font-weight:700}
 .footer{text-align:center;border-top:3px solid #b5122b;margin-top:30px;padding-top:14px;color:#667085}
 .publisher-info{max-width:680px;margin:18px auto 0;padding:16px 12px 0;border-top:1px solid #ddd;line-height:1.7}
@@ -92,7 +92,7 @@ h1{font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:34px;line-heigh
 .buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
-@media(max-width:500px){.paper{padding:15px}h1{font-size:25px;line-height:1.6;padding-bottom:14px}.brand{font-size:20px}.article{font-size:17px;line-height:2}}
+@media(max-width:650px){.paper{padding:15px}h1{font-size:27px;line-height:1.55;padding:4px 4px 14px}.brand{font-size:20px}.article{font-size:17px;line-height:1.9;column-count:1;column-gap:0;column-rule:0}}
 @media print{body{background:white;padding:0}.paper{box-shadow:none;border:0;padding:0}.buttons,.home{display:none!important}}
 </style>
 </head>
