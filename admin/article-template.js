@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="20261114photo-copy2";
+window.articleTemplateVersion="20261114photo-copy3";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -83,9 +83,10 @@ body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Ari
 h1{font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:38px;line-height:1.48;font-weight:900;color:#111;text-align:center;margin:16px 0 18px;padding:4px 12px 20px;border-top:3px double #222;border-bottom:3px double #222}
 .date{color:#666;border-bottom:1px solid #ddd;padding-bottom:14px;font-size:14px}
 
-.photo-gallery{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
-.photo-card{margin:22px 0;padding:10px;border:1px solid #ddd;border-radius:12px;background:#fafafa}
-.photo-card img{display:block;width:100%;max-height:480px;object-fit:contain;border-radius:8px}
+.photo-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0;width:100%;align-items:start}
+.photo-card{min-width:0;overflow:hidden;margin:0;padding:7px;border:1px solid #ddd;border-radius:10px;background:#fafafa}
+.photo-card img{display:block;width:100%;height:180px;max-height:180px;object-fit:cover;border-radius:7px}
+.photo-card .caption{font-size:12px;line-height:1.4;overflow-wrap:anywhere}
 .caption{text-align:center;color:#667085;font-size:13px;padding-top:9px}
 .article{white-space:pre-wrap;overflow-wrap:anywhere;text-align:justify;text-justify:inter-word;font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:18px;line-height:1.9;letter-spacing:0;color:#202020;margin-top:22px;column-count:2;column-gap:30px;column-rule:1px solid #d5d5d5}
 .article::first-letter{font-size:1.12em;font-weight:700}
