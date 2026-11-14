@@ -10,7 +10,7 @@ function start(){
  const article=root.querySelector('.article,.body,.content')||root.querySelector('article');
  const photo=root.querySelector('.photo-card img,.article-image,figure img,.featured-image');
  const imgUrl=photo?.currentSrc||photo?.src||'';
- const logoUrl=new URL('../images/site-logo.svg',location.href).href;
+ const logoUrl=new URL('../images/bd-barguna-logo.webp?v=20261115',location.href).href;
  const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1200;
  const ctx=canvas.getContext('2d');
  if(!ctx)return;
