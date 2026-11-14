@@ -36,7 +36,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 <body>
 <main class="paper">
 <header class="masthead">
-<img class="logo" src="../images/channel-logo.svg?v=20261116" alt="BD Barguna News Logo">
+<img class="logo" src="../images/app-icon.svg?v=20261116" alt="BD Barguna News Logo">
 <div>
 <p class="brand">BD Barguna News</p>
 <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
@@ -112,7 +112,7 @@ window.downloadNewsPhotoCard=async function(){
   const date=(document.querySelector(".date")?.textContent||"").replace(/^📅\s*/,"").trim();
   const source=document.querySelector(".photo-card img");
   const loadImage=function(src){return new Promise(function(resolve){if(!src)return resolve(null);const im=new Image();im.crossOrigin="anonymous";im.onload=function(){resolve(im);};im.onerror=function(){resolve(null);};im.src=src;});};
-  const logoUrl=new URL('../images/channel-logo.svg?v=20261116',location.href).href;
+  const logoUrl=new URL('../images/app-icon.svg?v=20261116',location.href).href;
   const loaded=await Promise.all([loadImage(source?(source.currentSrc||source.src):""),loadImage(logoUrl)]);
   const photo=loaded[0],logo=loaded[1];
   const canvas=document.createElement("canvas"),ctx=canvas.getContext("2d");
