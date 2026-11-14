@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="20261114gallery7";
+window.articleTemplateVersion="20261114pdf1";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -251,10 +251,13 @@ window.downloadNewsPDF=async function(){
   if(!source)throw new Error('সংবাদ পেপার পাওয়া যায়নি।');
   const clone=source.cloneNode(true);
   clone.querySelectorAll('.masthead,.article-nav,.article-subnav,.bd-breadcrumb,.bd-story-tools,.buttons,.home,.photo-card-preview,#photoCardPreview,.article-qr,#articleViewCount,.bd-article-actions,iframe').forEach(el=>el.remove());
+  clone.classList.add('pdf-export');
   clone.style.cssText='display:block;width:794px;max-width:none;margin:0;padding:26px;background:#fff;color:#111;box-sizing:border-box;box-shadow:none;border:0;border-radius:0;font-family:Arial,sans-serif;';
   const staging=document.createElement('div');
   staging.style.cssText='position:fixed;left:-12000px;top:0;width:794px;background:#fff;z-index:-1;';
-  staging.appendChild(clone);document.body.appendChild(staging);
+  const pdfStyle=document.createElement('style');
+  pdfStyle.textContent='.pdf-export .print-masthead{display:block!important;visibility:visible!important;margin:0 0 12px!important;padding:0 0 8px!important;border-bottom:3px solid #a30d25!important}.pdf-export .print-topline{display:flex!important;justify-content:space-between!important;font-size:10px!important}.pdf-export .print-brand{display:flex!important;align-items:center!important;gap:10px!important;font-size:24px!important;font-weight:900!important;color:#a30d25!important}.pdf-export .print-logo{display:block!important;width:48px!important;height:48px!important;object-fit:contain!important}.pdf-export .print-tagline{font-size:13px!important}.pdf-export .print-rule{height:3px!important;background:#a30d25!important;margin:7px 0!important}.pdf-export .print-edition{display:flex!important;justify-content:space-between!important;font-size:10px!important}.pdf-export .category{display:block!important;margin:8px 0!important;font-size:12px!important;color:#a30d25!important}.pdf-export h1{font-size:25px!important;line-height:1.35!important;text-align:left!important;margin:8px 0!important;padding:0 0 8px!important;border-bottom:1px solid #bbb!important}.pdf-export .date{font-size:11px!important;margin:5px 0!important}.pdf-export .photo-gallery{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin:10px 0!important}.pdf-export .photo-card{margin:0!important;padding:4px!important;border:1px solid #aaa!important;background:#fff!important}.pdf-export .photo-card img{width:100%!important;height:105px!important;max-height:105px!important;object-fit:contain!important}.pdf-export .caption{font-size:9px!important;line-height:1.25!important;text-align:center!important}.pdf-export .article{font-size:12px!important;line-height:1.45!important;column-count:2!important;column-gap:18px!important;column-rule:1px solid #ddd!important;margin:10px 0!important;white-space:pre-wrap!important}.pdf-export .footer{font-size:10px!important;margin-top:10px!important;padding-top:6px!important}';
+  staging.appendChild(pdfStyle);staging.appendChild(clone);document.body.appendChild(staging);
   try{
    await Promise.all(Array.from(clone.querySelectorAll('img')).map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;})));
    const canvas=await html2canvas(clone,{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,windowWidth:850});
