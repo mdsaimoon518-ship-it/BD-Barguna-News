@@ -843,10 +843,11 @@ $("cancelEdit").onclick=()=>{
 };
 
 async function ensureArticleTemplate(){
- if(typeof window.articleHTML==="function")return;
+ if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="newspaper-print-20261114qr1")return;
+ const cacheKey="20261114qr1";
  const sources=[
-  new URL("./article-template.js?v=20261113embedded3",location.href).href,
-  "https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/admin/article-template.js?v=20261113embedded3"
+  new URL("./article-template.js?v="+cacheKey+"&retry="+Date.now(),location.href).href,
+  "https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/admin/article-template.js?v="+cacheKey+"&retry="+Date.now()
  ];
  const errors=[];
  for(const src of sources){
@@ -866,7 +867,7 @@ async function ensureArticleTemplate(){
  throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। বিকল্প পুরোনো টেমপ্লেট ব্যবহার না করে প্রকাশ বন্ধ রাখা হয়েছে। "+errors.join(" | "));
 }
 function validateArticlePage(html){
- const required=["downloadNewsPhotoCard","printNewsPhotoCard","copyNewsPhotoCard","copyArticleText","copyArticleLink","shareToYouTube","printAdPanel","printAdFile","printAdPosition","printAdOutput-top","printAdOutput-headline","printAdOutput-middle","printAdOutput-bottom","bdAddPrintAd","bdClearPrintAds"];
+ const required=["downloadNewsPhotoCard","printNewsPhotoCard","copyNewsPhotoCard","copyArticleText","copyArticleLink","shareToYouTube","printAdPanel","printAdFile","printAdPosition","printAdOutput-top","printAdOutput-headline","printAdOutput-middle","printAdOutput-bottom","bdAddPrintAd","bdClearPrintAds","printQrImage","QRCode.toDataURL","buildNewsPhotoCard","ctx.drawImage(qrImage"];
  const missing=required.filter(key=>!html.includes(key));
  if(missing.length)throw new Error("নিউজ পেজে প্রয়োজনীয় অপশন নেই: "+missing.join(", "));
  const articleAt=html.indexOf('class="article"'),buttonsAt=html.indexOf('class="buttons"'),adPanelAt=html.indexOf('id="printAdPanel"');
