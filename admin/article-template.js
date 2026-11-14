@@ -1,5 +1,4 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="qr-20261114d";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -37,7 +36,6 @@ window.articleHTML = function articleHTML(n){
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"><\/script>
 <meta name="description" content="${esc(n.body.slice(0,150))}">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1816426000436287" crossorigin="anonymous"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"><\/script>
@@ -71,7 +69,7 @@ body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Ari
 .article-nav a:hover{background:#79091c}.article-subnav a:hover{color:#a90e27}
 .article-nav::-webkit-scrollbar,.article-subnav::-webkit-scrollbar{display:none}
 
-.logo{display:block;flex:0 0 82px;width:82px;height:82px;object-fit:contain;background:#082d27;border:2px solid #d6a84f;border-radius:14px;padding:3px}
+.logo{width:65px;height:65px;object-fit:contain}
 .brand{color:#b5122b;font-size:24px;font-weight:bold;margin:0}
 .tagline{font-size:13px;color:#667085;margin:0}
 .category{display:inline-block;background:#fff0f1;color:#b5122b;padding:5px 13px;border-radius:20px;margin-top:20px}
@@ -88,95 +86,31 @@ h1{font-size:30px;line-height:1.5}
 .publisher-info a{color:#b5122b;font-weight:700}
 @media(max-width:500px){.article-nav,.article-subnav{margin-left:-15px;margin-right:-15px}.article-nav a,.article-subnav a{padding:9px 10px;font-size:12px}}
 
-.photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.article-qr{display:none!important}@media print{.article-qr{display:block!important;width:max-content!important;margin:4mm auto!important;padding:0!important;border:0!important;background:transparent!important;break-inside:avoid!important}.article-qr img{display:block!important;width:25mm!important;height:25mm!important;object-fit:contain!important}}.youtube{background:#e62117}
+.photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.youtube{background:#e62117}
 .buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
 @media(max-width:500px){.paper{padding:15px}h1{font-size:23px}.brand{font-size:20px}.article{font-size:16px}}
-@media screen{.print-masthead{display:none!important}}
-@page{size:A4 portrait;margin:9mm 10mm 11mm}
-@media print{
- html,body{margin:0!important;padding:0!important;background:#fffdf4!important;color:#171717!important;font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- .paper{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fffdf4!important}
- .print-masthead{display:block!important;margin:0 0 3mm!important;padding:0 0 2mm!important;color:#171717!important;break-inside:avoid!important;border-bottom:3px double #171717!important;text-align:center!important}
- .print-topline{display:flex!important;justify-content:space-between!important;gap:6px!important;font-size:7.5pt!important;border-bottom:1px solid #333!important;padding-bottom:1.5mm!important}
- .print-brand{font-family:Georgia,"Noto Serif Bengali",serif!important;font-size:31pt!important;letter-spacing:.5px!important;line-height:1.08!important;font-weight:900!important;color:#171717!important;margin:1.5mm 0!important}
- .print-tagline{font-size:9pt!important;font-weight:700!important;letter-spacing:.4px!important}
- .print-rule{height:3px!important;border-top:2px solid #171717!important;border-bottom:1px solid #171717!important;margin:1.5mm 0!important}
- .print-edition{display:flex!important;justify-content:space-between!important;font-size:7pt!important;font-weight:700!important}
- .masthead,.article-nav,.article-subnav,.category,#articleViewCount,.photo-card-preview,section[style*="margin-top:28px"],.buttons,.home,.publisher-info{display:none!important}
- h1{font-size:22pt!important;line-height:1.2!important;font-weight:900!important;text-align:center!important;margin:2mm 0 1.5mm!important;color:#171717!important;column-span:all!important;break-after:avoid!important;border-bottom:1px solid #555!important;padding-bottom:2mm!important}
- .date{font-size:7.5pt!important;text-align:center!important;color:#333!important;border:0!important;padding:0 0 2mm!important;margin:0 0 2mm!important}
- .photo-card{float:left!important;width:39%!important;margin:1mm 3mm 2mm 0!important;padding:1mm!important;border:1px solid #888!important;border-radius:0!important;background:transparent!important;break-inside:avoid!important}
- .photo-card img{width:100%!important;max-width:100%!important;height:auto!important;max-height:72mm!important;object-fit:contain!important;margin:0!important;border-radius:0!important}
- .caption{font-size:7pt!important;color:#333!important;padding:1mm 0!important;text-align:center!important}
- .article{font-size:10pt!important;line-height:1.48!important;text-align:justify!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;column-count:2!important;column-gap:6mm!important;column-rule:.35pt solid #aaa!important;column-fill:balance!important}
- .footer{font-size:8pt!important;border-top:2px double #222!important;margin-top:4mm!important;padding-top:1.5mm!important;color:#222!important;break-inside:avoid!important;text-align:center!important}
- .footer>strong{font-size:12pt!important;color:#111!important}
- .print-ad-output:not(:empty){display:block!important;column-span:all!important;width:100%!important;break-inside:avoid!important;margin:2.5mm 0!important}
- .print-ad-item{margin:2mm 0!important;padding:1.5mm!important;border:1px solid #444!important;background:#fffdf4!important;color:#171717!important;text-align:center!important;break-inside:avoid!important}.print-ad-item .ad-name{font-size:8pt!important;font-weight:700!important;color:#444!important;margin-bottom:1mm!important}.print-ad-item .print-ad-name,.print-ad-item .print-ad-remove{display:none!important}
- .print-ad-item img{display:block!important;max-width:100%!important;max-height:42mm!important;width:auto!important;height:auto!important;object-fit:contain!important;margin:0 auto!important}
- .print-ad-item .ad-copy{font-size:8.5pt!important;font-weight:700!important;color:#171717!important;margin-top:1mm!important}
- a{color:inherit!important;text-decoration:none!important}
-}
-.logo-mark{box-sizing:border-box;display:flex!important;flex:0 0 82px;width:82px;height:82px;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:linear-gradient(145deg,#06452f,#111d2b)!important;border:3px solid #d9ad4b!important;border-radius:13px!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);color:#fff!important;line-height:1!important;padding:5px!important;text-align:center}.logo-mark span{font:bold 32px/1 Arial,sans-serif;color:#ffe08a!important}.logo-mark b{font:bold 10px/1 Arial,sans-serif;letter-spacing:1px;color:#fff!important}.logo-mark i{font:bold normal 10px/1 Arial,sans-serif;letter-spacing:2px;color:#fff!important;background:#b5122b;padding:3px 10px;border-radius:10px}</style>
-<style id="bd-print-ad-style">
-.print-ad-item .ad-name{font-weight:700;color:#8b1529;margin:0 0 5px}.print-ad-item .print-ad-name{display:block;width:100%;padding:7px;border:1px dashed #b5122b;border-radius:5px;margin:4px 0}.print-ad-item .print-ad-remove{margin-top:5px;background:#b42318;color:#fff}
-#printAdPanel{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:5!important;margin:18px 0!important;padding:16px!important;background:#fff8f0!important;border:2px solid #b5122b!important;border-radius:10px!important;color:#202936!important} .print-ad-panel{margin:16px 0;padding:14px;border:2px dashed #b5122b;border-radius:10px;background:#fff8f0;color:#202936;font:14px Arial,sans-serif}
-.print-ad-panel strong{display:block;color:#b5122b;font-size:17px;margin-bottom:9px}
-.print-ad-panel label{display:block;font-weight:700;margin:8px 0 4px}
-.print-ad-panel input,.print-ad-panel textarea{display:block;width:100%;box-sizing:border-box;padding:9px;border:1px solid #cbd5e1;border-radius:6px;background:white;color:#111;font:14px Arial,sans-serif}
-.print-ad-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.print-ad-actions button{border:0;border-radius:6px;padding:9px 13px;background:#b5122b;color:#fff;font-weight:bold}
-.print-ad-actions button+button{background:#475569}
-.print-ad-panel small{display:block;margin-top:8px;color:#475569}
-.print-ad-output:empty{display:none}
-.print-ad-item{margin:3mm 0;padding:2mm;border:1px solid #b5122b;background:#fff8e8;text-align:center;break-inside:avoid}
-.print-ad-item img{display:block;max-width:100%;max-height:65mm;width:auto;height:auto;object-fit:contain;margin:0 auto}
-.print-ad-item .ad-copy{font-size:10pt;font-weight:bold;color:#9b1730;margin-top:1.5mm}
-@media print{
- *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- html,body{color-adjust:exact!important}
- .print-ad-panel{display:none!important}
- .print-ad-output:not(:empty){display:block!important;visibility:visible!important;opacity:1!important;position:static!important;width:100%!important;min-height:1px!important;break-inside:avoid!important;page-break-inside:avoid!important;column-span:all!important;margin:2.5mm 0!important}
- .print-ad-output .print-ad-item{display:block!important;visibility:visible!important;opacity:1!important;break-inside:avoid!important;page-break-inside:avoid!important}
- .print-ad-output .print-ad-item img{display:block!important;visibility:visible!important;max-width:100%!important;height:auto!important}
- .print-ad-item{background:#fffdf4!important;border:1px solid #555!important;color:#171717!important}
- .print-ad-item .ad-copy{color:#171717!important}
- .print-brand,.bd-print-masthead .name{color:#171717!important}
- .print-rule,.bd-print-masthead .rule{border-top:2px solid #171717!important;border-bottom:1px solid #171717!important}
-}
-@media print{#printAdPanel{display:none!important}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}.print-ad-remove{display:block;margin:6px auto 0;padding:5px 10px;border:0;border-radius:5px;background:#475569;color:#fff;font-size:12px}@media print{.print-ad-remove{display:none!important}}</style>
+@media print{body{background:white;padding:0}.paper{box-shadow:none;border:0;padding:0}.buttons,.home{display:none!important}}
+</style>
 </head>
 <body>
 <main class="paper">
-<div class="print-masthead">
- <div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span class="print-date"></span></div>
- <div class="print-brand">BD BARGUNA NEWS</div>
- <div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div>
- <div class="print-rule"></div>
- <div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div>
-</div>
 <header class="masthead">
-<div class="logo-mark" role="img" aria-label="BD Barguna News"><span>BD</span><b>BARGUNA</b><i>NEWS</i></div>
+<img class="logo" src="../images/app-icon.svg" alt="BD Barguna News Logo">
 <div>
 <p class="brand">BD Barguna News</p>
 <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
 </div>
 </header>
 ${articleNav}
-<div id="printAdOutput-top" class="print-ad-output"></div>
 <div class="category">${esc(n.category)}</div>
 <h1>${esc(n.title)}</h1>
 <div class="date">📅 প্রকাশিত: ${dateText}</div>
-<div id="printAdOutput-headline" class="print-ad-output"></div>
 <div id="articleViewCount" class="date" aria-live="polite">👁️ পাঠসংখ্যা লোড হচ্ছে...</div>
 ${image}
-<div id="printAdOutput-middle" class="print-ad-output"></div>
-<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"></section>
-<section class="article-qr" aria-label="QR"><img id="articleQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&amp;margin=10&amp;data=${encodeURIComponent(canonical)}" alt="QR" width="240" height="240"></section>
+<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
 <div class="article">${esc(n.body)}</div>
-<div id="printAdOutput-bottom" class="print-ad-output"></div>
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
@@ -186,27 +120,15 @@ ${image}
 <strong>প্রকাশক ও সম্পাদক</strong> · BD Barguna News
 <p>বরগুনা ও বাংলাদেশের স্থানীয়, জাতীয় এবং গুরুত্বপূর্ণ খবর পাঠকের কাছে তুলে ধরাই আমাদের লক্ষ্য। তথ্যভিত্তিক, স্পষ্ট ও পাঠকবান্ধব সংবাদ প্রকাশে আমরা কাজ করি।</p>
 <p>অফিস: শের-ই বাংলা সড়ক, বরগুনা</p>
-<p>মোবাইল: <a href="tel:+8801609320308">০১৬০৯৩২০৩০৮</a> · <a href="tel:+8809658593243">০৯৬৫৮৫৯৩২৪৩</a></p>
+<p>মোবাইল: <a href="tel:+8801609320308">০১৬০৯৩২০৩০৮</a></p>
 <p>ইমেইল: <a href="mailto:mdsaimoon518@gmail.com">mdsaimoon518@gmail.com</a></p>
 </div>
 </footer>
-<section class="print-ad-panel" id="printAdPanel">
- <strong>📢 বিজ্ঞাপন পরিচালনা</strong>
- <p>একই সংবাদে একাধিক বিজ্ঞাপন যোগ করুন এবং পত্রিকার যে স্থানে চান সেখানে বসান।</p>
- <label for="printAdPosition">বিজ্ঞাপন কোথায় বসাবেন?</label>
- <select id="printAdPosition"><option value="top">পত্রিকার একদম শুরুতে</option><option value="headline">শিরোনাম ও তারিখের নিচে</option><option value="middle">ছবির পরে / খবরের আগে</option><option value="bottom">খবরের শেষে</option></select>
- <label>বিজ্ঞাপনের আলাদা নাম</label><input id="printAdName" type="text" placeholder="যেমন: রহমান ট্রেডার্স / বিজ্ঞাপন ১"><label>বিজ্ঞাপনের ছবি (ফোন থেকে একসঙ্গে অনেকগুলো নির্বাচন করুন)</label><input id="printAdFile" type="file" accept="image/*" multiple>
- <label>অথবা বিজ্ঞাপনের ছবির লিংক</label><input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
-
- <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">＋ বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
- <p id="printAdCount" aria-live="polite">যোগ করা বিজ্ঞাপন: ০টি</p><small>প্রতিটি বিজ্ঞাপন আলাদাভাবে মুছতে পারবেন। একই স্থানে বা ভিন্ন স্থানে যত খুশি বিজ্ঞাপন যোগ করুন।</small>
-</section>
 <div class="buttons">
 <button onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
 <button class="gray" onclick="printNewsPhotoCard()">🖨️ ফটোকার্ড প্রিন্ট</button>
 <button class="gray" onclick="copyNewsPhotoCard()">📋 ফটোকার্ড কপি</button>
-<button onclick="printNewsPaper()">🖨️ সংবাদ প্রিন্ট</button>
-<button class="gray" onclick="copyArticleText()">📋 নিউজ কপি</button>
+<button onclick="window.print()">🖨️ সংবাদ প্রিন্ট</button>
 <button class="gray" onclick="copyArticleLink()">🔗 লিংক কপি</button>
 <button class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
 <button class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
@@ -215,79 +137,46 @@ ${image}
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
 </main>
 <script>
-document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅\s*প্রকাশিত:\s*/,''):'';});
 window.buildNewsPhotoCard=async function(){
- const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
- const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:"M"}):"https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=1&data="+encodeURIComponent(articleLink);
- const title=(document.querySelector('h1')?.textContent||document.title).trim();
- const wrap=(value,maxWidth,font)=>{
-  ctx.font=font;const result=[];let line='';
-  const addWord=word=>{
-   const candidate=line?line+' '+word:word;
-   if(ctx.measureText(candidate).width<=maxWidth){line=candidate;return;}
-   if(line){result.push(line);line='';}
-   if(ctx.measureText(word).width<=maxWidth){line=word;return;}
-   let part='';
-   for(const ch of Array.from(word)){
-    if(ctx.measureText(part+ch).width>maxWidth&&part){result.push(part);part=ch;}else part+=ch;
-   }
-   line=part;
-  };
-  String(value||'').trim().split(/\s+/).filter(Boolean).forEach(addWord);
-  if(line)result.push(line);return result;
- };
- const canvas=document.createElement('canvas');
+ const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1200;
  const ctx=canvas.getContext('2d');if(!ctx)throw new Error('ফটোকার্ড তৈরি করা যাচ্ছে না।');
- let titleSize=44,titleLines=[];
- for(;titleSize>24;titleSize-=2){titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');if(titleLines.length<=18&&titleLines.length*(titleSize+14)<=900)break;}
- titleLines=wrap(title,1025,'bold '+titleSize+'px "Noto Sans Bengali",Arial');
- const footerY=Math.max(1160,850+titleLines.length*(titleSize+14)+105);
- canvas.width=1200;canvas.height=footerY+245;
+ const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const category=(document.querySelector('.cat,.category')?.textContent||'সর্বশেষ সংবাদ').trim();
  const detail=(document.querySelector('.article')?.textContent||'').replace(/\s+/g,' ').trim().slice(0,145);
- const dateRaw=document.querySelector('meta[property="article:published_time"]')?.content||document.querySelector('.date:not(#articleViewCount)')?.getAttribute('datetime')||document.querySelector('.date:not(#articleViewCount)')?.textContent||new Date().toISOString();
+ const dateRaw=document.querySelector('meta[property="article:published_time"]')?.content||document.querySelector('.date')?.textContent||new Date().toISOString();
  const parsed=new Date(dateRaw),safeDate=isNaN(parsed.getTime())?new Date():parsed;
  const dateText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(safeDate);
  const dayText=new Intl.DateTimeFormat('bn-BD',{weekday:'long',timeZone:'Asia/Dhaka'}).format(safeDate);
- const photoEl=document.querySelector('#newsImage,.photo-card img,.article-image,figure img,.photo img');
- const rawPhotoUrl=photoEl?.getAttribute('src')||photoEl?.currentSrc||photoEl?.src||'';
- const photoUrl=rawPhotoUrl?new URL(rawPhotoUrl,document.baseURI).href:'';
- const logoUrl=new URL('../images/app-icon.svg?v=7',location.href).href;
- const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();try{if(new URL(src,location.href).origin!==location.origin)im.crossOrigin='anonymous';}catch(e){}im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
- const [photo,logo,qrImage]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl),loadImage(qrDataUrl)]);
+ const photoEl=document.querySelector('.photo-card img,.article-image,figure img');
+ const photoUrl=photoEl?.currentSrc||photoEl?.src||'';
+ const logoUrl=new URL('../images/app-icon.svg',location.href).href;
+ const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
+ const [photo,logo]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl)]);
  const rr=(x,y,w,h,r)=>{ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();};
- const bg=ctx.createLinearGradient(0,0,1200,1200);bg.addColorStop(0,'#071a2e');bg.addColorStop(.52,'#163653');bg.addColorStop(1,'#35172a');ctx.fillStyle=bg;ctx.fillRect(0,0,1200,1200);ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=3;rr(24,24,1152,1152,34);ctx.stroke();ctx.fillStyle='#d6a84f';ctx.fillRect(48,18,1104,7);
+ const bg=ctx.createLinearGradient(0,0,1200,1200);bg.addColorStop(0,'#111827');bg.addColorStop(.55,'#18263b');bg.addColorStop(1,'#273c59');ctx.fillStyle=bg;ctx.fillRect(0,0,1200,1200);
  ctx.fillStyle='#c51b36';ctx.fillRect(0,0,1200,18);ctx.fillStyle='rgba(255,255,255,.06)';ctx.beginPath();ctx.arc(1110,105,190,0,Math.PI*2);ctx.fill();
  if(logo){ctx.save();rr(58,48,92,92,22);ctx.fillStyle='#fff';ctx.fill();ctx.clip();const sc=Math.min(78/logo.naturalWidth,78/logo.naturalHeight);ctx.drawImage(logo,104-logo.naturalWidth*sc/2,94-logo.naturalHeight*sc/2,logo.naturalWidth*sc,logo.naturalHeight*sc);ctx.restore();}
  ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText('BD BARGUNA NEWS',174,88);ctx.fillStyle='#cbd5e1';ctx.font='23px Arial';ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',174,126);
- ctx.fillStyle='#f8fafc';ctx.font='bold 19px Arial';ctx.textAlign='right';ctx.fillText('NEWS • বরগুনা',1138,95);ctx.textAlign='left';ctx.save();rr(805,112,333,42,18);ctx.fillStyle='rgba(255,255,255,.14)';ctx.fill();ctx.fillStyle='#f5d58a';ctx.font='bold 19px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('প্রকাশের তারিখ: '+dateText,971,141);ctx.textAlign='left';ctx.restore();
+ ctx.fillStyle='#f8fafc';ctx.font='bold 19px Arial';ctx.textAlign='right';ctx.fillText('NEWS • বরগুনা',1138,95);ctx.textAlign='left';
  ctx.save();rr(48,170,1104,535,28);ctx.clip();
- if(photo){ctx.fillStyle='#172b40';ctx.fillRect(48,170,1104,535);const scale=Math.min(1104/photo.naturalWidth,535/photo.naturalHeight),dw=photo.naturalWidth*scale,dh=photo.naturalHeight*scale;ctx.drawImage(photo,48+(1104-dw)/2,170+(535-dh)/2,dw,dh);}
+ if(photo){const scale=Math.max(1104/photo.naturalWidth,535/photo.naturalHeight),sw=1104/scale,sh=535/scale;ctx.drawImage(photo,(photo.naturalWidth-sw)/2,(photo.naturalHeight-sh)/2,sw,sh,48,170,1104,535);}
  else{const pg=ctx.createLinearGradient(48,170,1152,705);pg.addColorStop(0,'#334b6c');pg.addColorStop(1,'#0f172a');ctx.fillStyle=pg;ctx.fillRect(48,170,1104,535);ctx.fillStyle='rgba(255,255,255,.14)';ctx.font='bold 64px Arial';ctx.fillText('BD BARGUNA NEWS',100,440);}
  const shade=ctx.createLinearGradient(0,430,0,705);shade.addColorStop(0,'rgba(5,12,24,0)');shade.addColorStop(1,'rgba(5,12,24,.82)');ctx.fillStyle=shade;ctx.fillRect(48,420,1104,285);
  ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText('সত্যের খবর, সবার আগে',82,665);ctx.restore();
- ctx.save();rr(48,675,1104,footerY+135-675,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
+ ctx.save();rr(48,675,1104,390,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
  ctx.fillStyle='#c51b36';rr(82,710,250,52,16);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 23px "Noto Sans Bengali",Arial';ctx.fillText(category.slice(0,18),104,745);
  ctx.fillStyle='#64748b';ctx.font='bold 22px "Noto Sans Bengali",Arial';ctx.textAlign='right';ctx.fillText(dayText,1115,745);ctx.textAlign='left';
- ctx.fillStyle='#111827';ctx.font='bold '+titleSize+'px "Noto Sans Bengali",Arial';let y=850;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=titleSize+14;});
+ const wrap=(text,maxWidth,font,maxLines)=>{ctx.font=font;const words=text.split(/\s+/),lines=[];let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>maxWidth&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);if(lines.length>maxLines){lines.length=maxLines;let last=lines[maxLines-1];while(last.length&&ctx.measureText(last+'…').width>maxWidth)last=last.slice(0,-1);lines[maxLines-1]=last+'…';}return lines;};
+ const titleLines=wrap(title,1025,'bold 46px "Noto Sans Bengali",Arial',2);
+ ctx.fillStyle='#111827';ctx.font='bold 46px "Noto Sans Bengali",Arial';let y=825;titleLines.forEach(line=>{ctx.fillText(line,82,y);y+=58;});
  
- ctx.fillStyle='#e2e8f0';ctx.fillRect(82,footerY,1036,2);ctx.fillStyle='#d6a84f';ctx.fillRect(82,footerY,1036,4);
- ctx.fillStyle='#334155';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,footerY+35);ctx.textAlign='left';rr(82,footerY+55,1036,52,14);ctx.fillStyle='#c51b36';ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮ | ০৯৬৫৮৫৯৩২৪৩',485,footerY+89);ctx.textAlign='left';
- if(qrImage){ctx.save();ctx.fillStyle="#fff";ctx.fillRect(955,footerY+42,165,165);ctx.strokeStyle="#c51b36";ctx.lineWidth=4;ctx.strokeRect(955,footerY+42,165,165);ctx.drawImage(qrImage,970,footerY+57,135,135);ctx.restore();}
+ ctx.fillStyle='#e2e8f0';ctx.fillRect(82,1000,1036,2);ctx.fillStyle='#c51b36';ctx.fillRect(82,1000,140,5);
+ ctx.fillStyle='#475569';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,1035);ctx.textAlign='right';ctx.font='20px "Noto Sans Bengali",Arial';ctx.fillText(dateText,1118,1035);ctx.textAlign='left';
  return canvas;
 };
 window.downloadNewsPhotoCard=async function(){
  try{const canvas=await window.buildNewsPhotoCard();canvas.toBlob(blob=>{if(!blob){alert('ফটোকার্ড তৈরি হয়নি।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='bd-barguna-news-photo-card.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);},'image/png');}
  catch(e){alert(e.message||'ফটোকার্ড তৈরি করা যায়নি।');}
-};
-window.printNewsPaper=async function(){
- try{
-  const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
-  outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
-  const images=Array.from(document.querySelectorAll('.print-ad-output img,#articleQrImage'));
-  await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,8000);})));
-  window.print();
- }catch(e){window.print();}
 };
 window.printNewsPhotoCard=async function(){
  try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
@@ -296,22 +185,6 @@ window.printNewsPhotoCard=async function(){
 window.copyNewsPhotoCard=async function(){
  try{const canvas=await window.buildNewsPhotoCard();const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('ছবি তৈরি করা যায়নি।');if(!navigator.clipboard||!window.ClipboardItem)throw new Error('এই ব্রাউজারে ছবি কপি সুবিধা নেই—ডাউনলোড বাটন ব্যবহার করুন।');await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);alert('ফটোকার্ড কপি হয়েছে। এখন Facebook পোস্টে পেস্ট করতে পারবেন।');}
  catch(e){alert(e.message||'ফটোকার্ড কপি করা যায়নি।');}
-};
-window.copyArticleText=async function(){
- const title=(document.querySelector('h1')?.textContent||document.title).trim();
- const category=(document.querySelector('.category')?.textContent||'').trim();
- const date=(document.querySelector('.date')?.textContent||'').trim();
- const body=(document.querySelector('.article')?.textContent||'').trim();
- const text=[title,category,date,body,'সংবাদের লিংক: '+location.href].filter(Boolean).join('\\n\\n');
- try{
-  if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
-  else{
-   const field=document.createElement('textarea');field.value=text;field.style.position='fixed';field.style.opacity='0';
-   document.body.appendChild(field);field.focus();field.select();
-   const ok=document.execCommand('copy');field.remove();if(!ok)throw new Error('কপি করা যায়নি');
-  }
-  alert('সম্পূর্ণ সংবাদ কপি হয়েছে।');
- }catch(e){window.prompt('সংবাদটি কপি করুন:',text);}
 };
 window.copyArticleLink=async function(){
  const text=location.href;
@@ -338,7 +211,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
-window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');try{const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';const qrEl=document.getElementById('articleQrImage');if(qrEl&&qr)qrEl.src=qr;if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}const note=preview?.parentElement?.querySelector('.preview-note');if(note)note.textContent='QR/ফটোকার্ড তৈরি হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।';console.error('BD Barguna QR/photo card error:',e);}});
+window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');if(!preview||!window.buildNewsPhotoCard)return;try{const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');}catch(e){preview.alt='ফটোকার্ড প্রিভিউ লোড হয়নি। ডাউনলোড বাটন ব্যবহার করুন।';}});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
@@ -347,46 +220,6 @@ firebase.auth().signInAnonymously().then(()=>firebase.database().ref("articleVie
 document.getElementById("articleComments").src="https://www.facebook.com/plugins/comments.php?href="+encodeURIComponent(location.href)+"&width=100%25&numposts=10&order_by=reverse_time";
 })();
 <\/script>
-<script id="bd-print-ad-script">
-const BD_AD_KEY='bd-barguna-print-ads:'+location.pathname;
-function bdGetPrintAds(){try{return JSON.parse(localStorage.getItem(BD_AD_KEY)||'[]');}catch(e){return [];}}
-function bdRenderPrintAd(ad){
- const out=document.getElementById('printAdOutput-'+ad.position);if(!out)return;
- const item=document.createElement('div');item.className='print-ad-item';item.dataset.position=ad.position;
- const nameLabel=document.createElement('div');nameLabel.className='ad-name';nameLabel.textContent=ad.name||'বিজ্ঞাপন';item.appendChild(nameLabel);
- const nameInput=document.createElement('input');nameInput.type='text';nameInput.className='print-ad-name';nameInput.value=ad.name||'বিজ্ঞাপন';nameInput.setAttribute('aria-label','বিজ্ঞাপনের নাম');nameInput.oninput=()=>{nameLabel.textContent=nameInput.value.trim()||'বিজ্ঞাপন';bdSavePrintAds();};item.appendChild(nameInput);
- if(ad.src){const img=document.createElement('img');img.src=ad.src;img.alt=ad.name||'বিজ্ঞাপন';item.appendChild(img);}
- const rm=document.createElement('button');rm.type='button';rm.className='print-ad-remove';rm.textContent='এই বিজ্ঞাপন মুছুন';rm.onclick=()=>{item.remove();bdSavePrintAds();bdUpdatePrintAdCount();};item.appendChild(rm);
- out.appendChild(item);out.style.display='block';
-}
-function bdSavePrintAds(){
- const ads=Array.from(document.querySelectorAll('.print-ad-item')).map(item=>({name:item.querySelector('.print-ad-name')?.value.trim()||'বিজ্ঞাপন',position:item.dataset.position,src:item.querySelector('img')?.src||''}));
- try{localStorage.setItem(BD_AD_KEY,JSON.stringify(ads));return true;}catch(e){return false;}
-}
-function bdUpdatePrintAdCount(){const count=document.getElementById('printAdCount'),total=document.querySelectorAll('.print-ad-item').length;if(count)count.textContent='যোগ করা বিজ্ঞাপন: '+total.toLocaleString('bn-BD')+'টি';}
-function bdRestorePrintAds(){bdGetPrintAds().forEach(bdRenderPrintAd);bdUpdatePrintAdCount();}
-async function bdCompressAdFile(file){
- const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('বিজ্ঞাপনের ছবি পড়া যায়নি'));reader.readAsDataURL(file);});
- const image=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(new Error('বিজ্ঞাপনের ছবি খোলা যায়নি'));im.src=data;});
- const scale=Math.min(1,1400/image.naturalWidth),canvas=document.createElement('canvas');canvas.width=Math.round(image.naturalWidth*scale);canvas.height=Math.round(image.naturalHeight*scale);
- canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/jpeg',.78);
-}
-window.bdAddPrintAd=async function(){
- const file=document.getElementById('printAdFile'),url=document.getElementById('printAdUrl'),position=document.getElementById('printAdPosition'),nameField=document.getElementById('printAdName');
- const files=file&&file.files?Array.from(file.files):[],link=url?url.value.trim():'',baseName=nameField&&nameField.value.trim()?nameField.value.trim():'বিজ্ঞাপন';
- if(!files.length&&!link){alert('বিজ্ঞাপনের ছবি নির্বাচন করুন অথবা বিজ্ঞাপনের ছবির লিংক দিন।');return;}
- const start=(position&&position.value)||'top',slots=['top','headline','middle','bottom'],sources=[];
- for(const f of files)sources.push(await bdCompressAdFile(f));
- if(!sources.length&&link)sources.push(link);if(!sources.length)sources.push('');
- const ads=bdGetPrintAds(),newAds=sources.map((src,index)=>({name:sources.length>1?baseName+' '+(index+1):baseName,position:slots[(slots.indexOf(start)+index)%slots.length],src})));
- newAds.forEach(bdRenderPrintAd);const saved=bdSavePrintAds();bdUpdatePrintAdCount();
- if(file)file.value='';if(url)url.value='';if(nameField)nameField.value='';
- if(!saved)alert('বিজ্ঞাপন এই পেজে যোগ হয়েছে, তবে ব্রাউজারের জায়গা কম থাকায় সংরক্ষণ হয়নি।');
- else alert(newAds.length+'টি বিজ্ঞাপন যোগ হয়েছে। এখন সংবাদ প্রিন্ট চাপুন।');
-};
-window.bdClearPrintAds=function(){document.querySelectorAll('.print-ad-output').forEach(out=>out.replaceChildren());try{localStorage.removeItem(BD_AD_KEY);}catch(e){}bdUpdatePrintAdCount();};
-document.addEventListener('DOMContentLoaded',bdRestorePrintAds);
-</script>
 </body>
 </html>`;
 };
