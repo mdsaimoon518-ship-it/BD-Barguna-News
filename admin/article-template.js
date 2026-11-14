@@ -210,9 +210,9 @@ document.addEventListener('DOMContentLoaded',function(){
 </head>
 <body>
 <main class="paper">
-<div class="print-masthead"><div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span>${dateText}</span></div><div class="print-brand"><img class="print-logo" src="../images/site-logo.svg" alt="BD Barguna News">BD BARGUNA NEWS</div><div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div><div class="print-rule"></div><div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div></div>
+<div class="print-masthead"><div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span>${dateText}</span></div><div class="print-brand"><img class="print-logo" src="../images/site-logo.svg?v=7" alt="BD Barguna News">BD BARGUNA NEWS</div><div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div><div class="print-rule"></div><div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div></div>
 <header class="masthead">
-<img class="channel-logo" src="../images/site-logo.svg" alt="BD Barguna News লোগো">
+<img class="channel-logo" src="../images/site-logo.svg?v=7" alt="BD Barguna News লোগো">
 <div>
 <p class="brand">BD Barguna News</p>
 <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
