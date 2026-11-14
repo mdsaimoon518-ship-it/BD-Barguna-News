@@ -11,15 +11,15 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "../images/app-icon.jpg?v=8?v=6",
+      "src": "../images/channel-logo.svg?v=20261116",
       "sizes": "any",
-      "type": "image/jpeg",
+      "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "../images/app-icon.jpg?v=8?v=6",
+      "src": "../images/channel-logo.svg?v=20261116",
       "sizes": "any",
-      "type": "image/jpeg",
+      "type": "image/svg+xml",
       "purpose": "maskable"
     }
   ]
