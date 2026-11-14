@@ -848,8 +848,8 @@ $("cancelEdit").onclick=()=>{
 };
 
 async function ensureArticleTemplate(){
- if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114pdf-fix4")return;
- const cacheKey="20261114pdf-fix4";
+ if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114pdf-fix5")return;
+ const cacheKey="20261114pdf-fix5";
  const sources=[
   new URL("./article-template.js?v="+cacheKey+"&retry="+Date.now(),location.href).href,
   "https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/admin/article-template.js?v="+cacheKey+"&retry="+Date.now()
@@ -878,6 +878,16 @@ function validateArticlePage(html){
   if(html.includes('<p class="home">')) html=html.replace('<p class="home">',actions+'<p class="home">');
   else if(html.includes('</main>')) html=html.replace('</main>',actions+'</main>');
   else throw new Error("সংবাদের শেষে বাটন বসানোর জায়গা পাওয়া যায়নি।");
+ }
+ // PDF action is repaired automatically for older or partially cached templates.
+ if(!html.includes('PDF ডাউনলোড')){
+  const pdfButton='<button type="button" onclick="downloadNewsPDF()">📄 PDF ডাউনলোড</button>';
+  if(html.includes('<div class="buttons">')) html=html.replace('<div class="buttons">','<div class="buttons">'+pdfButton);
+  else throw new Error("PDF বাটন বসানোর জায়গা পাওয়া যায়নি।");
+ }
+ if(!html.includes('downloadNewsPDF')){
+  const pdfScript='<script>window.downloadNewsPDF=async function(){try{if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){alert("PDF লাইব্রেরি লোড হয়নি। প্রিন্ট অপশন থেকে Save as PDF নির্বাচন করুন।");window.print();return;}const node=document.querySelector(".paper")||document.querySelector("main")||document.body;const canvas=await window.html2canvas(node,{scale:1.5,useCORS:true,backgroundColor:"#ffffff"});const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});const pageW=210,pageH=297;const img=canvas.toDataURL("image/jpeg",0.88);const ratio=Math.min(pageW/canvas.width,pageH/canvas.height);const w=canvas.width*ratio,h=canvas.height*ratio;pdf.addImage(img,"JPEG",(pageW-w)/2,5,w,h);pdf.save("BD-Barguna-News.pdf");}catch(e){alert("PDF তৈরি করা যায়নি: "+(e.message||e));}};<\/script>';
+  html=html.replace('</body>',pdfScript+'</body>');
  }
  const required=["downloadNewsPhotoCard","downloadNewsPDF","PDF ডাউনলোড","copyArticleLink","buildNewsPhotoCard","bd-article-actions","Facebook শেয়ার","WhatsApp শেয়ার","নিউজ প্রিন্ট"];
  const missing=required.filter(key=>!html.includes(key));
