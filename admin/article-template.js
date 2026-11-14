@@ -235,7 +235,6 @@ ${image}
 <section class="bd-article-actions" aria-label="সংবাদ ডাউনলোড ও শেয়ার">
 <h2>সংবাদ ডাউনলোড ও শেয়ার করুন</h2>
 <div class="buttons">
-<button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
 <button type="button" onclick="printNewsPaper()">🖨️ নিউজ প্রিন্ট</button>
 <button type="button" class="gray" onclick="copyArticleText()">📝 নিউজ কপি</button>
 <button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button>
@@ -244,6 +243,7 @@ ${image}
 </div>
 </section>
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
+<div class="buttons bd-photo-download-end"><button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটো কার্ড ডাউনলোড</button></div>
 </main>
 <script>
 window.downloadNewsPDF=async function(){
@@ -346,18 +346,18 @@ window.buildNewsPhotoCard=async function(){
  if(logo){ctx.save();rr(58,48,92,92,22);ctx.fillStyle='#fff';ctx.fill();ctx.clip();const sc=Math.min(78/logo.naturalWidth,78/logo.naturalHeight);ctx.drawImage(logo,104-logo.naturalWidth*sc/2,94-logo.naturalHeight*sc/2,logo.naturalWidth*sc,logo.naturalHeight*sc);ctx.restore();}
  ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText('BD BARGUNA NEWS',174,88);ctx.fillStyle='#cbd5e1';ctx.font='23px Arial';ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',174,126);
  ctx.fillStyle='#f8fafc';ctx.font='bold 19px Arial';ctx.textAlign='right';ctx.fillText('NEWS • বরগুনা',1138,95);ctx.textAlign='left';
- ctx.save();rr(48,170,1104,535,28);ctx.clip();
+ ctx.save();rr(48,170,1104,505,28);ctx.clip();
  const drawContain=(im,x,y,w,h)=>{if(!im)return;const scale=Math.min(w/im.naturalWidth,h/im.naturalHeight);const dw=im.naturalWidth*scale,dh=im.naturalHeight*scale;ctx.fillStyle='#fff';ctx.fillRect(x,y,w,h);ctx.drawImage(im,x+(w-dw)/2,y+(h-dh)/2,dw,dh);};
- ctx.fillStyle='#e8edf3';ctx.fillRect(48,170,1104,535);
+ ctx.fillStyle='#e8edf3';ctx.fillRect(48,170,1104,505);
  if(usablePhotos.length>=3){
   const colW=360,imgY=170,imgH=330,gap=12;
   usablePhotos.slice(0,3).forEach((photo,i)=>{
    const x=48+i*(colW+gap);
-   ctx.fillStyle='#fff';ctx.fillRect(x,imgY,colW,535);
+   ctx.fillStyle='#fff';ctx.fillRect(x,imgY,colW,505);
    drawContain(photo,x,imgY,colW,imgH);
    ctx.fillStyle='#e2e8f0';ctx.fillRect(x,imgY+imgH,colW,2);
    const label=photoEntries[i]?.caption||('ছবি '+(i+1));
-   ctx.save();ctx.beginPath();ctx.rect(x+10,510,colW-20,175);ctx.clip();
+   ctx.save();ctx.beginPath();ctx.rect(x+10,510,colW-20,155);ctx.clip();
    ctx.fillStyle='#17212b';ctx.font='bold 22px "Noto Sans Bengali",Arial';ctx.textAlign='center';
    const words=label.split(/\s+/);let line='',lines=[],maxW=colW-28;
    for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width<=maxW){line=next;}else{if(line)lines.push(line);line=word;}}
@@ -366,8 +366,8 @@ window.buildNewsPhotoCard=async function(){
    ctx.restore();ctx.textAlign='left';
   });
  }else if(usablePhotos.length===2){
-  drawContain(usablePhotos[0],48,170,546,535);ctx.fillStyle='#fff';ctx.fillRect(594,170,6,535);drawContain(usablePhotos[1],600,170,552,535);
- }else if(usablePhotos.length===1){drawContain(usablePhotos[0],48,170,1104,535);}
+  drawContain(usablePhotos[0],48,170,546,505);ctx.fillStyle='#fff';ctx.fillRect(594,170,6,505);drawContain(usablePhotos[1],600,170,552,505);
+ }else if(usablePhotos.length===1){drawContain(usablePhotos[0],48,170,1104,505);}
  else{const pg=ctx.createLinearGradient(48,170,1152,705);pg.addColorStop(0,'#334b6c');pg.addColorStop(1,'#0f172a');ctx.fillStyle=pg;ctx.fillRect(48,170,1104,535);ctx.fillStyle='rgba(255,255,255,.14)';ctx.font='bold 64px Arial';ctx.fillText('BD BARGUNA NEWS',100,440);}
  ctx.restore();
  const panelHeight=390+extraHeight;ctx.save();rr(48,675,1104,panelHeight,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
