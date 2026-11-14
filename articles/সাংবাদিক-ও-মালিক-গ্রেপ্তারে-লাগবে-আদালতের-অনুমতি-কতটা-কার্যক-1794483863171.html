@@ -59,12 +59,12 @@ h1{font-size:30px;line-height:1.5}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
 @media(max-width:500px){.paper{padding:15px}h1{font-size:23px}.brand{font-size:20px}.article{font-size:16px}}
-@media screen{.print-masthead{display:none!important}}
+@media screen{.print-masthead{position:relative;display:none!important}}
 @page{size:A4 portrait;margin:9mm 10mm 11mm}
 @media print{
  html,body{margin:0!important;padding:0!important;background:#fffdf4!important;color:#171717!important;font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
  .paper{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fffdf4!important}
- .print-masthead{display:block!important;margin:0 0 3mm!important;padding:0 0 2mm!important;color:#171717!important;break-inside:avoid!important;border-bottom:3px double #171717!important;text-align:center!important}
+ .print-masthead{position:relative;display:block!important;margin:0 0 3mm!important;padding:0 0 2mm!important;color:#171717!important;break-inside:avoid!important;border-bottom:3px double #171717!important;text-align:center!important}
  .print-topline{display:flex!important;justify-content:space-between!important;gap:6px!important;font-size:7.5pt!important;border-bottom:1px solid #333!important;padding-bottom:1.5mm!important}
  .print-brand{font-family:Georgia,"Noto Serif Bengali",serif!important;font-size:31pt!important;letter-spacing:.5px!important;line-height:1.08!important;font-weight:900!important;color:#171717!important;margin:1.5mm 0!important}
  .print-tagline{font-size:9pt!important;font-weight:700!important;letter-spacing:.4px!important}
@@ -85,7 +85,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  .print-ad-item .ad-copy{font-size:8.5pt!important;font-weight:700!important;color:#171717!important;margin-top:1mm!important}
  a{color:inherit!important;text-decoration:none!important}
 }
-.logo-mark{box-sizing:border-box;display:flex!important;flex:0 0 82px;width:82px;height:82px;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:linear-gradient(145deg,#06452f,#111d2b)!important;border:3px solid #d9ad4b!important;border-radius:13px!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);color:#fff!important;line-height:1!important;padding:5px!important;text-align:center}.logo-mark span{font:bold 32px/1 Arial,sans-serif;color:#ffe08a!important}.logo-mark b{font:bold 10px/1 Arial,sans-serif;letter-spacing:1px;color:#fff!important}.logo-mark i{font:bold normal 10px/1 Arial,sans-serif;letter-spacing:2px;color:#fff!important;background:#b5122b;padding:3px 10px;border-radius:10px}</style>
+.logo-mark{box-sizing:border-box;display:flex!important;flex:0 0 82px;width:82px;height:82px;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:linear-gradient(145deg,#06452f,#111d2b)!important;border:3px solid #d9ad4b!important;border-radius:13px!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);color:#fff!important;line-height:1!important;padding:5px!important;text-align:center}.logo-mark span{font:bold 32px/1 Arial,sans-serif;color:#ffe08a!important}.logo-mark b{font:bold 10px/1 Arial,sans-serif;letter-spacing:1px;color:#fff!important}.logo-mark i{font:bold normal 10px/1 Arial,sans-serif;letter-spacing:2px;color:#fff!important;background:#b5122b;padding:3px 10px;border-radius:10px} .article-qr{display:none!important}.print-qr-code{display:none}@media print{.print-qr-code{display:block!important;position:absolute!important;right:1mm!important;top:8mm!important;width:18mm!important;height:18mm!important;object-fit:contain!important}} </style>
 <style id="bd-print-ad-style">
 .print-ad-item .ad-name{font-weight:700;color:#8b1529;margin:0 0 5px}.print-ad-item .print-ad-name{display:block;width:100%;padding:7px;border:1px dashed #b5122b;border-radius:5px;margin:4px 0}.print-ad-item .print-ad-remove{margin-top:5px;background:#b42318;color:#fff}
 #printAdPanel{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:5!important;margin:18px 0!important;padding:16px!important;background:#fff8f0!important;border:2px solid #b5122b!important;border-radius:10px!important;color:#202936!important} .print-ad-panel{margin:16px 0;padding:14px;border:2px dashed #b5122b;border-radius:10px;background:#fff8f0;color:#202936;font:14px Arial,sans-serif}
@@ -122,7 +122,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  <div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div>
  <div class="print-rule"></div>
  <div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div>
-</div>
+<img id="printQrImage" class="print-qr-code" alt="সংবাদ স্ক্যান করুন"></div>
 <header class="masthead">
 <div class="logo-mark" role="img" aria-label="BD Barguna News"><span>BD</span><b>BARGUNA</b><i>NEWS</i></div>
 <div>
@@ -143,7 +143,6 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  </div>
 <div id="printAdOutput-middle" class="print-ad-output"></div>
 <section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো, প্রকাশের তারিখ ও এই নিউজের নিজস্ব QR স্ক্যানারসহ ফটোকার্ড</p></section>
-<section class="article-qr" aria-label="এই সংবাদের QR কোড"><img id="articleQrImage" alt="এই সংবাদের QR কোড"><div><strong>এই নিউজটি স্ক্যান করুন</strong><span>মোবাইল ক্যামেরা দিয়ে QR কোড স্ক্যান করলে সরাসরি এই সংবাদটি খুলবে</span><small>https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/articles/%E0%A6%B8%E0%A6%BE%E0%A6%82%E0%A6%AC%E0%A6%BE%E0%A6%A6%E0%A6%BF%E0%A6%95-%E0%A6%93-%E0%A6%AE%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95-%E0%A6%97%E0%A7%8D%E0%A6%B0%E0%A7%87%E0%A6%AA%E0%A7%8D%E0%A6%A4%E0%A6%BE%E0%A6%B0%E0%A7%87-%E0%A6%B2%E0%A6%BE%E0%A6%97%E0%A6%AC%E0%A7%87-%E0%A6%86%E0%A6%A6%E0%A6%BE%E0%A6%B2%E0%A6%A4%E0%A7%87%E0%A6%B0-%E0%A6%85%E0%A6%A8%E0%A7%81%E0%A6%AE%E0%A6%A4%E0%A6%BF-%E0%A6%95%E0%A6%A4%E0%A6%9F%E0%A6%BE-%E0%A6%95%E0%A6%BE%E0%A6%B0%E0%A7%8D%E0%A6%AF%E0%A6%95-1794483863171.html</small></div></section>
 <div class="article">সাংবাদিকতা কোনো অপরাধ নয়, সত্য প্রকাশও অপরাধ হতে পারে না। অথচ দায়িত্ব পালন করতে গিয়ে সাংবাদিকদের বিরুদ্ধে মামলা, গ্রেপ্তার, হয়রানি ও নানা ধরনের চাপের অভিযোগ নতুন কিছু নয়। কখনো সংবাদ প্রকাশের জেরে, কখনো অনুসন্ধানী প্রতিবেদন কিংবা ক্ষমতাসীনদের সমালোচনা করার কারণে সাংবাদিকদের আইনি জটিলতার মুখোমুখি হতে হয়। এমন বাস্তবতায় সাংবাদিক ও গণমাধ্যমের মালিকদের গ্রেপ্তারের আগে আদালতের অনুমতি নেওয়ার প্রস্তাব নিঃসন্দেহে একটি গুরুত্বপূর্ণ আলোচনার বিষয়।
 
 সম্প্রতি সাইবার সুরক্ষা (সংশোধন) আইন, ২০২৬-এর খসড়া পর্যালোচনায় সংবাদ প্রকাশ বা সম্প্রচারের কারণে কোনো সাংবাদিক, গণমাধ্যমের মালিক কিংবা সংশ্লিষ্ট দায়িত্বশীল ব্যক্তিকে গ্রেপ্তারের আগে এখতিয়ারসম্পন্ন আদালতের পূর্বানুমতি নেওয়ার বিধান অন্তর্ভুক্ত করার বিষয়ে নীতিগত ঐকমত্যের কথা জানা গেছে। ৫ নভেম্বর তথ্য ও সম্প্রচার প্রতিমন্ত্রীও জানিয়েছেন, বিষয়টি সরকার গুরুত্বের সঙ্গে বিবেচনা করছে। তবে আইন পাস হওয়ার আগে চূড়ান্ত সিদ্ধান্ত বলা সম্ভব নয়। 
@@ -304,7 +303,7 @@ window.printNewsPaper=async function(){
  try{
   const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
   outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
-  const images=Array.from(document.querySelectorAll('.print-ad-output img,#articleQrImage'));
+  const images=Array.from(document.querySelectorAll('.print-ad-output img,.print-qr-code'));
   await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,8000);})));
   window.print();
  }catch(e){window.print();}
@@ -358,7 +357,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
-window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');try{const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';const qrEl=document.getElementById('articleQrImage');if(qrEl&&qr)qrEl.src=qr;if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}const note=preview?.parentElement?.querySelector('.preview-note');if(note)note.textContent='QR/ফটোকার্ড তৈরি হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।';console.error('BD Barguna QR/photo card error:',e);}});
+window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');try{const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:220,margin:1,errorCorrectionLevel:'M'}):'';const printQr=document.getElementById("printQrImage");if(printQr&&qr)printQr.src=qr;if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}const note=preview?.parentElement?.querySelector('.preview-note');if(note)note.textContent='QR/ফটোকার্ড তৈরি হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।';console.error('BD Barguna QR/photo card error:',e);}});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
