@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="20261114gallery6";
+window.articleTemplateVersion="20261114gallery7";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -213,12 +213,15 @@ window.buildNewsPhotoCard=async function(){
  const dayText=new Intl.DateTimeFormat('bn-BD',{weekday:'long',timeZone:'Asia/Dhaka'}).format(safeDate);
  const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
  const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:1,errorCorrectionLevel:'M'}):'';
- const photoEls=Array.from(document.querySelectorAll('.photo-gallery img,.photo-card img,.article-image,figure img')).filter(el=>!el.closest('.photo-card-preview')).slice(0,3);
- const photoEntries=photoEls.map((el,i)=>({
-  url:el.currentSrc||el.src||el.getAttribute('src'),
-  caption:(el.closest('figure')?.querySelector('figcaption,.caption')?.textContent||el.closest('.photo-card')?.querySelector('.caption')?.textContent||'').trim()||('ছবি '+(i+1))
- })).filter(item=>item.url);
- const photoUrls=[...new Set(photoEntries.map(item=>item.url))].slice(0,3);
+ const galleryFigures=Array.from(document.querySelectorAll('.photo-gallery figure.photo-card'));
+ const galleryEntries=galleryFigures.map((figure,i)=>{
+  const el=figure.querySelector('img');
+  return el?{url:el.currentSrc||el.src||el.getAttribute('src'),caption:(figure.querySelector('figcaption,.caption')?.textContent||'').trim()||('ছবি '+(i+1))}:null;
+ }).filter(item=>item&&item.url);
+ const fallbackEls=Array.from(document.querySelectorAll('.article-image, figure img')).filter(el=>!el.closest('.photo-card-preview')&&!el.closest('.photo-gallery'));
+ const fallbackEntries=fallbackEls.map((el,i)=>({url:el.currentSrc||el.src||el.getAttribute('src'),caption:(el.closest('figure')?.querySelector('figcaption,.caption')?.textContent||'').trim()||('ছবি '+(i+1))})).filter(item=>item.url);
+ const photoEntries=[...galleryEntries,...fallbackEntries].filter((item,i,all)=>all.findIndex(x=>x.url===item.url)===i).slice(0,3);
+ const photoUrls=photoEntries.map(item=>item.url);
  const logoUrl=new URL('../images/app-icon.svg',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
  const [photos,logo,qr]=await Promise.all([Promise.all(photoUrls.map(loadImage)),loadImage(logoUrl),loadImage(qrDataUrl)]);
