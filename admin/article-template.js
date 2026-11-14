@@ -227,13 +227,11 @@ ${image}
 সত্যের সন্ধানে, মানুষের পাশে।
 
 </footer>
-<section class="bd-article-actions" aria-label="সংবাদ ব্যবহার ও শেয়ার">
-<h2>সংবাদটি সংরক্ষণ ও শেয়ার করুন</h2>
+<section class="bd-article-actions" aria-label="সংবাদ ডাউনলোড ও শেয়ার">
+<h2>সংবাদ ডাউনলোড ও শেয়ার করুন</h2>
 <div class="buttons">
 <button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
-<button type="button" onclick="copyArticleText()">📋 সম্পূর্ণ নিউজ কপি</button>
 <button type="button" onclick="window.print()">🖨️ নিউজ প্রিন্ট</button>
-<button type="button" onclick="downloadNewsPDF()">📄 PDF ডাউনলোড</button>
 <button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button>
 <button type="button" class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
 <button type="button" class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
@@ -273,6 +271,14 @@ window.downloadNewsPDF=async function(){
   }finally{staging.remove();}
  }catch(error){alert(error.message||'PDF ডাউনলোড করা যায়নি।');}
  finally{if(button){button.disabled=false;button.textContent=oldText;}}
+};
+window.copyArticleLink=async function(){
+ const link=location.href;
+ try{
+  if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);
+  else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();const ok=document.execCommand('copy');field.remove();if(!ok)throw new Error('কপি করা যায়নি');}
+  alert('সংবাদের লিংক কপি হয়েছে।');
+ }catch(e){window.prompt('এই লিংকটি কপি করুন:',link);}
 };
 window.buildNewsPhotoCard=async function(){
  const title=(document.querySelector('h1')?.textContent||document.title).replace(/\s+/g,' ').trim();
