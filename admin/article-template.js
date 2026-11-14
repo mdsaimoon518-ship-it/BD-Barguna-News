@@ -148,6 +148,15 @@ h1{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;text-ali
 @media(max-width:650px){.paper{padding:0 14px!important}.masthead .brand{font-size:19px!important}.article-nav a{padding:10px!important;font-size:12px!important}.article{font-size:17px!important;line-height:1.95!important}h1{font-size:26px!important}}
 @media print{.masthead,.article-nav,.bd-breadcrumb,.bd-story-tools,.buttons,.home{display:none!important}.paper{padding:0!important}.article{font-size:12pt!important}}
 </style>
+<style id="bd-print-three-photo-layout">
+@media print{
+.photo-card-preview,#photoCardPreview{display:none!important}
+.photo-gallery{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4mm!important;width:100%!important;margin:2mm 0 3mm!important;break-inside:avoid!important;page-break-inside:avoid!important}
+.photo-gallery .photo-card{float:none!important;display:block!important;width:auto!important;min-width:0!important;margin:0!important;padding:1.5mm!important;border:1px solid #888!important;background:#fff!important;break-inside:avoid!important;page-break-inside:avoid!important}
+.photo-gallery .photo-card img{display:block!important;width:100%!important;height:42mm!important;max-height:42mm!important;object-fit:contain!important;margin:0 auto!important}
+.photo-gallery .caption{display:block!important;text-align:center!important;font-size:8.5pt!important;line-height:1.35!important;padding:1.5mm 0 0!important;color:#111!important;font-weight:700!important}
+}
+</style>
 <script id="bd-story-toolbar-script">
 document.addEventListener('DOMContentLoaded',function(){
  const paper=document.querySelector('.paper');if(!paper||paper.querySelector('.bd-story-tools'))return;
