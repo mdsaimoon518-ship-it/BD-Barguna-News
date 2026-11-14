@@ -35,7 +35,9 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 
 <label>GitHub Token</label>
 <input id="token" type="password" autocomplete="off" placeholder="GitHub Token দিন">
-<p class="note">Token গোপন রাখবেন। কাউকে পাঠাবেন না।</p>
+<label style="display:flex;align-items:center;gap:9px;margin:8px 0"><input id="rememberToken" type="checkbox" checked style="width:auto;margin:0"> এই ডিভাইসে টোকেন সেভ রাখুন</label>
+<button id="clearToken" type="button" class="gray">সেভ করা টোকেন মুছুন</button>
+<p class="note">টোকেন শুধু এই ব্রাউজারের লোকাল স্টোরেজে থাকবে। ব্যক্তিগত/বিশ্বস্ত ডিভাইসে ব্যবহার করুন; শেয়ার করা ডিভাইসে সেভ করবেন না।</p>
 
 <hr>
 <h3>📝 সংবাদ প্রকাশ</h3>
@@ -142,6 +144,37 @@ const NEWS="news.json";
 const VIDEOS="videos.json";
 
 const $=id=>document.getElementById(id);
+const TOKEN_STORAGE_KEY="bdBargunaNewsGitHubToken";
+function restoreSavedToken(){
+ try{
+  const saved=localStorage.getItem(TOKEN_STORAGE_KEY);
+  if(saved){$("token").value=saved;$("rememberToken").checked=true;}
+ }catch(e){}
+}
+$("token").addEventListener("input",()=>{
+ try{
+  if($("rememberToken").checked){
+   const value=$("token").value.trim();
+   if(value)localStorage.setItem(TOKEN_STORAGE_KEY,value);
+   else localStorage.removeItem(TOKEN_STORAGE_KEY);
+  }
+ }catch(e){}
+});
+$("rememberToken").addEventListener("change",()=>{
+ try{
+  if($("rememberToken").checked){
+   const value=$("token").value.trim();
+   if(value)localStorage.setItem(TOKEN_STORAGE_KEY,value);
+  }else localStorage.removeItem(TOKEN_STORAGE_KEY);
+ }catch(e){}
+});
+$("clearToken").addEventListener("click",()=>{
+ try{localStorage.removeItem(TOKEN_STORAGE_KEY);}catch(e){}
+ $("token").value="";
+ $("rememberToken").checked=false;
+ alert("সেভ করা টোকেন মুছে ফেলা হয়েছে।");
+});
+restoreSavedToken();
 let cachedNews=[];
 let editingSlug=null;
 
