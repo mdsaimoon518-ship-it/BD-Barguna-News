@@ -89,7 +89,13 @@ h1{font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:38px;line-heigh
 @media(max-width:500px){.article-nav,.article-subnav{margin-left:-15px;margin-right:-15px}.article-nav a,.article-subnav a{padding:9px 10px;font-size:12px}}
 
 .photo-card-preview{margin:24px 0;padding:14px;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}.photo-card-preview h2{margin:0 0 12px;color:#b5122b;font-size:20px}.photo-card-preview img{display:block;width:100%;max-width:560px;margin:auto;border-radius:10px;box-shadow:0 5px 20px #0002}.photo-card-preview .preview-note{text-align:center;color:#64748b;font-size:13px;margin:8px 0 0}.youtube{background:#e62117}
-.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.bd-article-actions{margin:28px 0 18px;padding:18px 0;border-top:2px solid #a30d25;border-bottom:1px solid #ddd}
+.bd-article-actions h2{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif;font-size:20px;margin:0 0 12px;color:#222}
+.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+.buttons button{min-height:42px;padding:10px 15px;border:1px solid #ddd;border-radius:4px;background:#f4f4f4;color:#222;font-weight:700;cursor:pointer}
+.buttons button.facebook{background:#1877f2;color:#fff;border-color:#1877f2}
+.buttons button.whatsapp{background:#128c4a;color:#fff;border-color:#128c4a}
+.buttons button:hover{filter:brightness(.95)}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
 @media(max-width:650px){.paper{padding:15px}h1{font-size:27px;line-height:1.55;padding:4px 4px 14px}.brand{font-size:20px}.article{font-size:17px;line-height:1.9;column-count:1;column-gap:0;column-rule:0}}
@@ -168,7 +174,6 @@ ${articleNav}
 <div class="date">📅 প্রকাশিত: ${dateText}</div>
 <div id="articleViewCount" class="date" aria-live="polite">👁️ পাঠসংখ্যা লোড হচ্ছে...</div>
 ${image}
-<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
 <div class="article">${esc(n.body)}</div>
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
 <footer class="footer">
@@ -183,16 +188,16 @@ ${image}
 <p>ইমেইল: <a href="mailto:mdsaimoon518@gmail.com">mdsaimoon518@gmail.com</a></p>
 </div>
 </footer>
+<section class="bd-article-actions" aria-label="সংবাদ ব্যবহার ও শেয়ার">
+<h2>সংবাদটি সংরক্ষণ ও শেয়ার করুন</h2>
 <div class="buttons">
-<button onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
-<button class="gray" onclick="printNewsPhotoCard()">🖨️ ফটোকার্ড প্রিন্ট</button>
-<button class="gray" onclick="copyNewsPhotoCard()">📋 ফটোকার্ড কপি</button>
-<button onclick="window.print()">🖨️ সংবাদ প্রিন্ট</button>
-<button class="gray" onclick="copyArticleLink()">🔗 লিংক কপি</button>
-<button class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
-<button class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
-<button class="youtube" onclick="shareToYouTube()">▶ YouTube-এ শেয়ার</button>
+<button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
+<button type="button" onclick="window.print()">🖨️ নিউজ প্রিন্ট</button>
+<button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button>
+<button type="button" class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
+<button type="button" class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
 </div>
+</section>
 <p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
 </main>
 <script>
@@ -289,7 +294,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
-window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');if(!preview||!window.buildNewsPhotoCard)return;try{const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');}catch(e){preview.alt='ফটোকার্ড প্রিভিউ লোড হয়নি। ডাউনলোড বাটন ব্যবহার করুন।';}});
+
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
