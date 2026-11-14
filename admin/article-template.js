@@ -219,9 +219,19 @@ ${image}
 </main>
 <script>
 document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅\s*প্রকাশিত:\s*/,''):'';});
-window.buildNewsPhotoCard=async function(){
+window.bdEnsureArticleQR=async function(){
  const articleLink=document.querySelector('link[rel="canonical"]')?.href||location.href;
- const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:220,margin:3,errorCorrectionLevel:"H"}):"https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=1&data="+encodeURIComponent(articleLink);
+ const img=document.getElementById('printQrImage');
+ if(img){
+  if(window.QRCode) img.src=await QRCode.toDataURL(articleLink,{width:320,margin:2,errorCorrectionLevel:'H'});
+  else img.src='https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=2&data='+encodeURIComponent(articleLink);
+  if(img.decode)try{await img.decode();}catch(e){}
+ }
+ return articleLink;
+};
+window.buildNewsPhotoCard=async function(){
+ const articleLink=await window.bdEnsureArticleQR();
+ const qrDataUrl=window.QRCode?await QRCode.toDataURL(articleLink,{width:320,margin:2,errorCorrectionLevel:"H"}):"https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=2&data="+encodeURIComponent(articleLink);
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const wrap=(value,maxWidth,font)=>{
   ctx.font=font;const result=[];let line='';
@@ -285,6 +295,7 @@ window.downloadNewsPhotoCard=async function(){
 };
 window.printNewsPaper=async function(){
  try{
+  await window.bdEnsureArticleQR();
   const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
   outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
   const images=Array.from(document.querySelectorAll('.print-ad-output img,.print-qr img'));
@@ -341,7 +352,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
-window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;const fallbackQr='https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=2&data='+encodeURIComponent(canonical);try{const qr=window.QRCode?await QRCode.toDataURL(canonical,{width:300,margin:2,errorCorrectionLevel:'H'}):fallbackQr;['printQrImage'].forEach(id=>{const img=document.getElementById(id);if(img){img.src=qr||fallbackQr;img.alt='স্ক্যান করলে এই সংবাদ খুলবে';}});if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){['printQrImage'].forEach(id=>{const img=document.getElementById(id);if(img)img.src=fallbackQr;});const qrUrl=document.getElementById('articleQrUrl');if(qrUrl)qrUrl.textContent=canonical;if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}console.error('BD Barguna QR/photo card error:',e);}});
+window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');const canonical=document.querySelector('link[rel="canonical"]')?.href||location.href;try{await window.bdEnsureArticleQR();if(preview&&window.buildNewsPhotoCard){const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}}catch(e){const img=document.getElementById('printQrImage');if(img)img.src='https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=2&data='+encodeURIComponent(canonical);if(preview){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');}console.error('BD Barguna QR/photo card error:',e);}});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
