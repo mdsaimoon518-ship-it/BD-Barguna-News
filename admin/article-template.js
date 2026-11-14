@@ -84,6 +84,8 @@ h1{font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:38px;line-heigh
 .date{color:#666;border-bottom:1px solid #ddd;padding-bottom:14px;font-size:14px}
 
 .photo-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0;width:100%;align-items:start}
+.photo-gallery .photo-card{min-width:0;display:block!important}
+.photo-gallery .photo-card img{display:block;width:100%;height:180px;max-height:180px;object-fit:contain!important;background:#fff}
 .photo-card{min-width:0;overflow:hidden;margin:0;padding:7px;border:1px solid #ddd;border-radius:10px;background:#fafafa}
 .photo-card img{display:block;width:100%;height:180px;max-height:180px;object-fit:cover;border-radius:7px}
 .photo-card .caption{font-size:12px;line-height:1.4;overflow-wrap:anywhere}
@@ -310,14 +312,14 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText('BD BARGUNA NEWS',174,88);ctx.fillStyle='#cbd5e1';ctx.font='23px Arial';ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',174,126);
  ctx.fillStyle='#f8fafc';ctx.font='bold 19px Arial';ctx.textAlign='right';ctx.fillText('NEWS • বরগুনা',1138,95);ctx.textAlign='left';
  ctx.save();rr(48,170,1104,535,28);ctx.clip();
- const drawCrop=(im,x,y,w,h)=>{if(!im)return;const sc=Math.max(w/im.naturalWidth,h/im.naturalHeight),sw=w/sc,sh=h/sc;ctx.drawImage(im,(im.naturalWidth-sw)/2,(im.naturalHeight-sh)/2,sw,sh,x,y,w,h);};
+ const drawContain=(im,x,y,w,h)=>{if(!im)return;const scale=Math.min(w/im.naturalWidth,h/im.naturalHeight);const dw=im.naturalWidth*scale,dh=im.naturalHeight*scale;ctx.fillStyle='#fff';ctx.fillRect(x,y,w,h);ctx.drawImage(im,x+(w-dw)/2,y+(h-dh)/2,dw,dh);};
  ctx.fillStyle='#e8edf3';ctx.fillRect(48,170,1104,535);
  if(usablePhotos.length>=3){
   const colW=360,imgY=170,imgH=330,gap=12;
   usablePhotos.slice(0,3).forEach((photo,i)=>{
    const x=48+i*(colW+gap);
    ctx.fillStyle='#fff';ctx.fillRect(x,imgY,colW,535);
-   drawCrop(photo,x,imgY,colW,imgH);
+   drawContain(photo,x,imgY,colW,imgH);
    ctx.fillStyle='#e2e8f0';ctx.fillRect(x,imgY+imgH,colW,2);
    const label=photoEntries[i]?.caption||('ছবি '+(i+1));
    ctx.save();ctx.beginPath();ctx.rect(x+10,510,colW-20,175);ctx.clip();
@@ -329,8 +331,8 @@ window.buildNewsPhotoCard=async function(){
    ctx.restore();ctx.textAlign='left';
   });
  }else if(usablePhotos.length===2){
-  drawCrop(usablePhotos[0],48,170,546,535);ctx.fillStyle='#fff';ctx.fillRect(594,170,6,535);drawCrop(usablePhotos[1],600,170,552,535);
- }else if(usablePhotos.length===1){drawCrop(usablePhotos[0],48,170,1104,535);}
+  drawContain(usablePhotos[0],48,170,546,535);ctx.fillStyle='#fff';ctx.fillRect(594,170,6,535);drawContain(usablePhotos[1],600,170,552,535);
+ }else if(usablePhotos.length===1){drawContain(usablePhotos[0],48,170,1104,535);}
  else{const pg=ctx.createLinearGradient(48,170,1152,705);pg.addColorStop(0,'#334b6c');pg.addColorStop(1,'#0f172a');ctx.fillStyle=pg;ctx.fillRect(48,170,1104,535);ctx.fillStyle='rgba(255,255,255,.14)';ctx.font='bold 64px Arial';ctx.fillText('BD BARGUNA NEWS',100,440);}
  ctx.restore();
  const panelHeight=390+extraHeight;ctx.save();rr(48,675,1104,panelHeight,26);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
@@ -359,17 +361,14 @@ window.printNewsPhotoCard=async function(){
  }catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
 window.copyNewsPhotoCard=async function(){
- try{const canvas=await window.buildNewsPhotoCard();const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('ছবি তৈরি করা যায়নি।');if(!navigator.clipboard||!window.ClipboardItem)throw new Error('এই ব্রাউজারে ছবি কপি সুবিধা নেই—ডাউনলোড বাটন ব্যবহার করুন।');await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);alert('ফটোকার্ড কপি হয়েছে। এখন Facebook পোস্টে পেস্ট করতে পারবেন।');}
- catch(e){alert(e.message||'ফটোকার্ড কপি করা যায়নি।'window.copyArticleText=async function(){
- const title=(document.querySelector('h1')?.textContent||document.title).trim();
- const body=(document.querySelector('.article')?.textContent||'').trim();
- const text=[title,body].filter(Boolean).join('\n\n');
  try{
-  if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
-  else{const field=document.createElement('textarea');field.value=text;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.focus();field.select();const ok=document.execCommand('copy');field.remove();if(!ok)throw new Error('কপি করা যায়নি');}
-  alert('শুধু শিরোনাম ও নিউজের লেখা কপি হয়েছে।');
- }catch(e){window.prompt('শুধু শিরোনাম ও নিউজের লেখা কপি করুন:',text);}
-};e);}
+  const canvas=await window.buildNewsPhotoCard();
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+  if(!blob)throw new Error('ছবি তৈরি করা যায়নি।');
+  if(!navigator.clipboard||!window.ClipboardItem)throw new Error('এই ব্রাউজারে ছবি কপি সুবিধা নেই—ডাউনলোড বাটন ব্যবহার করুন।');
+  await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+  alert('ফটোকার্ড কপি হয়েছে। এখন Facebook পোস্টে পেস্ট করতে পারবেন।');
+ }catch(e){alert(e.message||'ফটোকার্ড কপি করা যায়নি।');}
 };
 window.copyArticleLink=async function(){
  const text=location.href;
