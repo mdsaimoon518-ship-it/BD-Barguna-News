@@ -598,12 +598,17 @@ $("newsForm").addEventListener("submit",async e=>{
   await saveFile("articles/"+n.slug+".html",articleHTML(n),"Publish article page");
   await saveFile(NEWS,JSON.stringify(updated,null,2),old?"Update news":"Publish news");
 
+  const verified=await readJSON(NEWS);
+  if(!verified.some(item=>item&&item.slug===n.slug&&item.title===n.title)){
+   throw new Error("GitHub-এ নিউজ সংরক্ষণ যাচাই করা যায়নি। আবার চেষ্টা করুন।");
+  }
+
   editingSlug=null;
   $("newsForm").reset();
   $("breaking").checked=false;
   $("publishBtn").textContent="সংবাদ প্রকাশ করুন";
   $("cancelEdit").hidden=true;
-  show("status","সফল! সংবাদ ও HTML পেজ প্রকাশ হয়েছে।");
+  show("status","সফল! নিউজ GitHub-এ সংরক্ষিত ও যাচাই হয়েছে। ওয়েবসাইটে আসতে ১–৩ মিনিট লাগতে পারে।");
   await loadNews();
  }catch(err){show("status","সমস্যা: "+err.message,true)}
  finally{btn.disabled=false}
