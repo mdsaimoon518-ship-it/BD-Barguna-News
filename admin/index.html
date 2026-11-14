@@ -96,7 +96,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 
 <label>মোবাইল থেকে একসঙ্গে একাধিক ছবি আপলোড (প্রতি ছবি 15 MB পর্যন্ত; স্বয়ংক্রিয়ভাবে ছোট হবে)</label>
 <input id="imageFiles" type="file" accept="image/*" multiple>
-<p class="note">একসঙ্গে যতগুলো প্রয়োজন ছবি নির্বাচন করুন। প্রতিটি ছবির ক্যাপশন আলাদা লাইনে লিখতে পারবেন।</p>
+<p class="note">প্রতি নিউজে সর্বোচ্চ ৩টি ছবি নির্বাচন করুন। প্রতিটি ছবির ক্যাপশন আলাদা লাইনে লিখতে পারবেন।</p>
 <label>প্রতিটি ছবির ক্যাপশন (ঐচ্ছিক, প্রতি লাইনে একটি)</label>
 <textarea id="imageCaptions" rows="3" placeholder="প্রথম ছবির ক্যাপশন&#10;দ্বিতীয় ছবির ক্যাপশন&#10;তৃতীয় ছবির ক্যাপশন"></textarea>
 <label>প্রধান ছবির ক্যাপশন (ঐচ্ছিক)</label>
@@ -848,7 +848,7 @@ $("cancelEdit").onclick=()=>{
 };
 
 async function ensureArticleTemplate(){
- if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114classicheader1")return;
+ if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114gallery3")return;
 
  const sources=[
   new URL("./article-template.js?v=20261114classicheader1&retry="+Date.now(),location.href).href,
@@ -915,6 +915,8 @@ $("newsForm").addEventListener("submit",async e=>{
   const imageUrl=$("image").value.trim();
   if(imageUrl){if(images.length)images[0]=imageUrl;else images.push(imageUrl);}
   const selectedFiles=Array.from($("imageFiles").files||[]);
+  if(images.length>3)images.splice(3);
+  if(selectedFiles.length>3-images.length)throw new Error("প্রতি নিউজে সর্বোচ্চ ৩টি ছবি দেওয়া যাবে। আগে থাকা "+images.length+"টি ছবির সঙ্গে আর "+(3-images.length)+"টি ছবি যোগ করতে পারবেন।");
   for(let i=0;i<selectedFiles.length;i++){
    const uploaded=await uploadImage(selectedFiles[i],i+1);
    images.push(uploaded);
