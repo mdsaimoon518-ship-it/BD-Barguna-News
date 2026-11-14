@@ -65,7 +65,7 @@ window.addEventListener('load',function(){try{var c=make(),p=document.getElement
  const date=new Date(published),dateText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(isNaN(date)?new Date():date);
  const photoEl=document.querySelector('article img,.photo-card img,.photo');
  const photoUrl=document.querySelector('meta[property="og:image"]')?.content||(photoEl?.currentSrc||photoEl?.src||'');
- const logoUrl=new URL('../images/app-icon.svg?v=20261116',location.href).href;
+ const logoUrl=new URL('../images/bd-barguna-logo.webp?v=20261115',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();try{const imageUrl=new URL(src,location.href);if(/^https?:$/.test(imageUrl.protocol)&&imageUrl.origin!==location.origin)im.crossOrigin='anonymous';}catch(e){}im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
  const [photo,logo]=await Promise.all([loadImage(photoUrl),loadImage(logoUrl)]);
  ctx.fillStyle='#101827';ctx.fillRect(0,0,1200,1200);ctx.fillStyle='#f8fafc';ctx.beginPath();ctx.roundRect(28,28,1144,1144,34);ctx.fill();
