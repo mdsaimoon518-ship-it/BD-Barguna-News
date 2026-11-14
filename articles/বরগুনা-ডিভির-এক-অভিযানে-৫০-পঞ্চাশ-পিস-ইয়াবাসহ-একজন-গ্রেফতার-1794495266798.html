@@ -276,7 +276,7 @@ window.printNewsPaper=async function(){
  try{
   const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
   outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
-  const images=Array.from(document.querySelectorAll('.print-ad-output img,#articleQrImage'));
+  const images=Array.from(document.querySelectorAll('.print-ad-output img,#printQrImage'));
   await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,8000);})));
   window.print();
  }catch(e){window.print();}
