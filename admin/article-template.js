@@ -306,23 +306,29 @@ window.downloadNewsPhotoCard=async function(){
 };
 window.printNewsPaper=async function(){
  const paper=document.querySelector('.paper');
+ const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
  try{
-  const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
   outputs.forEach(out=>{if(out.querySelector('.print-ad-item'))out.style.display='block';});
-  const images=Array.from(document.querySelectorAll('.print-ad-output img'));
+  const images=Array.from(document.querySelectorAll('.print-ad-output img,.photo-card img,.article img'));
   await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,8000);})));
+  if(document.fonts?.ready)await document.fonts.ready;
   if(paper){
    paper.classList.add('bd-print-fit');
    paper.style.setProperty('--bd-print-zoom','1');
    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-   const available=1080;
-   const measured=Math.max(1,paper.scrollHeight);
-   const scale=Math.min(1,available/measured);
+   // One article per A4 sheet: shrink the whole newspaper layout to fit the printable height.
+   const availableHeight=1060;
+   const measuredHeight=Math.max(1,paper.scrollHeight);
+   const scale=Math.min(1,availableHeight/measuredHeight);
    paper.style.setProperty('--bd-print-zoom',String(scale));
   }
   window.print();
- }catch(e){window.print();}
- finally{setTimeout(()=>{if(paper){paper.classList.remove('bd-print-fit');paper.style.removeProperty('--bd-print-zoom');}},1000);}
+ }catch(e){
+  console.error('BD Barguna one-page print:',e);
+  window.print();
+ }finally{
+  setTimeout(()=>{if(paper){paper.classList.remove('bd-print-fit');paper.style.removeProperty('--bd-print-zoom');}},1500);
+ }
 };
 window.printNewsPhotoCard=async function(){
  try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
