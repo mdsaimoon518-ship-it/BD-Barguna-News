@@ -848,8 +848,8 @@ $("cancelEdit").onclick=()=>{
 };
 
 async function ensureArticleTemplate(){
- if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114pdf-fix5")return;
- const cacheKey="20261114pdf-fix5";
+ if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114pdf-fix6")return;
+ const cacheKey="20261114pdf-fix6";
  const sources=[
   new URL("./article-template.js?v="+cacheKey+"&retry="+Date.now(),location.href).href,
   "https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/admin/article-template.js?v="+cacheKey+"&retry="+Date.now()
@@ -865,8 +865,8 @@ async function ensureArticleTemplate(){
     script.onerror=()=>reject(new Error("স্ক্রিপ্ট ডাউনলোড ব্যর্থ: "+src));
     document.head.appendChild(script);
    });
-   if(typeof window.articleHTML==="function")return;
-   errors.push("ফাইল লোড হয়েছে, কিন্তু articleHTML পাওয়া যায়নি: "+src);
+   if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114pdf-fix6")return;
+   errors.push("টেমপ্লেটের সঠিক সংস্করণ লোড হয়নি: "+src+" (version: "+(window.articleTemplateVersion||"নেই")+")");
   }catch(error){errors.push(error.message);}
  }
  throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। বিকল্প পুরোনো টেমপ্লেট ব্যবহার না করে প্রকাশ বন্ধ রাখা হয়েছে। "+errors.join(" | "));
