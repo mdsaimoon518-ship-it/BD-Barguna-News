@@ -546,7 +546,7 @@ function renderEditImages(){
  const wrap=$("editImageManager"),slots=$("editImageSlots");
  if(!editingSlug){wrap.hidden=true;slots.innerHTML="";return;}
  wrap.hidden=false;
- slots.innerHTML=editingImages.map((item,i)=>`<div class="card"><p><strong>ছবি ${i+1}</strong></p><img src="${esc(item.path.startsWith("http")?item.path:"../"+item.path.replace(/^\\/+/, ""))}" alt="বর্তমান ছবি"><label>এই ছবির বদলে নতুন ছবি দিন</label><input type="file" accept="image/*" data-replace-slot="${i}"><button type="button" class="red" data-remove-slot="${i}">এই ছবি মুছুন</button></div>`).join("")||"<p>কোনো ছবি নেই। নিচের ফিল্ড থেকে নতুন ছবি যোগ করুন।</p>";
+ slots.innerHTML=editingImages.map((item,i)=>`<div class="card"><p><strong>ছবি ${i+1}</strong></p><img src="${esc(item.path.startsWith("http")?item.path:"../"+item.path)}" alt="বর্তমান ছবি"><label>এই ছবির বদলে নতুন ছবি দিন</label><input type="file" accept="image/*" data-replace-slot="${i}"><button type="button" class="red" data-remove-slot="${i}">এই ছবি মুছুন</button></div>`).join("")||"<p>কোনো ছবি নেই। নিচের ফিল্ড থেকে নতুন ছবি যোগ করুন।</p>";
 }
 
 // Optional token memory: saved only in this browser on this device.
@@ -776,7 +776,7 @@ async function loadNews(){
   list.innerHTML=cachedNews.map((n,i)=>{
    const imgs=Array.isArray(n.images)?n.images:(n.image?[n.image]:[]);
    const first=imgs[0]||"";
-   const image=first?'<img src="'+esc(/^https?:\\/\\//i.test(first)?first:"../"+String(first).replace(/^\\/+/, ""))+'" alt="সংবাদ ছবি">':"";
+   const image=first?'<img src="'+esc(String(first).startsWith("http")?first:"../"+String(first))+'" alt="সংবাদ ছবি">':"";
    return '<div class="card"><strong>'+esc(n.title||"শিরোনাম নেই")+'</strong><p>'+esc(n.category||"")+' | '+esc(n.date||"")+(n.breaking===true?" | 🔴 ব্রেকিং নিউজ":"")+'</p>'+image+'<p>ছবি: '+imgs.length+'টি</p><div class="actions"><button class="blue" data-a="edit" data-i="'+i+'">এডিট</button><button class="red" data-a="delete" data-i="'+i+'">ডিলিট</button><button class="gray" data-a="copy" data-i="'+i+'">লিংক কপি</button><button class="facebook" data-a="facebook" data-i="'+i+'">Facebook</button><button class="whatsapp" data-a="whatsapp" data-i="'+i+'">WhatsApp</button><button data-a="print" data-i="'+i+'">সংবাদ প্রিন্ট</button></div></div>';
   }).join("");
  }catch(e){
