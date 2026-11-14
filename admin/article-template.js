@@ -219,7 +219,6 @@ ${articleNav}
 <div class="date">📅 প্রকাশিত: ${dateText}</div>
 <div id="articleViewCount" class="date" aria-live="polite">👁️ পাঠসংখ্যা লোড হচ্ছে...</div>
 ${image}
-<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো, প্রকাশের তারিখ ও এই নিউজের নিজস্ব QR স্ক্যানারসহ ফটোকার্ড</p></section>
 <section class="article-qr" aria-label="সংবাদের QR কোড"><img id="articleQrImage" alt="সংবাদের QR কোড"></section>
 <div class="article">${esc(n.body)}</div>
 <section style="margin-top:28px;padding-top:18px;border-top:1px solid #ddd"><h2 style="color:#b5122b;font-size:21px">পাঠকের মন্তব্য</h2><iframe id="articleComments" title="পাঠকের মন্তব্য" width="100%" height="420" style="border:0;background:#fff" loading="lazy"></iframe></section>
