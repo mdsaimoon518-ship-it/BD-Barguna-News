@@ -111,7 +111,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <h3>📚 প্রকাশিত সংবাদ পরিচালনা</h3>
 <button id="loadNews" class="blue" type="button">সংবাদের তালিকা দেখুন</button>
 <button id="refreshArticlePages" type="button">🔄 পুরোনো সব নিউজে নতুন ডিজাইন ও বাটন বসান</button>
-<p class="note">একবার চাপলে প্রকাশিত সব পুরোনো নিউজে নতুন সংবাদপত্র-ধাঁচের ডিজাইন এবং ফটোকার্ড ডাউনলোড, নিউজ প্রিন্ট, কপি লিংক, Facebook ও WhatsApp শেয়ার বাটন যুক্ত হবে। GitHub-এ প্রতিটি পুরোনো নিউজ পেজ আপডেট হবে।</p>
+<p class="note">একবার চাপলে প্রকাশিত সব পুরোনো নিউজে নতুন সংবাদপত্র-ধাঁচের ডিজাইন এবং ফটোকার্ড ডাউনলোড, PDF ডাউনলোড, নিউজ প্রিন্ট, কপি লিংক, Facebook ও WhatsApp শেয়ার বাটন যুক্ত হবে। GitHub-এ প্রতিটি পুরোনো নিউজ পেজ আপডেট হবে।</p>
 <div id="newsList"></div>
 
 <hr>
@@ -875,7 +875,7 @@ function validateArticlePage(html){
   else if(html.includes('</main>')) html=html.replace('</main>',actions+'</main>');
   else throw new Error("সংবাদের শেষে বাটন বসানোর জায়গা পাওয়া যায়নি।");
  }
- const required=["downloadNewsPhotoCard","copyArticleLink","buildNewsPhotoCard","bd-article-actions","Facebook শেয়ার","WhatsApp শেয়ার","নিউজ প্রিন্ট"];
+ const required=["downloadNewsPhotoCard","downloadNewsPDF","PDF ডাউনলোড","copyArticleLink","buildNewsPhotoCard","bd-article-actions","Facebook শেয়ার","WhatsApp শেয়ার","নিউজ প্রিন্ট"];
  const missing=required.filter(key=>!html.includes(key));
  if(missing.length)throw new Error("নিউজ পেজে প্রয়োজনীয় অপশন নেই: "+missing.join(", "));
  const articleAt=html.indexOf('class="article"'),actionsAt=html.indexOf('class="bd-article-actions"');
@@ -959,7 +959,7 @@ $("refreshArticlePages").onclick=async()=>{
    done++;
    show("status","নতুন ডিজাইন আপডেট হচ্ছে: "+done+" / "+items.length);
   }
-  show("status","সফল! "+done+"টি পুরোনো নিউজে নতুন ডিজাইন ও ফটোকার্ড ডাউনলোড, নিউজ প্রিন্ট, কপি লিংক, Facebook এবং WhatsApp শেয়ার বাটন যুক্ত হয়েছে।");
+  show("status","সফল! "+done+"টি পুরোনো নিউজে নতুন ডিজাইন, ফটোকার্ড ডাউনলোড, PDF ডাউনলোড, নিউজ প্রিন্ট, কপি লিংক, Facebook এবং WhatsApp শেয়ার বাটন যুক্ত হয়েছে।");
  }catch(err){show("status","সমস্যা: "+err.message,true)}
  finally{btn.disabled=false}
 };
