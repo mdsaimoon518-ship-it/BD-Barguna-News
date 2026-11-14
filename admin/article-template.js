@@ -1,5 +1,5 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="20261114classicheader1";
+window.articleTemplateVersion="20261114gallery3";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
@@ -9,6 +9,7 @@ window.articleHTML = function articleHTML(n){
   caption:(Array.isArray(n.imageCaptions)?n.imageCaptions[i]:"")||(item&&item.caption)||(i===0?n.caption:"")||""
  })).filter(item=>item.url);
  if(n.image&&!imageEntries.some(item=>item.url===n.image))imageEntries.unshift({url:n.image,caption:n.caption||""});
+ imageEntries.splice(3); // প্রতিটি নিউজে সর্বোচ্চ ৩টি ছবি দেখান
  const imageUrls=imageEntries.map(item=>/^https?:\/\//i.test(item.url)?item.url:"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/"+String(item.url).replace(/^\/+/, ""));
  const image=imageEntries.length?`<div class="photo-gallery" aria-label="সংবাদের ছবির গ্যালারি">${imageEntries.map((item,i)=>`<figure class="photo-card"><img src="${/^https?:\/\//i.test(item.url)?esc(item.url):"../"+esc(item.url).replace(/^\/+/, "")}" alt="${esc(n.title)} - ছবি ${i+1}" loading="lazy"><figcaption class="caption">${esc(item.caption||"ছবি: BD Barguna News")}</figcaption></figure>`).join("")}</div>`:"";
 
@@ -79,6 +80,7 @@ body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Ari
 h1{font-family:"Noto Serif Bengali","Noto Serif",serif;font-size:38px;line-height:1.48;font-weight:900;color:#111;text-align:center;margin:16px 0 18px;padding:4px 12px 20px;border-top:3px double #222;border-bottom:3px double #222}
 .date{color:#666;border-bottom:1px solid #ddd;padding-bottom:14px;font-size:14px}
 
+.photo-gallery{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
 .photo-card{margin:22px 0;padding:10px;border:1px solid #ddd;border-radius:12px;background:#fafafa}
 .photo-card img{display:block;width:100%;max-height:480px;object-fit:contain;border-radius:8px}
 .caption{text-align:center;color:#667085;font-size:13px;padding-top:9px}
