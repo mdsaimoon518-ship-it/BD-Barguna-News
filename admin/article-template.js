@@ -18,7 +18,7 @@ window.articleHTML = function articleHTML(n){
  date.toLocaleString("bn-BD",{dateStyle:"long",timeStyle:"short"});
  const canonical="https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/articles/"+encodeURIComponent(n.slug)+".html";
  const description=String(n.body||n.title).replace(/\s+/g," ").trim().slice(0,160);
- const imageUrl=imageUrls[0]||"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/bd-barguna-logo.webp?v=20261117";
+ const imageUrl=imageUrls[0]||"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/bd-barguna-logo.webp?v=20261118";
  const publishedDate=Number.isNaN(date.getTime())?new Date().toISOString():date.toISOString();
  const modifiedDate=n.modifiedAt||publishedDate;
  const articleSchema=JSON.stringify({
@@ -32,7 +32,7 @@ window.articleHTML = function articleHTML(n){
   "dateModified":modifiedDate,
   "inLanguage":"bn-BD",
   "articleSection":n.category||"সংবাদ",
-  "publisher":{"@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","logo":{"@type":"ImageObject","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/bd-barguna-logo.webp?v=20261117"}}
+  "publisher":{"@type":"NewsMediaOrganization","name":"BD Barguna News","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/","logo":{"@type":"ImageObject","url":"https://mdsaimoon518-ship-it.github.io/BD-Barguna-News/images/bd-barguna-logo.webp?v=20261118"}}
  }).replace(/</g,"\\u003c");
 
  return `<!DOCTYPE html>
@@ -210,9 +210,9 @@ document.addEventListener('DOMContentLoaded',function(){
 </head>
 <body>
 <main class="paper">
-<div class="print-masthead"><div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span>${dateText}</span></div><div class="print-brand"><img class="print-logo" src="../images/bd-barguna-logo.webp?v=20261117" alt="BD Barguna News">BD BARGUNA NEWS</div><div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div><div class="print-rule"></div><div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div></div>
+<div class="print-masthead"><div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span>${dateText}</span></div><div class="print-brand"><img class="print-logo" src="../images/bd-barguna-logo.webp?v=20261118" alt="BD Barguna News">BD BARGUNA NEWS</div><div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div><div class="print-rule"></div><div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div></div>
 <header class="masthead">
-<img class="channel-logo" src="../images/bd-barguna-logo.webp?v=20261117" alt="BD Barguna News লোগো">
+<img class="channel-logo" src="../images/bd-barguna-logo.webp?v=20261118" alt="BD Barguna News লোগো">
 <div>
 <p class="brand">BD Barguna News</p>
 <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
@@ -328,7 +328,7 @@ window.buildNewsPhotoCard=async function(){
  const fallbackEntries=fallbackEls.map((el,i)=>({url:el.currentSrc||el.src||el.getAttribute('src'),caption:(el.closest('figure')?.querySelector('figcaption,.caption')?.textContent||'').trim()||('ছবি '+(i+1))})).filter(item=>item.url);
  const photoEntries=[...galleryEntries,...fallbackEntries].filter((item,i,all)=>all.findIndex(x=>x.url===item.url)===i).slice(0,3);
  const photoUrls=photoEntries.map(item=>item.url);
- const logoUrl=new URL('../images/bd-barguna-logo.webp?v=20261117',location.href).href;
+ const logoUrl=new URL('../images/bd-barguna-logo.webp?v=20261118',location.href).href;
  const loadImage=src=>new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});
  const [photos,logo,qr]=await Promise.all([Promise.all(photoUrls.map(loadImage)),loadImage(logoUrl),loadImage(qrDataUrl)]);
  const usablePhotos=photos.filter(Boolean);
