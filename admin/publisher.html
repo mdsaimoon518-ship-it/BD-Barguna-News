@@ -843,8 +843,8 @@ $("cancelEdit").onclick=()=>{
 };
 
 async function ensureArticleTemplate(){
- if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="newspaper-print-20261114qr1")return;
- const cacheKey="20261114qr1";
+ if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="newspaper-print-20261114qr6")return;
+ const cacheKey="20261114qr6";
  const sources=[
   new URL("./article-template.js?v="+cacheKey+"&retry="+Date.now(),location.href).href,
   "https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/admin/article-template.js?v="+cacheKey+"&retry="+Date.now()
