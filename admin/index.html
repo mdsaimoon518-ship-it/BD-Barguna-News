@@ -96,6 +96,7 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 
 <label>মোবাইল থেকে একসঙ্গে একাধিক ছবি আপলোড (প্রতি ছবি 15 MB পর্যন্ত; স্বয়ংক্রিয়ভাবে ছোট হবে)</label>
 <input id="imageFiles" type="file" accept="image/*" multiple>
+<div id="editImageManager" class="card" hidden><strong>বর্তমান ছবিগুলো পরিবর্তন করুন</strong><p class="note">প্রতিটি ছবির নিচে নতুন ছবি বেছে নিলে ওই ছবিটিই বদলাবে। ছবি মুছতেও পারবেন।</p><div id="editImageSlots"></div></div>
 <p class="note">প্রতি নিউজে সর্বোচ্চ ৩টি ছবি নির্বাচন করুন। প্রতিটি ছবির ক্যাপশন আলাদা লাইনে লিখতে পারবেন।</p>
 <label>প্রতিটি ছবির ক্যাপশন (ঐচ্ছিক, প্রতি লাইনে একটি)</label>
 <textarea id="imageCaptions" rows="3" placeholder="প্রথম ছবির ক্যাপশন&#10;দ্বিতীয় ছবির ক্যাপশন&#10;তৃতীয় ছবির ক্যাপশন"></textarea>
@@ -540,6 +541,13 @@ const VIDEOS="videos.json";
 const $=id=>document.getElementById(id);
 let cachedNews=[];
 let editingSlug=null;
+let editingImages=[];
+function renderEditImages(){
+ const wrap=$("editImageManager"),slots=$("editImageSlots");
+ if(!editingSlug){wrap.hidden=true;slots.innerHTML="";return;}
+ wrap.hidden=false;
+ slots.innerHTML=editingImages.map((item,i)=>`<div class="card"><p><strong>ছবি ${i+1}</strong></p><img src="${esc(/^https?:\\/\\//i.test(item.path)?item.path:"../"+item.path.replace(/^\\/+/, ""))}" alt="বর্তমান ছবি"><label>এই ছবির বদলে নতুন ছবি দিন</label><input type="file" accept="image/*" data-replace-slot="${i}"><button type="button" class="red" data-remove-slot="${i}">এই ছবি মুছুন</button></div>`).join("")||"<p>কোনো ছবি নেই। নিচের ফিল্ড থেকে নতুন ছবি যোগ করুন।</p>";
+}
 
 // Optional token memory: saved only in this browser on this device.
 const TOKEN_STORAGE_KEY="bdBargunaNews_adminGithubToken";
@@ -837,7 +845,7 @@ $("cancelEdit").onclick=()=>{
  $("cancelEdit").hidden=true;
 };
 
-async function ensureArticleTemplate(){
+$("editImageSlots").addEventListener("click",e=>{const b=e.target.closest("button[data-remove-slot]");if(!b)return;editingImages.splice(Number(b.dataset.removeSlot),1);renderEditImages();});\n\nasync function ensureArticleTemplate(){
  if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114threephoto1")return;
 
  const sources=[
@@ -901,7 +909,7 @@ $("newsForm").addEventListener("submit",async e=>{
   const old=editingSlug?latest.find(x=>x.slug===editingSlug):null;
   if(editingSlug&&!old)throw new Error("সম্পাদনার সংবাদ পাওয়া যায়নি");
 
-  const images=Array.isArray(old?.images)?old.images.slice():(old?.image?[old.image]:[]);
+  const images=old?(editingImages||[]).map(x=>x.path):[];
   const imageUrl=$("image").value.trim();
   if(imageUrl){if(images.length)images[0]=imageUrl;else images.push(imageUrl);}
   const selectedFiles=Array.from($("imageFiles").files||[]);
