@@ -94,10 +94,12 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <label>ছবির URL (ঐচ্ছিক)</label>
 <input id="image" type="url" placeholder="https://example.com/photo.jpg">
 
-<label>মোবাইল থেকে ছবি আপলোড (15 MB পর্যন্ত; স্বয়ংক্রিয়ভাবে ছোট হবে)</label>
-<input id="imageFile" type="file" accept="image/*">
-
-<label>ছবির ক্যাপশন</label>
+<label>মোবাইল থেকে একসঙ্গে একাধিক ছবি আপলোড (প্রতি ছবি 15 MB পর্যন্ত; স্বয়ংক্রিয়ভাবে ছোট হবে)</label>
+<input id="imageFiles" type="file" accept="image/*" multiple>
+<p class="note">একসঙ্গে যতগুলো প্রয়োজন ছবি নির্বাচন করুন। প্রতিটি ছবির ক্যাপশন আলাদা লাইনে লিখতে পারবেন।</p>
+<label>প্রতিটি ছবির ক্যাপশন (ঐচ্ছিক, প্রতি লাইনে একটি)</label>
+<textarea id="imageCaptions" rows="3" placeholder="প্রথম ছবির ক্যাপশন&#10;দ্বিতীয় ছবির ক্যাপশন&#10;তৃতীয় ছবির ক্যাপশন"></textarea>
+<label>প্রধান ছবির ক্যাপশন (ঐচ্ছিক)</label>
 <input id="caption" placeholder="ছবি: BD Barguna News">
 
 <button id="publishBtn" type="submit">সংবাদ প্রকাশ করুন</button>
@@ -741,7 +743,7 @@ async function copyLink(text){
  }
 }
 
-async function uploadImage(file){
+async function uploadImage(file,suffix=""){
  if(!file)return "";
  if(!file.type.startsWith("image/"))throw new Error("শুধু ছবির ফাইল নির্বাচন করুন");
  if(file.size>15*1024*1024)throw new Error("মূল ছবির সাইজ 15 MB-এর বেশি। ছোট ছবি নির্বাচন করুন।");
@@ -760,7 +762,7 @@ async function uploadImage(file){
  for(const quality of [0.84,0.76,0.68,0.60,0.52,0.45]){blob=await blobFor(quality);if(blob&&blob.size<=850*1024)break;}
  if(!blob||blob.size>900*1024)throw new Error("ছবিটি ছোট করা যায়নি। অন্য ছবি নির্বাচন করুন।");
  const base=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result).split(",")[1]);r.onerror=()=>reject(new Error("ছবি প্রস্তুত করা যায়নি"));r.readAsDataURL(blob);});
- const path="images/news/news-"+Date.now()+".jpg";
+ const path="images/news/news-"+Date.now()+"-"+String(suffix||"1")+".jpg";
  const r=await githubFetch(api(path),{method:"PUT",headers:{...getHeaders(),"Content-Type":"application/json"},body:JSON.stringify({message:"Upload compressed news photo",content:base,branch:BRANCH})},"ছবি GitHub-এ আপলোড");
  if(!r.ok)throw new Error(await errorText(r));
  return path;
@@ -805,6 +807,7 @@ $("newsList").addEventListener("click",async e=>{
     $("breaking").checked=n.breaking===true;
     $("body").value=n.body;
     $("image").value=/^https?:\/\//i.test(n.image||"")?n.image:"";
+    $("imageCaptions").value=(Array.isArray(n.imageCaptions)?n.imageCaptions:[]).join("\n");
     $("caption").value=n.caption||"";
     editingSlug=n.slug;
     $("publishBtn").textContent="সংবাদ আপডেট করুন";
@@ -910,13 +913,22 @@ $("newsForm").addEventListener("submit",async e=>{
   const old=editingSlug?latest.find(x=>x.slug===editingSlug):null;
   if(editingSlug&&!old)throw new Error("সম্পাদনার সংবাদ পাওয়া যায়নি");
 
-  let image=$("image").value.trim()||old?.image||"";
-  if($("imageFile").files[0])
-   image=await uploadImage($("imageFile").files[0]);
+  const images=Array.isArray(old?.images)?old.images.slice():(old?.image?[old.image]:[]);
+  const imageUrl=$("image").value.trim();
+  if(imageUrl){if(images.length)images[0]=imageUrl;else images.push(imageUrl);}
+  const selectedFiles=Array.from($("imageFiles").files||[]);
+  for(let i=0;i<selectedFiles.length;i++){
+   const uploaded=await uploadImage(selectedFiles[i],i+1);
+   images.push(uploaded);
+   show("status","ছবি আপলোড হচ্ছে: "+(i+1)+" / "+selectedFiles.length);
+  }
+  const uniqueImages=[...new Set(images.filter(Boolean))];
+  const image=uniqueImages[0]||"";
+  const imageCaptions=$("imageCaptions").value.split(/\r?\n/).map(x=>x.trim());
 
   const n={
-   title,category,body,image,
-   caption:$("caption").value.trim(),
+   title,category,body,image,images:uniqueImages,imageCaptions,
+   caption:$("caption").value.trim()||old?.caption||"",
    breaking:$("breaking").checked,
    date:old?.date||new Date().toISOString(),
    modifiedAt:new Date().toISOString(),
