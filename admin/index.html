@@ -848,7 +848,9 @@ $("cancelEdit").onclick=()=>{
  $("cancelEdit").hidden=true;
 };
 
-$("editImageSlots").addEventListener("click",e=>{const b=e.target.closest("button[data-remove-slot]");if(!b)return;editingImages.splice(Number(b.dataset.removeSlot),1);renderEditImages();});\n\nasync function ensureArticleTemplate(){
+$("editImageSlots").addEventListener("click",e=>{const b=e.target.closest("button[data-remove-slot]");if(!b)return;editingImages.splice(Number(b.dataset.removeSlot),1);renderEditImages();});
+
+async function ensureArticleTemplate(){
  if(typeof window.articleHTML==="function"&&window.articleTemplateVersion==="20261114threephoto1")return;
 
  const sources=[
