@@ -249,7 +249,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  .paper{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fffdf4!important}
  .print-masthead{display:block!important;margin:0 0 3mm!important;padding:0 0 2mm!important;color:#171717!important;break-inside:avoid!important;border-bottom:3px double #171717!important;text-align:center!important}
  .print-topline{display:flex!important;justify-content:space-between!important;gap:6px!important;font-size:7.5pt!important;border-bottom:1px solid #333!important;padding-bottom:1.5mm!important}
- .print-brand{font-family:Georgia,"Noto Serif Bengali",serif!important;font-size:31pt!important;letter-spacing:.5px!important;line-height:1.08!important;font-weight:900!important;color:#171717!important;margin:1.5mm 0!important}
+ .print-brand{display:flex!important;align-items:center!important;justify-content:center!important;gap:3mm!important}.print-logo{width:16mm!important;height:16mm!important;object-fit:contain!important}.print-brand{font-family:Georgia,"Noto Serif Bengali",serif!important;font-size:31pt!important;letter-spacing:.5px!important;line-height:1.08!important;font-weight:900!important;color:#171717!important;margin:1.5mm 0!important}
  .print-tagline{font-size:9pt!important;font-weight:700!important;letter-spacing:.4px!important}
  .print-rule{height:3px!important;border-top:2px solid #171717!important;border-bottom:1px solid #171717!important;margin:1.5mm 0!important}
  .print-edition{display:flex!important;justify-content:space-between!important;font-size:7pt!important;font-weight:700!important}
@@ -301,7 +301,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 <main class="paper">
 <div class="print-masthead">
  <div class="print-topline"><span>জাতীয় অনলাইন সংবাদপত্র</span><span>বরগুনা • বাংলাদেশ</span><span class="print-date"></span></div>
- <div class="print-brand">BD BARGUNA NEWS</div>
+ <div class="print-brand"><img class="print-logo" src="../images/site-logo.svg" alt="BD Barguna News">BD BARGUNA NEWS</div>
  <div class="print-tagline">সত্যের সন্ধানে, মানুষের পাশে।</div>
  <div class="print-rule"></div>
  <div class="print-edition"><span>BD BARGUNA NEWS</span><span>বিশেষ সংবাদ সংস্করণ</span><span>বরগুনা</span></div>
@@ -329,14 +329,7 @@ ${image}
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
 সত্যের সন্ধানে, মানুষের পাশে।
-<div class="publisher-info">
-<h2>মোঃ সাইমুন মিয়া</h2>
-<strong>প্রকাশক ও সম্পাদক</strong> · BD Barguna News
-<p>বরগুনা ও বাংলাদেশের স্থানীয়, জাতীয় এবং গুরুত্বপূর্ণ খবর পাঠকের কাছে তুলে ধরাই আমাদের লক্ষ্য। তথ্যভিত্তিক, স্পষ্ট ও পাঠকবান্ধব সংবাদ প্রকাশে আমরা কাজ করি।</p>
-<p>অফিস: শের-ই বাংলা সড়ক, বরগুনা</p>
-<p>মোবাইল: <a href="tel:+8801609320308">০১৬০৯৩২০৩০৮</a> · <a href="tel:+8809658593243">০৯৬৫৮৫৯৩২৪৩</a></p>
-<p>ইমেইল: <a href="mailto:mdsaimoon518@gmail.com">mdsaimoon518@gmail.com</a></p>
-</div>
+
 </footer>
 <section class="print-ad-panel" id="printAdPanel">
  <strong>📢 বিজ্ঞাপন পরিচালনা</strong>
@@ -351,6 +344,7 @@ ${image}
 </section>
 <div class="buttons">
 <button onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
+<button type="button" onclick="copyArticleText()">📋 সম্পূর্ণ নিউজ কপি</button>
 <button class="gray" onclick="printNewsPhotoCard()">🖨️ ফটোকার্ড প্রিন্ট</button>
 <button class="gray" onclick="copyNewsPhotoCard()">📋 ফটোকার্ড কপি</button>
 <button onclick="printNewsPaper()">🖨️ সংবাদ প্রিন্ট</button>
