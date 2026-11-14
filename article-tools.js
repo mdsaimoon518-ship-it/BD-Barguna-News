@@ -6,7 +6,7 @@ function start(){
  const title=(root.querySelector('h1')||document.querySelector('h1'))?.textContent?.trim()||document.title;
  const category=(root.querySelector('.category,.cat')?.textContent||'সংবাদ').trim();
  const dateNode=root.querySelector('.date:not(#articleViewCount)');
- const dateText=(dateNode?.textContent||'').replace(/^📅\\s*প্রকাশিত:\\s*/,'').trim()||new Date().toLocaleDateString('bn-BD');
+ const dateText=(dateNode?.textContent||'').replace(/^📅\s*প্রকাশিত:\s*/,'').trim()||new Date().toLocaleDateString('bn-BD');
  const article=root.querySelector('.article,.body,.content')||root.querySelector('article');
  const photo=root.querySelector('.photo-card img,.article-image,figure img,.featured-image');
  const imgUrl=photo?.currentSrc||photo?.src||'';
@@ -43,7 +43,7 @@ function start(){
   ctx.fillStyle='#bd1834';rounded(80,690,250,55,14);ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText(category.slice(0,18),102,727);
   ctx.fillStyle='#64748b';ctx.font='bold 22px Arial';ctx.textAlign='right';ctx.fillText(dateText.slice(0,32),1115,727);ctx.textAlign='left';
   ctx.fillStyle='#111827';ctx.font='bold 48px Arial';
-  const words=title.split(/\\s+/);let lines=[],line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>1020&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);
+  const words=title.split(/\s+/);let lines=[],line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>1020&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);
   let y=825;lines.slice(0,3).forEach(v=>{ctx.fillText(v,82,y);y+=66;});
   ctx.fillStyle='#bd1834';ctx.fillRect(82,1005,140,5);ctx.fillStyle='#475569';ctx.font='bold 22px Arial';ctx.fillText('BD BARGUNA NEWS',82,1045);
   preview.src=canvas.toDataURL('image/png');
@@ -65,7 +65,7 @@ function start(){
  const bar=document.createElement('div');bar.className='bd-auto-actions';bar.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin:18px 0';
  function btn(label,color,fn){const b=document.createElement('button');b.type='button';b.textContent=label;b.style.cssText='border:0;border-radius:7px;padding:11px 15px;color:white;background:'+color+';font-weight:700;cursor:pointer';b.addEventListener('click',fn);bar.appendChild(b);}
  async function download(){await ready;const save=url=>{const a=document.createElement('a');a.href=url;a.download='BD-Barguna-News-PhotoCard.png';a.style.display='none';document.body.appendChild(a);a.click();a.remove();};if(canvas.toBlob)canvas.toBlob(blob=>{if(!blob){save(canvas.toDataURL('image/png'));return;}const url=URL.createObjectURL(blob);save(url);setTimeout(()=>URL.revokeObjectURL(url),10000);},'image/png');else save(canvas.toDataURL('image/png'));}
- async function copyText(){const value=[title,category,dateText,(article?.textContent||'').trim(),'সংবাদের লিংক: '+location.href].filter(Boolean).join('\\n\\n');try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(value);else{const field=document.createElement('textarea');field.value=value;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.focus();field.select();const ok=document.execCommand('copy');field.remove();if(!ok)throw Error('কপি করা যায়নি');}alert('সম্পূর্ণ নিউজ কপি হয়েছে।');}catch(e){window.prompt('নিউজটি কপি করুন:',value);}}
+ async function copyText(){const value=[title,category,dateText,(article?.textContent||'').trim(),'সংবাদের লিংক: '+location.href].filter(Boolean).join('\n\n');try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(value);else{const field=document.createElement('textarea');field.value=value;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.focus();field.select();const ok=document.execCommand('copy');field.remove();if(!ok)throw Error('কপি করা যায়নি');}alert('সম্পূর্ণ নিউজ কপি হয়েছে।');}catch(e){window.prompt('নিউজটি কপি করুন:',value);}}
  btn('🖼️ ফটোকার্ড ডাউনলোড','#087b42',download);
  btn('📋 সম্পূর্ণ নিউজ কপি','#334155',copyText);
  btn('🖨️ ফটোকার্ড প্রিন্ট','#475569',async()=>{await ready;const w=window.open('','_blank');if(!w)return;w.document.write('<img style="width:100%;max-width:900px" src="'+canvas.toDataURL('image/png')+'" onload="window.print()">');w.document.close();});
