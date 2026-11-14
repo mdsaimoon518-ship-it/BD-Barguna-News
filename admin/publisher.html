@@ -867,11 +867,11 @@ async function ensureArticleTemplate(){
  throw new Error("মূল সংবাদ টেমপ্লেট চালু হয়নি। বিকল্প পুরোনো টেমপ্লেট ব্যবহার না করে প্রকাশ বন্ধ রাখা হয়েছে। "+errors.join(" | "));
 }
 function validateArticlePage(html){
- const required=["downloadNewsPhotoCard","printNewsPhotoCard","copyNewsPhotoCard","copyArticleText","copyArticleLink","shareToYouTube","printAdPanel","printAdFile","printAdPosition","printAdOutput-top","printAdOutput-headline","printAdOutput-middle","printAdOutput-bottom","bdAddPrintAd","bdClearPrintAds","buildNewsPhotoCard"];
+ const required=["downloadNewsPhotoCard","copyArticleLink","buildNewsPhotoCard","bd-article-actions","Facebook শেয়ার","WhatsApp শেয়ার","নিউজ প্রিন্ট"];
  const missing=required.filter(key=>!html.includes(key));
  if(missing.length)throw new Error("নিউজ পেজে প্রয়োজনীয় অপশন নেই: "+missing.join(", "));
- const articleAt=html.indexOf('class="article"'),buttonsAt=html.indexOf('class="buttons"'),adPanelAt=html.indexOf('id="printAdPanel"');
- if(articleAt<0||buttonsAt<articleAt||adPanelAt<articleAt)throw new Error("নিউজের অপশনগুলো নিচে বসানোর টেমপ্লেট যাচাই করা যায়নি।");
+ const articleAt=html.indexOf('class="article"'),actionsAt=html.indexOf('class="bd-article-actions"');
+ if(articleAt<0||actionsAt<articleAt)throw new Error("সংবাদের নিচে শেয়ার ও প্রিন্ট অপশন যাচাই করা যায়নি।");
  return html;
 }
 
