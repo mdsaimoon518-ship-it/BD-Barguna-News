@@ -376,13 +376,13 @@ h1{font-size:30px;line-height:1.5}
 button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b42}
 .facebook{background:#1877f2}.whatsapp{background:#128c4a}
 @media(max-width:500px){.paper{padding:15px}h1{font-size:23px}.brand{font-size:20px}.article{font-size:16px}}
-@media print{body{background:white;padding:0}.paper{box-shadow:none;border:0;padding:0}.buttons,.home{display:none!important}}
+@media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body{background:white;padding:0}.paper{box-shadow:none;border:0;padding:0}.masthead{display:flex!important;break-inside:avoid;page-break-inside:avoid}.masthead .logo{display:block!important;width:65px!important;height:65px!important;object-fit:contain!important}.buttons,.home{display:none!important}}
 </style>
 </head>
 <body>
 <main class="paper">
 <header class="masthead">
-<img class="logo" src="../images/bd-barguna-logo.webp?v=20261115" alt="BD Barguna News Logo">
+<img class="logo" src="../images/app-icon.svg?v=20261116" alt="BD Barguna News Logo">
 <div>
 <p class="brand">BD Barguna News</p>
 <p class="tagline">সত্যের সন্ধানে, মানুষের পাশে।</p>
@@ -419,7 +419,7 @@ window.downloadNewsPhotoCard=async function(){
   const date=(document.querySelector(".date")?.textContent||"").replace(/^📅\\s*/,"").trim();
   const source=document.querySelector(".photo-card img");
   const loadImage=function(src){return new Promise(function(resolve){if(!src)return resolve(null);const im=new Image();im.crossOrigin="anonymous";im.onload=function(){resolve(im);};im.onerror=function(){resolve(null);};im.src=src;});};
-  const logoUrl=new URL("../images/bd-barguna-logo.webp?v=20261115",location.href).href;
+  const logoUrl=new URL("../images/app-icon.svg?v=20261116",location.href).href;
   const loaded=await Promise.all([loadImage(source?(source.currentSrc||source.src):""),loadImage(logoUrl)]);
   const photo=loaded[0],logo=loaded[1];
   const canvas=document.createElement("canvas"),ctx=canvas.getContext("2d");
