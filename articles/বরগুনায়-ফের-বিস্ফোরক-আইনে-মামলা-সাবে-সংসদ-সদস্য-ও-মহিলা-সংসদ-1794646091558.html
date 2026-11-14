@@ -120,6 +120,30 @@ h1{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;text-ali
 .photo-gallery .caption{display:block!important;text-align:center!important;font-size:8.5pt!important;line-height:1.35!important;padding:1.5mm 0 0!important;color:#111!important;font-weight:700!important}
 }
 </style>
+<style id="bd-one-page-news-print">
+@page{size:A4 portrait;margin:7mm}
+@media print{
+html,body{width:100%!important;margin:0!important;padding:0!important;background:#fff!important}
+.print-masthead{display:block!important;visibility:visible!important;margin:0 0 3mm!important;padding:0 0 2mm!important}
+.print-topline{display:flex!important;justify-content:space-between!important;font-size:7pt!important;color:#333!important}
+.print-brand{display:flex!important;align-items:center!important;gap:3mm!important;font-size:18pt!important;font-weight:900!important;color:#a30d25!important}
+.print-logo{display:block!important;width:14mm!important;height:14mm!important;object-fit:contain!important}
+.print-tagline{font-size:9pt!important;color:#333!important}
+.print-rule{height:1mm!important;background:#a30d25!important;margin:2mm 0!important}
+.print-edition{display:flex!important;justify-content:space-between!important;font-size:7pt!important}
+.masthead,.article-nav,.bd-breadcrumb,.bd-story-tools,.buttons,.home,.photo-card-preview,#photoCardPreview,.article-qr,#articleViewCount,.bd-article-actions,iframe{display:none!important}
+.paper{display:block!important;width:100%!important;max-width:none!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;zoom:var(--bd-print-zoom,1)!important}
+.category{margin:1mm 0!important;padding:0!important;font-size:8pt!important}
+h1{font-size:17pt!important;line-height:1.25!important;margin:1mm 0 2mm!important;padding:0 0 2mm!important;border-bottom:1px solid #999!important}
+.date{font-size:7.5pt!important;margin:1mm 0!important;padding:0!important}
+.photo-gallery{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:2mm!important;margin:2mm 0!important;break-inside:avoid!important}
+.photo-gallery .photo-card{margin:0!important;padding:1mm!important;border:1px solid #aaa!important;break-inside:avoid!important}
+.photo-gallery .photo-card img{width:100%!important;height:27mm!important;max-height:27mm!important;object-fit:contain!important}
+.photo-gallery .caption{display:block!important;font-size:6.5pt!important;line-height:1.2!important;padding:1mm 0 0!important;color:#111!important}
+.article{font-size:8.2pt!important;line-height:1.35!important;column-count:2!important;column-gap:5mm!important;column-rule:0.2mm solid #ddd!important;margin:2mm 0!important;white-space:pre-wrap!important}
+.footer{font-size:7pt!important;margin-top:2mm!important;padding-top:1mm!important}
+}
+</style>
 <script id="bd-story-toolbar-script">
 document.addEventListener('DOMContentLoaded',function(){
  const paper=document.querySelector('.paper');if(!paper||paper.querySelector('.bd-story-tools'))return;
@@ -264,7 +288,10 @@ window.printNewsPhotoCard=async function(){
  try{
   const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');
   if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}
-  w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');
+  w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script id="bd-fit-single-page-print">
+(function(){function fitNewsToOnePage(){const paper=document.querySelector('.paper');if(!paper)return;paper.style.setProperty('--bd-print-zoom','1');const available=277*96/25.4;const scale=Math.min(1,available/paper.scrollHeight);paper.style.setProperty('--bd-print-zoom',String(Math.max(.35,scale)));}window.addEventListener('beforeprint',fitNewsToOnePage);window.addEventListener('afterprint',function(){const p=document.querySelector('.paper');if(p)p.style.removeProperty('--bd-print-zoom');});})();
+</script>
+</body></html>');
   w.document.close();
  }catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
