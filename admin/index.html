@@ -426,7 +426,29 @@ window.printNewsPaper=async function(){
  }catch(e){window.print();}
 };
 window.printNewsPhotoCard=async function(){
- try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
+ try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script>
+(function(){
+ const start=function(){
+  const btn=document.getElementById("loadNews"),box=document.getElementById("newsList");
+  if(!btn||!box)return;
+  async function showList(){
+   box.textContent="সংবাদ তালিকা লোড হচ্ছে...";
+   try{
+    const response=await fetch("https://raw.githubusercontent.com/mdsaimoon518-ship-it/BD-Barguna-News/main/news.json?v="+Date.now(),{cache:"no-store"});
+    if(!response.ok)throw new Error("news.json পাওয়া যায়নি: "+response.status);
+    const rows=await response.json();
+    if(!Array.isArray(rows))throw new Error("সংবাদের তথ্য সঠিক ফরম্যাটে নেই");
+    if(!rows.length){box.textContent="প্রকাশিত সংবাদ পাওয়া যায়নি।";return;}
+    box.innerHTML=rows.map((n,i)=>'<div class="card"><strong>'+String(n.title||"শিরোনাম নেই").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</strong><p>'+String(n.date||"")+'</p><p>ছবি: '+(Array.isArray(n.images)?n.images.length:(n.image?1:0))+'টি</p></div>').join("");
+   }catch(e){box.textContent="তালিকা লোড হয়নি: "+e.message;}
+  }
+  btn.addEventListener("click",showList);
+  showList();
+ };
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
+})();
+</script>
+</body></html>');w.document.close();}
  catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
 window.copyNewsPhotoCard=async function(){
