@@ -885,7 +885,7 @@ function validateArticlePage(html){
   if(html.includes('<div class="buttons">')) html=html.replace('<div class="buttons">','<div class="buttons">'+pdfButton);
   else throw new Error("PDF বাটন বসানোর জায়গা পাওয়া যায়নি।");
  }
- if(!html.includes('downloadNewsPDF')){
+ if(!html.includes('window.downloadNewsPDF=')){
   const pdfScript='<script>window.downloadNewsPDF=async function(){try{if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){alert("PDF লাইব্রেরি লোড হয়নি। প্রিন্ট অপশন থেকে Save as PDF নির্বাচন করুন।");window.print();return;}const node=document.querySelector(".paper")||document.querySelector("main")||document.body;const canvas=await window.html2canvas(node,{scale:1.5,useCORS:true,backgroundColor:"#ffffff"});const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});const pageW=210,pageH=297;const img=canvas.toDataURL("image/jpeg",0.88);const ratio=Math.min(pageW/canvas.width,pageH/canvas.height);const w=canvas.width*ratio,h=canvas.height*ratio;pdf.addImage(img,"JPEG",(pageW-w)/2,5,w,h);pdf.save("BD-Barguna-News.pdf");}catch(e){alert("PDF তৈরি করা যায়নি: "+(e.message||e));}};<\/script>';
   html=html.replace('</body>',pdfScript+'</body>');
  }
