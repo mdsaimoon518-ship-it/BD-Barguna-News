@@ -288,10 +288,7 @@ window.printNewsPhotoCard=async function(){
  try{
   const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');
   if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}
-  w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script id="bd-fit-single-page-print">
-(function(){function fitNewsToOnePage(){const paper=document.querySelector('.paper');if(!paper)return;paper.style.setProperty('--bd-print-zoom','1');const available=277*96/25.4;const scale=Math.min(1,available/paper.scrollHeight);paper.style.setProperty('--bd-print-zoom',String(Math.max(.35,scale)));}window.addEventListener('beforeprint',fitNewsToOnePage);window.addEventListener('afterprint',function(){const p=document.querySelector('.paper');if(p)p.style.removeProperty('--bd-print-zoom');});})();
-</script>
-</body></html>');
+  w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');
   w.document.close();
  }catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
