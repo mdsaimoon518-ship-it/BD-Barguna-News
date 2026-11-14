@@ -1,9 +1,9 @@
 // Article-page HTML template used by the admin publisher.
-window.articleTemplateVersion="20261114multiphoto2";
+window.articleTemplateVersion="20261114classicheader1";
 window.articleHTML = function articleHTML(n){
  const mainMenu=["হোম","আজকের সর্বশেষ খবর","বিশেষ সংবাদ","করোনাভাইরাস","সম্পাদকীয়","জাতীয়","রাজধানী","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","টেক","শিক্ষা","স্বাস্থ্য","চাকরি","সোশ্যাল মিডিয়া","আইন-আদালত","প্রজন্ম","প্রবাস","ক্যাম্পাস","সাহিত্য","ধর্ম","ছবি","ভিডিও","ই-পেপার","English"];
  const subMenu=["সর্বশেষ","বিশেষ সংবাদ","জাতীয়","সারাদেশ","রাজনীতি","বিশ্ব সংবাদ","খেলা","বিনোদন","অর্থনীতি","লাইফস্টাইল","টেক","আইন-আদালত","ভিডিও","মতামত","অন্যান্য","Eng","menu"];
- const articleNav='<nav class="article-nav" aria-label="প্রধান মেনু">'+mainMenu.map((x,i)=>'<a href="../'+(i===0?'':'#latest')+'">'+esc(x)+'</a>').join('')+'</nav><nav class="article-subnav" aria-label="দ্বিতীয় মেনু">'+subMenu.map(x=>'<a href="../#latest">'+esc(x)+'</a>').join('')+'</nav>';
+ const articleNav='<nav class="article-nav" aria-label="প্রধান মেনু">'+mainMenu.map((x,i)=>'<a href="../'+(i===0?'':'#latest')+'">'+esc(x)+'</a>').join('')+'</nav>';
  const imageEntries=(Array.isArray(n.images)?n.images:[]).map((item,i)=>({
   url:typeof item==="string"?item:(item&&item.url)||"",
   caption:(Array.isArray(n.imageCaptions)?n.imageCaptions[i]:"")||(item&&item.caption)||(i===0?n.caption:"")||""
@@ -122,11 +122,11 @@ body{background:#fff!important;padding:0!important}
 .masthead .logo,.masthead .logo-mark{width:46px!important;height:46px!important;flex:0 0 46px!important}
 .masthead .brand{font-size:23px!important;color:#a30d25!important;font-weight:900!important;margin:0!important}
 .masthead .tagline{font-size:12px!important;color:#555!important;margin:0!important}
-.article-nav,.article-subnav{display:flex!important;overflow-x:auto!important;white-space:nowrap!important;gap:0!important;margin:0!important;padding:0!important;border-radius:0!important}
+.article-nav{display:flex!important;overflow-x:auto!important;white-space:nowrap!important;gap:0!important;margin:0!important;padding:0!important;border-radius:0!important}
 .article-nav{background:#a30d25!important;color:#fff!important}
-.article-subnav{background:#f4f4f4!important;border-bottom:1px solid #ddd!important}
+
 .article-nav a{color:#fff!important;padding:11px 13px!important;font-size:14px!important}
-.article-subnav a{color:#222!important;padding:9px 12px!important;font-size:13px!important}
+
 .category{display:block!important;margin:20px 0 8px!important;padding:0 0 8px!important;border:0!important;background:none!important;color:#a30d25!important;font-size:14px!important;font-weight:800!important}
 h1{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;text-align:left!important;font-size:clamp(27px,3.4vw,40px)!important;line-height:1.48!important;margin:8px 0 14px!important;padding:0 0 14px!important;border:0!important;border-bottom:1px solid #ddd!important;color:#171717!important}
 .date{font-size:13px!important;color:#666!important;border:0!important;padding:0!important;margin:6px 0!important}
@@ -142,8 +142,8 @@ h1{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;text-ali
 .article{font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;font-size:19px!important;line-height:2!important;color:#222!important;text-align:justify!important;column-count:1!important;column-rule:0!important;max-width:1000px!important;margin:20px 0!important}
 .photo-card-preview{margin:24px 0!important;border-radius:0!important}
 .footer{border-top:1px solid #ddd!important;text-align:left!important}
-@media(max-width:650px){.paper{padding:0 14px!important}.masthead .brand{font-size:19px!important}.article-nav a{padding:10px!important;font-size:12px!important}.article-subnav a{padding:8px 10px!important;font-size:12px!important}.article{font-size:17px!important;line-height:1.95!important}h1{font-size:26px!important}}
-@media print{.masthead,.article-nav,.article-subnav,.bd-breadcrumb,.bd-story-tools,.buttons,.home{display:none!important}.paper{padding:0!important}.article{font-size:12pt!important}}
+@media(max-width:650px){.paper{padding:0 14px!important}.masthead .brand{font-size:19px!important}.article-nav a{padding:10px!important;font-size:12px!important}.article{font-size:17px!important;line-height:1.95!important}h1{font-size:26px!important}}
+@media print{.masthead,.article-nav,.bd-breadcrumb,.bd-story-tools,.buttons,.home{display:none!important}.paper{padding:0!important}.article{font-size:12pt!important}}
 </style>
 <script id="bd-story-toolbar-script">
 document.addEventListener('DOMContentLoaded',function(){
