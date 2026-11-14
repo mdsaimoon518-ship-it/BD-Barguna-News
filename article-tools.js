@@ -21,7 +21,7 @@ function start(){
  card.append(heading,preview);
  const insertion=article||root.querySelector('footer')||null;
  if(insertion)root.insertBefore(card,insertion);else root.appendChild(card);
- function rounded(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,x+w,y+h,r);ctx.fill();}
+ function rounded(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();}
  function load(src){return new Promise(resolve=>{if(!src)return resolve(null);const im=new Image();try{if(new URL(src,location.href).origin!==location.origin)im.crossOrigin='anonymous';}catch(e){}im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=src;});}
  function drawFullImage(im,x,y,w,h){
   ctx.fillStyle='#e9eef4';ctx.fillRect(x,y,w,h);
