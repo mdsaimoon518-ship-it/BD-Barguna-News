@@ -95,6 +95,15 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 @media(max-width:650px){.paper{padding:15px}h1{font-size:27px;line-height:1.55;padding:4px 4px 14px}.brand{font-size:20px}.article{font-size:17px;line-height:1.9;column-count:1;column-gap:0;column-rule:0}}
 @media print{body{background:white;padding:0}.paper{box-shadow:none;border:0;padding:0}.buttons,.home{display:none!important}}
 </style>
+<style id="bd-fullscreen-clean-top">
+/* Remove all content above the news category and use the full screen */
+.print-masthead,.masthead,.article-nav,.article-subnav{display:none!important}
+html,body{width:100%!important;min-height:100%!important;margin:0!important;padding:0!important}
+body{background:#fff!important}
+.paper{display:block!important;width:100%!important;max-width:none!important;min-height:100vh!important;margin:0!important;padding:18px clamp(14px,3vw,42px)!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important}
+.category{margin-top:0!important}
+@media(max-width:650px){.paper{padding:12px 14px!important}}
+</style>
 </head>
 <body>
 <main class="paper">
