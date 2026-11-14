@@ -232,7 +232,8 @@ ${image}
 <h2>সংবাদ ডাউনলোড ও শেয়ার করুন</h2>
 <div class="buttons">
 <button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
-<button type="button" onclick="window.print()">🖨️ নিউজ প্রিন্ট</button>
+<button type="button" onclick="printNewsPaper()">🖨️ নিউজ প্রিন্ট</button>
+<button type="button" class="gray" onclick="copyArticleText()">📝 নিউজ কপি</button>
 <button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button>
 <button type="button" class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
 <button type="button" class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
@@ -272,6 +273,30 @@ window.downloadNewsPDF=async function(){
   }finally{staging.remove();}
  }catch(error){alert(error.message||'PDF ডাউনলোড করা যায়নি।');}
  finally{if(button){button.disabled=false;button.textContent=oldText;}}
+};
+window.printNewsPaper=async function(){
+ try{
+  if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+  const images=Array.from(document.querySelectorAll('.paper img'));
+  await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;setTimeout(resolve,5000);})));
+  window.print();
+ }catch(e){alert(e.message||'প্রিন্ট চালু করা যায়নি।');}
+};
+window.copyArticleText=async function(){
+ const title=(document.querySelector('h1')?.textContent||document.title).trim();
+ const category=(document.querySelector('.category,.cat')?.textContent||'').trim();
+ const date=(document.querySelector('.date')?.textContent||'').trim();
+ const body=(document.querySelector('.article')?.innerText||document.querySelector('.article')?.textContent||'').trim();
+ const text=[title,category,date,body,'সংবাদের লিংক: '+location.href].filter(Boolean).join('\\n\\n');
+ try{
+  if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+  else{
+   const field=document.createElement('textarea');field.value=text;field.style.position='fixed';field.style.opacity='0';
+   document.body.appendChild(field);field.focus();field.select();
+   const ok=document.execCommand('copy');field.remove();if(!ok)throw new Error('কপি করা যায়নি');
+  }
+  alert('সম্পূর্ণ সংবাদ কপি হয়েছে।');
+ }catch(e){window.prompt('সংবাদটি কপি করুন:',text);}
 };
 window.copyArticleLink=async function(){
  const link=location.href;
