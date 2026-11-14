@@ -418,8 +418,12 @@ window.buildNewsPhotoCard=async function(){
  return canvas;
 };
 window.downloadNewsPhotoCard=async function(){
- try{const canvas=await window.buildNewsPhotoCard();canvas.toBlob(blob=>{if(!blob){alert('ফটোকার্ড তৈরি হয়নি।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='bd-barguna-news-photo-card.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);},'image/png');}
- catch(e){alert(e.message||'ফটোকার্ড তৈরি করা যায়নি।');}
+ try{
+  const canvas=await window.buildNewsPhotoCard();
+  const save=url=>{const a=document.createElement('a');a.href=url;a.download='BD-Barguna-News-PhotoCard.png';a.style.display='none';document.body.appendChild(a);a.click();a.remove();};
+  if(canvas.toBlob){canvas.toBlob(blob=>{if(!blob){save(canvas.toDataURL('image/png'));return;}const url=URL.createObjectURL(blob);save(url);setTimeout(()=>URL.revokeObjectURL(url),10000);},'image/png');}
+  else save(canvas.toDataURL('image/png'));
+ }catch(e){alert(e.message||'ফটোকার্ড ডাউনলোড করা যায়নি।');}
 };
 window.printNewsPaper=async function(){
  try{
