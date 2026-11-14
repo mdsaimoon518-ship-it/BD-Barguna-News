@@ -217,19 +217,13 @@ BD Barguna News
 <footer class="footer">
 <strong>BD Barguna News</strong><br>
 সত্যের সন্ধানে, মানুষের পাশে।
-<div class="publisher-info">
-<h2>মোঃ সাইমুন মিয়া</h2>
-<strong>প্রকাশক ও সম্পাদক</strong> · BD Barguna News
-<p>বরগুনা ও বাংলাদেশের স্থানীয়, জাতীয় এবং গুরুত্বপূর্ণ খবর পাঠকের কাছে তুলে ধরাই আমাদের লক্ষ্য। তথ্যভিত্তিক, স্পষ্ট ও পাঠকবান্ধব সংবাদ প্রকাশে আমরা কাজ করি।</p>
-<p>অফিস: শের-ই বাংলা সড়ক, বরগুনা</p>
-<p>মোবাইল: <a href="tel:+8801609320308">০১৬০৯৩২০৩০৮</a></p>
-<p>ইমেইল: <a href="mailto:mdsaimoon518@gmail.com">mdsaimoon518@gmail.com</a></p>
-</div>
+
 </footer>
 <section class="bd-article-actions" aria-label="সংবাদ ব্যবহার ও শেয়ার">
 <h2>সংবাদটি সংরক্ষণ ও শেয়ার করুন</h2>
 <div class="buttons">
 <button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
+<button type="button" onclick="copyArticleText()">📋 সম্পূর্ণ নিউজ কপি</button>
 <button type="button" onclick="window.print()">🖨️ নিউজ প্রিন্ট</button>
 <button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button>
 <button type="button" class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
@@ -314,7 +308,7 @@ h1{font-family:"Noto Serif Bengali",serif!important;font-size:clamp(28px,4vw,40p
  .photo-gallery .caption{font-size:6.5pt!important;padding-top:1mm!important}
  .article{font-size:9pt!important;line-height:1.35!important;column-count:2!important;column-gap:4mm!important}
 }
-</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"></body></html>');w.document.close();}
+</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script id="bd-copy-news-fix">window.copyArticleText=async function(){const title=(document.querySelector('h1')?.textContent||document.title).trim(),category=(document.querySelector('.category,.cat')?.textContent||'').trim(),date=(document.querySelector('.date')?.textContent||'').trim(),body=(document.querySelector('.article,.body')?.textContent||'').trim(),value=[title,category,date,body,'সংবাদের লিংক: '+location.href].filter(Boolean).join('\\n\\n');try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(value);else{const x=document.createElement('textarea');x.value=value;x.style.position='fixed';document.body.appendChild(x);x.focus();x.select();const ok=document.execCommand('copy');x.remove();if(!ok)throw Error('কপি করা যায়নি');}alert('সম্পূর্ণ নিউজ কপি হয়েছে।');}catch(e){window.prompt('নিউজটি কপি করুন:',value);}};</script></body></html>');w.document.close();}
  catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
 window.copyNewsPhotoCard=async function(){
