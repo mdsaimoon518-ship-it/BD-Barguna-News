@@ -224,9 +224,14 @@ button,a{-webkit-tap-highlight-color:transparent}
 <script>
 (function(){
 const firebaseConfig={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
-if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth(),database=firebase.database();
-const authReady=auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{}).then(()=>auth.signInAnonymously()).then(result=>result.user);
+let auth=null,database=null;
+try{
+ if(typeof firebase!=='undefined'&&firebase.apps){
+  if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+  auth=firebase.auth();database=firebase.database();
+ }
+}catch(firebaseError){console.warn('Firebase unavailable; news will still load:',firebaseError);}
+const authReady=auth?auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{}).then(()=>auth.signInAnonymously()).then(result=>result.user):Promise.resolve(null);
 let activePollRef=null;
 const bnDigits=s=>String(s).replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[Number(d)]);
 const now=new Date();document.getElementById('today').textContent=now.toLocaleDateString('bn-BD',{weekday:'long',day:'numeric',month:'long',year:'numeric'});document.getElementById('year').textContent=bnDigits(now.getFullYear());
@@ -260,6 +265,7 @@ root.innerHTML=valid.slice(0,6).map(v=>{const id=videoId(v.url);const link=safeU
 const siteBase=location.pathname.endsWith('/')?location.pathname:location.pathname.replace(/[^/]*$/,'');const cacheBust='?v='+Date.now();
 async function showPoll(polls){
 const root=document.getElementById('pollDisplay');
+if(!auth||!database){root.innerHTML='<p>জরিপ সাময়িকভাবে চালু নেই। তবে সংবাদ পড়তে কোনো সমস্যা হবে না।</p>';return;}
 const p=Array.isArray(polls)?polls.find(x=>x&&x.active!==false&&x.question&&Array.isArray(x.options)&&x.options.length>=2):null;
 if(!p){root.innerHTML='<p>এখনো কোনো জরিপ প্রকাশ করা হয়নি।</p>';return;}
 const pollKey=String(p.id||'');
@@ -301,7 +307,7 @@ status.textContent=error.code==='PERMISSION_DENIED'?'ভোট গ্রহণ �
 }catch(error){status.textContent='ভোট ব্যবস্থা চালু হয়নি: '+error.message;}
 }
 async function fetchLatestNews(){let lastError;for(let attempt=0;attempt<4;attempt++){try{const response=await fetch(siteBase+'news.json?v='+Date.now()+'-'+attempt,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!response.ok)throw new Error('news.json: '+response.status);const data=await response.json();if(!Array.isArray(data))throw new Error('সংবাদের তালিকার ফরম্যাট সঠিক নয়');return data;}catch(error){lastError=error;if(attempt<3)await new Promise(resolve=>setTimeout(resolve,700*(attempt+1)));}}throw lastError;}
-fetchLatestNews().then(news=>Promise.all([Promise.resolve(news),fetch(siteBase+'videos.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():[]).catch(()=>[]),fetch(siteBase+'poll.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():[]).catch(()=>[]),fetch(siteBase+'live.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]).then(([news,videos,polls,live])=>{allNews=news;allVideos=videos;showBreaking(news);updateFeaturedNews(news);showNews(allNews,activeCategory);showVideos(allVideos);showLive(live);showPoll(polls);database.ref('articleViews').once('value').then(snapshot=>{viewCounts=snapshot.val()||{};showPopular(allNews)}).catch(()=>showPopular(allNews))}).catch(err=>{document.getElementById('newsCards').innerHTML='<div class="empty"><strong>সংবাদ লোড করা যায়নি</strong>পেজটি আবার রিফ্রেশ করুন। ('+esc(err.message)+')</div>';document.getElementById('moreNews').innerHTML=''}));
+fetchLatestNews().then(news=>Promise.all([Promise.resolve(news),fetch(siteBase+'videos.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():[]).catch(()=>[]),fetch(siteBase+'poll.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():[]).catch(()=>[]),fetch(siteBase+'live.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]).then(([news,videos,polls,live])=>{allNews=news;allVideos=videos;showBreaking(news);updateFeaturedNews(news);showNews(allNews,activeCategory);showVideos(allVideos);showLive(live);showPoll(polls);database?database.ref('articleViews').once('value').then(snapshot=>{viewCounts=snapshot.val()||{};showPopular(allNews)}).catch(()=>showPopular(allNews)):showPopular(allNews)}).catch(err=>{document.getElementById('newsCards').innerHTML='<div class="empty"><strong>সংবাদ লোড করা যায়নি</strong>পেজটি আবার রিফ্রেশ করুন। ('+esc(err.message)+')</div>';document.getElementById('moreNews').innerHTML=''}));
 document.addEventListener('click',e=>{
  const b=e.target.closest('.download-card-btn');if(!b)return;
  const src=b.dataset.cardImage,date=b.dataset.cardDate||'',title=b.dataset.cardTitle||'সর্বশেষ সংবাদ';
