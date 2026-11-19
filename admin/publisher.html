@@ -361,7 +361,7 @@ ${image}
 <script>
 document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅\s*প্রকাশিত:\s*/,''):'';});
 window.buildNewsPhotoCard=async function(){
- const scriptSrc=new URL('../photo-card.js?v=3',location.href).href;
+ const scriptSrc=new URL('../photo-card.js?v=4',location.href).href;
  if(!window.BDPhotoCard){
   await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=scriptSrc;script.onload=resolve;script.onerror=()=>reject(new Error('ফটোকার্ড ডিজাইন লোড হয়নি।'));document.head.appendChild(script);});
  }
