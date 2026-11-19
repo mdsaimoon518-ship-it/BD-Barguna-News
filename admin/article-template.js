@@ -41,7 +41,7 @@ window.articleHTML = function articleHTML(n){
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="${esc(n.body.slice(0,150))}">
-<script src="../photo-card.js?v=5"><\/script>\n<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1816426000436287" crossorigin="anonymous"><\/script>
+<script src="../photo-card.js?v=6"><\/script>\n<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1816426000436287" crossorigin="anonymous"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"><\/script>
@@ -311,10 +311,11 @@ window.copyArticleLink=async function(){
  }catch(e){window.prompt('এই লিংকটি কপি করুন:',link);}
 };
 window.buildNewsPhotoCard=async function(){
- const scriptSrc=new URL('../photo-card.js?v=5',location.href).href;
+ const scriptSrc=new URL('../photo-card.js?v=6',location.href).href;
  if(!window.BDPhotoCard){
-  await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=scriptSrc;script.onload=resolve;script.onerror=()=>reject(new Error('ফটোকার্ড ডিজাইন লোড হয়নি।'));document.head.appendChild(script);});
+  await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=scriptSrc;script.onload=()=>window.BDPhotoCard?resolve():reject(new Error('ফটোকার্ড স্ক্রিপ্ট চালু হয়নি।'));script.onerror=()=>reject(new Error('ফটোকার্ড ডিজাইন লোড হয়নি।'));document.head.appendChild(script);});
  }
+ if(!window.BDPhotoCard||typeof window.BDPhotoCard.create!=='function')throw new Error('ফটোকার্ড তৈরি করার ফাংশন পাওয়া যায়নি।');
  const photos=Array.from(document.querySelectorAll('.photo-gallery figure.photo-card img,.article-image,figure img,#newsImage'))
   .filter((el,i,all)=>!el.closest('.photo-card-preview')&&all.findIndex(x=>(x.currentSrc||x.src)===(el.currentSrc||el.src))===i)
   .slice(0,2).map(el=>({url:el.currentSrc||el.src,caption:(el.closest('figure')?.querySelector('figcaption,.caption')?.textContent||'').trim()}));
