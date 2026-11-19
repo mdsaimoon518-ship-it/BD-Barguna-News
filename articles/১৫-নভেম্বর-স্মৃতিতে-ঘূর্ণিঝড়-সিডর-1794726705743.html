@@ -142,7 +142,6 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  <div class="caption">ছবি - সংগৃহীত</div>
  </div>
 <div id="printAdOutput-middle" class="print-ad-output"></div>
-<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
 <div class="article">১৫ নভেম্বর ২০০৭ সালের এই দিনে বাংলাদেশের উপকূলীয় অঞ্চলে আঘাত হানে প্রলয়ংকরী ঘূর্ণিঝড় সিডর। মুহূর্তের মধ্যে লণ্ডভণ্ড হয়ে যায় দক্ষিণাঞ্চলের বিস্তীর্ণ এলাকা।
 
 বিশেষ করে বাগেরহাট, বরগুনা, পটুয়াখালী, পিরোজপুর ও খুলনাসহ উপকূলীয় অঞ্চলে নেমে আসে ভয়াবহ তাণ্ডব। এ ঝড়ে অসংখ্য মানুষ প্রাণ হারান, অনেকে নিখোঁজ হন এবং হাজার হাজার পরিবার হারায় ঘরবাড়ি, স্বজন ও জীবিকার অবলম্বন।
@@ -244,14 +243,7 @@ window.buildNewsPhotoCard=async function(){
  ctx.fillStyle='#334155';ctx.font='bold 21px Arial';ctx.fillText('BD BARGUNA NEWS',82,footerY+35);ctx.textAlign='right';ctx.fillStyle='#64748b';ctx.font='bold 20px "Noto Sans Bengali",Arial';ctx.fillText('প্রকাশিত: '+dateText,1118,footerY+35);ctx.textAlign='left';rr(82,footerY+55,1036,52,14);ctx.fillStyle='#c51b36';ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 25px "Noto Sans Bengali",Arial';ctx.textAlign='center';ctx.fillText('বিজ্ঞাপনের জন্য যোগাযোগ : ০১৬০৯৩২০৩০৮ | ০৯৬৫৮৫৯৩২৪৩',600,footerY+89);ctx.textAlign='left';
  return canvas;
 };
-window.downloadNewsPhotoCard=async function(){
- try{
-  const canvas=await window.buildNewsPhotoCard();
-  const save=url=>{const a=document.createElement('a');a.href=url;a.download='BD-Barguna-News-PhotoCard.png';a.style.display='none';document.body.appendChild(a);a.click();a.remove();};
-  if(canvas.toBlob){canvas.toBlob(blob=>{if(!blob){save(canvas.toDataURL('image/png'));return;}const url=URL.createObjectURL(blob);save(url);setTimeout(()=>URL.revokeObjectURL(url),10000);},'image/png');}
-  else save(canvas.toDataURL('image/png'));
- }catch(e){alert(e.message||'ফটোকার্ড ডাউনলোড করা যায়নি।');}
-};
+window.downloadNewsPhotoCard=async function(){try{const canvas=await window.buildNewsPhotoCard();if(!canvas)throw new Error('ফটোকার্ড তৈরি হয়নি।');const data=canvas.toDataURL('image/png');const a=document.createElement('a');a.href=data;a.download='BD-Barguna-News-PhotoCard.png';a.style.position='fixed';a.style.left='-9999px';document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),1500);}catch(e){alert('ফটোকার্ড ডাউনলোড করা যায়নি: '+(e.message||e));}};
 window.printNewsPaper=async function(){
  try{
   const outputs=Array.from(document.querySelectorAll('.print-ad-output'));
@@ -262,7 +254,7 @@ window.printNewsPaper=async function(){
  }catch(e){window.print();}
 };
 window.printNewsPhotoCard=async function(){
- try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script>window.downloadNewsPDF=async function(){try{if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){alert("PDF লাইব্রেরি লোড হয়নি। প্রিন্ট অপশন থেকে Save as PDF নির্বাচন করুন।");window.print();return;}const node=document.querySelector(".paper")||document.querySelector("main")||document.body;const canvas=await window.html2canvas(node,{scale:1.5,useCORS:true,backgroundColor:"#ffffff"});const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});const pageW=210,pageH=297;const img=canvas.toDataURL("image/jpeg",0.88);const ratio=Math.min(pageW/canvas.width,pageH/canvas.height);const w=canvas.width*ratio,h=canvas.height*ratio;pdf.addImage(img,"JPEG",(pageW-w)/2,5,w,h);pdf.save("BD-Barguna-News.pdf");}catch(e){alert("PDF তৈরি করা যায়নি: "+(e.message||e));}};</script></body></html>');w.document.close();}
+ try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script>window.downloadNewsPDF=async function(){try{if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){alert("PDF লাইব্রেরি লোড হয়নি। প্রিন্ট অপশন থেকে Save as PDF নির্বাচন করুন।");window.print();return;}const node=document.querySelector(".paper")||document.querySelector("main")||document.body;const canvas=await window.html2canvas(node,{scale:1.5,useCORS:true,backgroundColor:"#ffffff"});const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});const pageW=210,pageH=297;const img=canvas.toDataURL("image/jpeg",0.88);const ratio=Math.min(pageW/canvas.width,pageH/canvas.height);const w=canvas.width*ratio,h=canvas.height*ratio;pdf.addImage(img,"JPEG",(pageW-w)/2,5,w,h);pdf.save("BD-Barguna-News.pdf");}catch(e){alert("PDF তৈরি করা যায়নি: "+(e.message||e));}};<\/script></body></html>');w.document.close();}
  catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
 window.copyNewsPhotoCard=async function(){
