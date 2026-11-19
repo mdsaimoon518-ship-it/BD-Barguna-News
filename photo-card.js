@@ -56,6 +56,7 @@ async function create(data){
  const date=String(data.date||new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(new Date())).replace(/^📅\s*প্রকাশিত:\s*/,'').trim();
  const logo=await load(data.logo||'images/bd-barguna-logo.webp');
  const raw=Array.isArray(data.images)?data.images.filter(Boolean).slice(0,2):[];
+ if(!raw.length&&data.image)raw.push({url:data.image});
  const loaded=await Promise.all(raw.map(item=>load(typeof item==='string'?item:item.url)));
  const photos=loaded.filter(Boolean);
  const c=document.createElement('canvas');c.width=W;c.height=H;
@@ -63,9 +64,7 @@ async function create(data){
  // Broadcast blue masthead
  const head=x.createLinearGradient(0,0,W,0);head.addColorStop(0,'#002b83');head.addColorStop(.55,'#0649bd');head.addColorStop(1,'#001b63');
  x.fillStyle=head;x.fillRect(0,0,W,190);dots(x,5,175);
- x.fillStyle='rgba(0,20,70,.85)';rounded(x,28,24,450,142,18);
- if(logo){x.fillStyle='#fff';rounded(x,42,38,112,112,14);const sc=Math.min(96/(logo.naturalWidth||logo.width),96/(logo.naturalHeight||logo.height));x.drawImage(logo,98-(logo.naturalWidth||logo.width)*sc/2,94-(logo.naturalHeight||logo.height)*sc/2,(logo.naturalWidth||logo.width)*sc,(logo.naturalHeight||logo.height)*sc);}
- x.textAlign='left';x.fillStyle='#fff';x.font='bold 39px Arial';x.fillText('BD BARGUNA',174,88);x.fillStyle='#ffe52b';x.font='bold 37px Arial';x.fillText('NEWS',174,133);
+ if(logo){x.save();x.fillStyle='#fff';x.beginPath();x.arc(96,95,73,0,Math.PI*2);x.fill();x.lineWidth=7;x.strokeStyle='#ed1735';x.stroke();const sc=Math.min(126/(logo.naturalWidth||logo.width),126/(logo.naturalHeight||logo.height));x.drawImage(logo,96-(logo.naturalWidth||logo.width)*sc/2,95-(logo.naturalHeight||logo.height)*sc/2,(logo.naturalWidth||logo.width)*sc,(logo.naturalHeight||logo.height)*sc);x.restore();}
  x.fillStyle='#df102b';x.beginPath();x.moveTo(850,28);x.lineTo(1172,28);x.lineTo(1172,146);x.lineTo(790,146);x.closePath();x.fill();
  x.fillStyle='#fff';x.textAlign='center';x.font='bold 44px '+FONT;x.fillText('সর্বশেষ সংবাদ',985,102);
  // Main photo panel
@@ -81,7 +80,7 @@ async function create(data){
  const panelY=984,panelH=430;x.fillStyle='#f7f8fb';x.fillRect(0,panelY,W,panelH);
  x.fillStyle='#d80e2d';x.beginPath();x.moveTo(28,panelY);x.lineTo(365,panelY);x.lineTo(405,panelY+74);x.lineTo(28,panelY+74);x.closePath();x.fill();
  x.fillStyle='#fff';x.textAlign='left';x.font='bold 39px '+FONT;x.fillText(category.slice(0,16),82,panelY+51);
- const layout=fitLines(x,title,1080,5,69,39),lineH=Math.round(layout.size*1.38);x.font='bold '+layout.size+'px '+FONT;x.textAlign='center';x.textBaseline='middle';
+ const layout=fitLines(x,title,1080,7,52,27),lineH=Math.round(layout.size*1.32);x.font='bold '+layout.size+'px '+FONT;x.textAlign='center';x.textBaseline='middle';
  const total=layout.lines.length*lineH;let yy=panelY+100+(panelH-115-total)/2+lineH/2;
  layout.lines.forEach(line=>{x.fillStyle='#080b12';x.fillText(line,W/2,yy);yy+=lineH;});
  // Navy world-news footer
