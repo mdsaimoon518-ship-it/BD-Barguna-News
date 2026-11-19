@@ -104,6 +104,8 @@ hr{border:0;border-top:1px solid #ddd;margin:25px 0}
 <hr>
 <h3>📚 প্রকাশিত সংবাদ পরিচালনা</h3>
 <button id="loadNews" class="blue" type="button">সংবাদের তালিকা দেখুন</button>
+<button id="refreshAllArticles" type="button" class="gray">🔄 পুরোনো সব নিউজে নতুন ডিজাইন ও ছবি ঠিক করুন</button>
+<p class="note">এই বাটনে চাপ দিলে প্রকাশিত সব নিউজের আর্টিকেল পেজ নতুন টেমপ্লেটে আপডেট হবে; নিউজের লেখা বা ছবি মুছবে না।</p>
 <div id="newsList"></div>
 
 <hr>
@@ -467,6 +469,27 @@ $("newsForm").addEventListener("submit",async e=>{
 });
 
 $("loadNews").onclick=loadNews;
+$("refreshAllArticles").addEventListener("click",async function(){
+ const btn=this;
+ if(!confirm("সব পুরোনো নিউজের পেজ নতুন ডিজাইনে আপডেট করবেন? নিউজের লেখা ও ছবির তথ্য অপরিবর্তিত থাকবে।"))return;
+ btn.disabled=true;
+ try{
+  const all=await readJSON(NEWS);
+  if(!all.length)throw new Error("কোনো নিউজ পাওয়া যায়নি।");
+  let done=0;
+  for(const n of all){
+   if(!n||!n.slug)continue;
+   await saveFile("articles/"+n.slug+".html",window.articleHTML(n),"Refresh article layout and photo card");
+   done++;
+   btn.textContent="আপডেট হচ্ছে "+done+"/"+all.length;
+  }
+  show("status","সফল! "+done+"টি নিউজের পেজ নতুন ডিজাইন ও ছবি-সমর্থিত টেমপ্লেটে আপডেট হয়েছে।");
+  btn.textContent="✅ সব নিউজ আপডেট হয়েছে";
+ }catch(err){
+  show("status","সমস্যা: "+err.message,true);
+  btn.textContent="আবার চেষ্টা করুন";
+ }finally{btn.disabled=false;}
+});
 
 /* VIDEO NEWS */
 
