@@ -412,7 +412,6 @@ ${image}
 </main>
 <script>
 window.BD_NEWS_IMAGE_URLS=${JSON.stringify(photoUrls.map(src=>new URL(src,location.href).href))};
-window.BD_NEWS_IMAGE_URLS=[];
 window.buildNewsPhotoCard=async function(){
  if(!window.BDPhotoCard||typeof window.BDPhotoCard.create!=="function"){
   await new Promise(function(resolve,reject){
