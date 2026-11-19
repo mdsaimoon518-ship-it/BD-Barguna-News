@@ -27,8 +27,10 @@ function wrap(ctx,text,maxWidth){
 }
 function cover(ctx,img,x,y,w,h){
  const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
- const scale=Math.max(w/iw,h/ih),sw=w/scale,sh=h/scale;
- ctx.drawImage(img,(iw-sw)/2,(ih-sh)/2,sw,sh,x,y,w,h);
+ // পুরো ছবি দেখান: crop নয়, অনুপাত ঠিক রেখে contain
+ ctx.save();ctx.fillStyle='#071d49';ctx.fillRect(x,y,w,h);
+ const scale=Math.min(w/iw,h/ih),dw=iw*scale,dh=ih*scale;
+ ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);ctx.restore();
 }
 function fitLines(ctx,text,maxWidth,maxLines,startSize,minSize){
  let size=startSize,lines=[];
@@ -80,7 +82,7 @@ async function create(data){
  const panelY=984,panelH=430;x.fillStyle='#f7f8fb';x.fillRect(0,panelY,W,panelH);
  x.fillStyle='#d80e2d';x.beginPath();x.moveTo(28,panelY);x.lineTo(365,panelY);x.lineTo(405,panelY+74);x.lineTo(28,panelY+74);x.closePath();x.fill();
  x.fillStyle='#fff';x.textAlign='left';x.font='bold 39px '+FONT;x.fillText(category.slice(0,16),82,panelY+51);
- const layout=fitLines(x,title,1080,7,52,27),lineH=Math.round(layout.size*1.32);x.font='bold '+layout.size+'px '+FONT;x.textAlign='center';x.textBaseline='middle';
+ const layout=fitLines(x,title,1080,9,40,20),lineH=Math.round(layout.size*1.24);x.font='bold '+layout.size+'px '+FONT;x.textAlign='center';x.textBaseline='middle';
  const total=layout.lines.length*lineH;let yy=panelY+100+(panelH-115-total)/2+lineH/2;
  layout.lines.forEach(line=>{x.fillStyle='#080b12';x.fillText(line,W/2,yy);yy+=lineH;});
  // Navy world-news footer
