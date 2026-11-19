@@ -335,6 +335,7 @@ async function uploadImage(file){
 }
 
 function articleHTML(n){
+ const photoUrls=[...(Array.isArray(n.images)?n.images:[]),n.image].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).slice(0,2).map(src=>/^https?:\\/\\//i.test(src)?src:"../"+String(src).replace(/^\\/+/, ""));
  const image=n.image?
  `<div class="photo-card">
  <img src="${/^https?:\/\//i.test(n.image)?esc(n.image):"../"+esc(n.image).replace(/^\/+/,"")}" alt="${esc(n.title)}">
@@ -410,6 +411,8 @@ ${image}
 <div class="buttons bd-photo-download-end"><button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটো কার্ড ডাউনলোড</button></div>
 </main>
 <script>
+window.BD_NEWS_IMAGE_URLS=${JSON.stringify(photoUrls.map(src=>new URL(src,location.href).href))};
+window.BD_NEWS_IMAGE_URLS=[];
 window.buildNewsPhotoCard=async function(){
  if(!window.BDPhotoCard||typeof window.BDPhotoCard.create!=="function"){
   await new Promise(function(resolve,reject){
@@ -418,9 +421,12 @@ window.buildNewsPhotoCard=async function(){
    script.onerror=function(){reject(new Error("ফটোকার্ড ডিজাইন লোড হয়নি।"));};document.head.appendChild(script);
   });
  }
- const imgs=Array.from(document.querySelectorAll(".photo-gallery img,.photo-card img,.article-image,figure img,#newsImage"))
-  .filter((el,i,all)=>el.complete&&el.naturalWidth>0&&!el.closest(".photo-card-preview")&&all.findIndex(x=>(x.currentSrc||x.src)===(el.currentSrc||el.src))===i)
-  .slice(0,2).map(el=>({url:el.currentSrc||el.src}));
+ const explicit=(window.BD_NEWS_IMAGE_URLS||[]).map(url=>({url}));
+ const discovered=Array.from(document.querySelectorAll(".photo-gallery img,.photo-card img,.article-image,figure img,#newsImage"))
+  .filter(el=>!el.closest(".photo-card-preview"))
+  .map(el=>({url:el.currentSrc||el.src}));
+ const seen=new Set();
+ const imgs=[...explicit,...discovered].filter(item=>item.url&&!seen.has(item.url)&&seen.add(item.url)).slice(0,2);
  const raw=document.querySelector(".date:not(#articleViewCount)")?.textContent||"";
  const date=raw.replace(/^📅\s*প্রকাশিত:\s*/,"").trim();
  return window.BDPhotoCard.create({title:document.querySelector("h1")?.textContent||document.title,category:document.querySelector(".category")?.textContent||"সর্বশেষ সংবাদ",date,images:imgs,logo:new URL("../images/bd-barguna-logo.webp?v=20261118",location.href).href});
