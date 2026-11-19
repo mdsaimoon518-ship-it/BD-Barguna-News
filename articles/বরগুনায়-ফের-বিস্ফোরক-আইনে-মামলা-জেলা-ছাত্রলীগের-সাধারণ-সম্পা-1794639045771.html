@@ -27,7 +27,8 @@
 *{box-sizing:border-box}
 body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Arial,sans-serif;line-height:1.9}
 .paper{max-width:850px;margin:auto;background:white;padding:25px;border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 20px #0001}
-.masthead{display:flex;align-items:center;gap:14px;border-bottom:4px solid #b5122b;padding-bottom:15px}.masthead .channel-logo{display:block;flex:0 0 58px;width:58px;height:58px;object-fit:contain;border-radius:10px}
+.masthead{display:flex;align-items:center;gap:14px;border-bottom:4px solid #b5122b;padding-bottom:15px}
+.channel-logo{display:block;width:65px;height:65px;flex:0 0 65px;object-fit:contain;border-radius:10px}
 .article-nav,.article-subnav{display:flex;gap:0;overflow-x:auto;white-space:nowrap;scrollbar-width:none;margin:12px -25px 0;padding:0 15px}
 .article-nav{background:#a90e27;color:#fff}
 .article-subnav{background:#f5f6f8;border-bottom:1px solid #e2e5eb;margin-top:0}
@@ -141,7 +142,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  <div class="caption">ছবি - সংগৃহীত</div>
  </div>
 <div id="printAdOutput-middle" class="print-ad-output"></div>
-
+<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
 <div class="article">নিজস্ব প্রতিবেদক : বরগুনায় ফের বিস্ফোরক আইনে মামলা হয়েছে আওয়ামী লীগ ও ছাত্রলীগ নেতাকর্মীদের বিরুদ্ধে। এ মামলায় বরগুনা জেলা ছাত্রলীগের সাধারন সম্পাদক তৌশিকুর রহমান ইমরান সহ আওয়ামিলীগের ৫৮ জনকে আসামি করা হয়েছে। তাঁদের মধ্যে রয়েছেন বরগুনা ১ আসনের সাবেক সংসদ সদস্য গোলাম সরোয়ার টুকু ও সংরক্ষিত নারী আসনের সাবেক সংসদ সদস্য ফারজানা সুমি। তবে সরকারি বাসে অগ্নিসংযোগের অভিযোগে দায়ের করা এ মামলার বাদী বাসটির কোনো কর্মকর্তা বা কর্মচারী নন। এ নিয়ে স্থানীয়দের মধ্যে নানা প্রশ্ন দেখা দিয়েছে। এমনকি বাসে আগুন দেওয়ার ঘটনা কেউ দেখেছেন কি না, তা নিয়েও তৈরি হয়েছে বিতর্ক।
 বুধবার (১১ নভেম্বর) মো. হুমায়ুন কবির (৪০) বাদী হয়ে বরগুনা থানায় মামলাটি করেন। তাঁর বাবার নাম মৃত বাশার উল্লাহ। বরগুনা পৌরসভার কেজি স্কুল সড়কে তাঁর বাড়ি। তিনি জেলা যুবদলের দপ্তর সম্পাদক। মামলায় প্রধান আসামি করা হয়েছে বরগুনা-১ আসনের সাবেক সংসদ সদস্য গোলাম সরোয়ার টুকু, সংরক্ষিত নারী আসনের সাবেক সংসদ সদস্য ফারজানা সুমি, জেলা ছাত্রলীগের সভাপতি রেজাউল কবির রেজা ও সাধারণ সম্পাদক, তৌশিকুর রহমান ইমরান সহ আওয়ামী লীগ ও এর সহযোগী সংগঠনের ৫৮ নেতাকর্মীকে। তালিকায় আইনজীবী ও জনপ্রতিনিধিরাও রয়েছেন।
 এজাহার সূত্রে জানা যায়, খুলনা থেকে বিআরটিসির একটি বাস বরগুনায় আসে। ধর্মঘটের কারণে বাসটি পুলিশ লাইনের পাশে টিটিসি ভবনের সামনের সড়কে রাখা হয়। ৮ নভেম্বর বিকেল সাড়ে ৩টার দিকে বাসটির চালক মো. শিপন হাওলাদার বরগুনা পৌরসভার পুলিশ লাইন্স সড়কসংলগ্ন টিটিসি ভবনের দক্ষিণ পাশে পাকা সড়কে বাসটি রেখে যান। এর পরদিন ৯ নভেম্বর রাত সাড়ে ১২টার দিকে বাসটি চলাচল না করানোর জন্য হুমকি দেওয়া হয় বলে অভিযোগ করেন বাদী।
@@ -157,21 +158,33 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 সত্যের সন্ধানে, মানুষের পাশে।
 
 </footer>
-<section class="bd-article-actions" aria-label="সংবাদ ডাউনলোড ও শেয়ার">
-<h2>সংবাদ ডাউনলোড ও শেয়ার করুন</h2>
-<div class="buttons">
-<button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
-<button type="button" onclick="printNewsPaper()">🖨️ নিউজ প্রিন্ট</button>
-<button type="button" class="gray" onclick="copyArticleText()">📝 নিউজ কপি</button>
-<button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button>
-<button type="button" class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
-<button type="button" class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
-</div>
+<section class="print-ad-panel" id="printAdPanel">
+ <strong>📢 বিজ্ঞাপন পরিচালনা</strong>
+ <p>একই সংবাদে একাধিক বিজ্ঞাপন যোগ করুন এবং পত্রিকার যে স্থানে চান সেখানে বসান।</p>
+ <label for="printAdPosition">বিজ্ঞাপন কোথায় বসাবেন?</label>
+ <select id="printAdPosition"><option value="top">পত্রিকার একদম শুরুতে</option><option value="headline">শিরোনাম ও তারিখের নিচে</option><option value="middle">ছবির পরে / খবরের আগে</option><option value="bottom">খবরের শেষে</option></select>
+ <label>বিজ্ঞাপনের আলাদা নাম</label><input id="printAdName" type="text" placeholder="যেমন: রহমান ট্রেডার্স / বিজ্ঞাপন ১"><label>বিজ্ঞাপনের ছবি (ফোন থেকে একসঙ্গে অনেকগুলো নির্বাচন করুন)</label><input id="printAdFile" type="file" accept="image/*" multiple>
+ <label>অথবা বিজ্ঞাপনের ছবির লিংক</label><input id="printAdUrl" type="url" placeholder="https://example.com/ad.jpg">
+
+ <div class="print-ad-actions"><button type="button" onclick="bdAddPrintAd()">＋ বিজ্ঞাপন যোগ করুন</button><button type="button" onclick="bdClearPrintAds()">সব বিজ্ঞাপন মুছুন</button></div>
+ <p id="printAdCount" aria-live="polite">যোগ করা বিজ্ঞাপন: ০টি</p><small>প্রতিটি বিজ্ঞাপন আলাদাভাবে মুছতে পারবেন। একই স্থানে বা ভিন্ন স্থানে যত খুশি বিজ্ঞাপন যোগ করুন।</small>
 </section>
-<p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
+<div class="buttons"><button type="button" onclick="downloadNewsPDF()">📄 PDF ডাউনলোড</button>
+<button onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button>
+<button type="button" onclick="copyArticleText()">📋 সম্পূর্ণ নিউজ কপি</button>
+<button class="gray" onclick="printNewsPhotoCard()">🖨️ ফটোকার্ড প্রিন্ট</button>
+<button class="gray" onclick="copyNewsPhotoCard()">📋 ফটোকার্ড কপি</button>
+<button onclick="printNewsPaper()">🖨️ সংবাদ প্রিন্ট</button>
+<button class="gray" onclick="copyArticleText()">📋 নিউজ কপি</button>
+<button class="gray" onclick="copyArticleLink()">🔗 লিংক কপি</button>
+<button class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button>
+<button class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button>
+<button class="youtube" onclick="shareToYouTube()">▶ YouTube-এ শেয়ার</button>
+</div>
+<section class="bd-article-actions" aria-label="সংবাদ ব্যবহার ও শেয়ার"><h2>সংবাদটি সংরক্ষণ ও শেয়ার করুন</h2><div class="buttons"><button type="button" onclick="downloadNewsPhotoCard()">🖼️ ফটোকার্ড ডাউনলোড</button><button type="button" onclick="window.print()">🖨️ নিউজ প্রিন্ট</button><button type="button" class="gray" onclick="copyArticleLink()">🔗 কপি লিংক</button><button type="button" class="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank','noopener')">Facebook শেয়ার</button><button type="button" class="whatsapp" onclick="window.open('https://wa.me/?text='+encodeURIComponent(document.title+' '+location.href),'_blank','noopener')">WhatsApp শেয়ার</button></div></section><p class="home"><a href="../">প্রচ্ছদে ফিরে যান</a></p>
 </main>
 <script>
-document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅\\s*প্রকাশিত:\\s*/,''):'';});
+document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅s*প্রকাশিত:s*/,''):'';});
 window.buildNewsPhotoCard=async function(){
  const title=(document.querySelector('h1')?.textContent||document.title).trim();
  const wrap=(value,maxWidth,font)=>{
@@ -198,7 +211,7 @@ window.buildNewsPhotoCard=async function(){
  const footerY=Math.max(1160,850+titleLines.length*(titleSize+14)+105);
  canvas.width=1200;canvas.height=footerY+145;
  const category=(document.querySelector('.cat,.category')?.textContent||'সর্বশেষ সংবাদ').trim();
- const detail=(document.querySelector('.article')?.textContent||'').replace(/\\s+/g,' ').trim().slice(0,145);
+ const detail=(document.querySelector('.article')?.textContent||'').replace(/s+/g,' ').trim().slice(0,145);
  const dateRaw=document.querySelector('meta[property="article:published_time"]')?.content||document.querySelector('.date:not(#articleViewCount)')?.getAttribute('datetime')||document.querySelector('.date:not(#articleViewCount)')?.textContent||new Date().toISOString();
  const parsed=new Date(dateRaw),safeDate=isNaN(parsed.getTime())?new Date():parsed;
  const dateText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(safeDate);
@@ -247,7 +260,7 @@ window.printNewsPaper=async function(){
  }catch(e){window.print();}
 };
 window.printNewsPhotoCard=async function(){
- try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script>window.downloadNewsPDF=async function(){try{if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){alert("PDF লাইব্রেরি লোড হয়নি। প্রিন্ট অপশন থেকে Save as PDF নির্বাচন করুন।");window.print();return;}const node=document.querySelector(".paper")||document.querySelector("main")||document.body;const canvas=await window.html2canvas(node,{scale:1.5,useCORS:true,backgroundColor:"#ffffff"});const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});const pageW=210,pageH=297;const img=canvas.toDataURL("image/jpeg",0.88);const ratio=Math.min(pageW/canvas.width,pageH/canvas.height);const w=canvas.width*ratio,h=canvas.height*ratio;pdf.addImage(img,"JPEG",(pageW-w)/2,5,w,h);pdf.save("BD-Barguna-News.pdf");}catch(e){alert("PDF তৈরি করা যায়নি: "+(e.message||e));}};<\\/script></body></html>');w.document.close();}
+ try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script>window.downloadNewsPDF=async function(){try{if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){alert("PDF লাইব্রেরি লোড হয়নি। প্রিন্ট অপশন থেকে Save as PDF নির্বাচন করুন।");window.print();return;}const node=document.querySelector(".paper")||document.querySelector("main")||document.body;const canvas=await window.html2canvas(node,{scale:1.5,useCORS:true,backgroundColor:"#ffffff"});const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});const pageW=210,pageH=297;const img=canvas.toDataURL("image/jpeg",0.88);const ratio=Math.min(pageW/canvas.width,pageH/canvas.height);const w=canvas.width*ratio,h=canvas.height*ratio;pdf.addImage(img,"JPEG",(pageW-w)/2,5,w,h);pdf.save("BD-Barguna-News.pdf");}catch(e){alert("PDF তৈরি করা যায়নি: "+(e.message||e));}};</script></body></html>');w.document.close();}
  catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
 window.copyNewsPhotoCard=async function(){
@@ -295,6 +308,7 @@ window.shareToYouTube=async function(){
  try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(link);else{const field=document.createElement('textarea');field.value=link;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}alert('সংবাদের লিংক কপি হয়েছে। YouTube খুলছে—আপনার পোস্ট বা বিবরণে লিংকটি পেস্ট করুন।');}catch(e){window.prompt('YouTube-এ শেয়ার করতে এই লিংকটি কপি করুন:',link);}
  window.open('https://www.youtube.com/','_blank','noopener');
 };
+window.addEventListener('load',async function(){const preview=document.getElementById('newsPhotoCardPreview');if(!preview||!window.buildNewsPhotoCard)return;try{const canvas=await window.buildNewsPhotoCard();preview.src=canvas.toDataURL('image/png');preview.dataset.ready='true';}catch(e){preview.removeAttribute('src');preview.alt='ফটোকার্ড তৈরি হয়নি: '+(e.message||'ছবি লোড করা যায়নি');const note=preview.parentElement?.querySelector('.preview-note');if(note)note.textContent='ফটোকার্ড তৈরি হয়নি। ছবির URL পরীক্ষা করে আবার চেষ্টা করুন।';console.error('BD Barguna photo card error:',e);}});
 (function(){
 const config={apiKey:"AIzaSyAmAyhVJfCRs4AzW_Hs-MxI5ydJzvxRE74",authDomain:"bd-barguna-news.firebaseapp.com",databaseURL:"https://bd-barguna-news-default-rtdb.firebaseio.com",projectId:"bd-barguna-news",storageBucket:"bd-barguna-news.firebasestorage.app",messagingSenderId:"468693004369",appId:"1:468693004369:web:e07e7bb422ec286a53c870"};
 if(!firebase.apps.length)firebase.initializeApp(config);
