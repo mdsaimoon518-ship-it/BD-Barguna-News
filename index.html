@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
+<head>\n<script src="photo-card.js?v=1"><\/script>
 <meta charset="UTF-8">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1816426000436287" crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -308,49 +308,13 @@ status.textContent=error.code==='PERMISSION_DENIED'?'ভোট গ্রহণ �
 }
 async function fetchLatestNews(){let lastError;for(let attempt=0;attempt<4;attempt++){try{const response=await fetch(siteBase+'news.json?v='+Date.now()+'-'+attempt,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!response.ok)throw new Error('news.json: '+response.status);const data=await response.json();if(!Array.isArray(data))throw new Error('সংবাদের তালিকার ফরম্যাট সঠিক নয়');return data;}catch(error){lastError=error;if(attempt<3)await new Promise(resolve=>setTimeout(resolve,700*(attempt+1)));}}throw lastError;}
 fetchLatestNews().then(news=>Promise.all([Promise.resolve(news),fetch(siteBase+'videos.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():[]).catch(()=>[]),fetch(siteBase+'poll.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():[]).catch(()=>[]),fetch(siteBase+'live.json'+cacheBust,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]).then(([news,videos,polls,live])=>{allNews=news;allVideos=videos;showBreaking(news);updateFeaturedNews(news);showNews(allNews,activeCategory);showVideos(allVideos);showLive(live);showPoll(polls);database?database.ref('articleViews').once('value').then(snapshot=>{viewCounts=snapshot.val()||{};showPopular(allNews)}).catch(()=>showPopular(allNews)):showPopular(allNews)}).catch(err=>{document.getElementById('newsCards').innerHTML='<div class="empty"><strong>সংবাদ লোড করা যায়নি</strong>পেজটি আবার রিফ্রেশ করুন। ('+esc(err.message)+')</div>';document.getElementById('moreNews').innerHTML=''}));
-document.addEventListener('click',e=>{
+document.addEventListener('click',async e=>{
  const b=e.target.closest('.download-card-btn');if(!b)return;
- const src=b.dataset.cardImage,date=b.dataset.cardDate||'',title=b.dataset.cardTitle||'সর্বশেষ সংবাদ';
- const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1200;
- const ctx=canvas.getContext('2d');
- const draw=img=>{
-  const W=canvas.width,H=canvas.height;
-  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-  ctx.fillStyle='#a90e27';ctx.fillRect(0,0,W,142);
-  ctx.fillStyle='#fff';ctx.textAlign='left';ctx.textBaseline='middle';
-  ctx.font='bold 58px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';
-  ctx.fillText('BD BARGUNA NEWS',48,58);
-  ctx.font='28px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';
-  ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',50,108);
-  ctx.textAlign='right';ctx.font='bold 24px Arial,sans-serif';ctx.fillText('NEWS',W-48,76);
-  const photoTop=142,photoH=650;
-  if(img){
-   const scale=Math.max(W/img.width,photoH/img.height),w=img.width*scale,h=img.height*scale;
-   ctx.save();ctx.beginPath();ctx.rect(0,photoTop,W,photoH);ctx.clip();ctx.drawImage(img,(W-w)/2,photoTop+(photoH-h)/2,w,h);ctx.restore();
-  }else{
-   const g=ctx.createLinearGradient(0,photoTop,W,photoTop+photoH);g.addColorStop(0,'#28384b');g.addColorStop(1,'#6d2334');ctx.fillStyle=g;ctx.fillRect(0,photoTop,W,photoH);
-   ctx.fillStyle='rgba(255,255,255,.16)';ctx.beginPath();ctx.arc(900,420,230,0,Math.PI*2);ctx.fill();
-   ctx.fillStyle='#fff';ctx.font='bold 52px Arial,sans-serif';ctx.textAlign='center';ctx.fillText('BD BARGUNA NEWS',W/2,470);
-  }
-  const shade=ctx.createLinearGradient(0,photoTop+300,0,photoTop+photoH);shade.addColorStop(0,'rgba(0,0,0,0)');shade.addColorStop(1,'rgba(0,0,0,.72)');ctx.fillStyle=shade;ctx.fillRect(0,photoTop,W,photoH);
-  const footerY=792;ctx.fillStyle='#f7f4f0';ctx.fillRect(0,footerY,W,H-footerY);
-  ctx.fillStyle='#b5122b';ctx.fillRect(48,footerY+34,150,7);
-  ctx.fillStyle='#a90e27';ctx.font='bold 27px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('সর্বশেষ সংবাদ',48,footerY+58);
-  ctx.fillStyle='#17202b';ctx.font='bold 48px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';
-  const words=title.split(/\s+/);let lines=[],line='';
-  const maxWidth=1100;
-  for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word;}else line=test;}
-  if(line)lines.push(line);
-  const lineHeight=64,maxLines=3;lines.slice(0,maxLines).forEach((txt,i)=>ctx.fillText(txt,48,footerY+112+i*lineHeight));
-  ctx.fillStyle='#5b6470';ctx.font='25px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';ctx.fillText('প্রকাশের তারিখ: '+date,48,footerY+340);
-  ctx.fillStyle='#a90e27';ctx.fillRect(0,H-100,W,100);
-  ctx.fillStyle='#fff';ctx.font='bold 28px "Noto Sans Bengali","Hind Siliguri",Arial,sans-serif';ctx.textBaseline='middle';ctx.fillText('বিস্তারিত পড়ুন আমাদের ওয়েবসাইটে',48,H-50);
-  ctx.textAlign='right';ctx.font='bold 26px Arial,sans-serif';ctx.fillText('BD BARGUNA NEWS',W-48,H-50);
-  try{const a=document.createElement('a');a.download='BD-Barguna-News-Photo-Card.png';a.href=canvas.toDataURL('image/png');a.click();}
-  catch(err){alert('এই ছবিটি ডাউনলোড করা যাচ্ছে না। ছবির URL-এ CORS অনুমতি নেই।');}
- };
- if(!src){draw(null);return;}
- const img=new Image();img.crossOrigin='anonymous';img.onload=()=>draw(img);img.onerror=()=>draw(null);img.src=src;
+ const src=b.dataset.cardImage||'',title=b.dataset.cardTitle||'সর্বশেষ সংবাদ',date=b.dataset.cardDate||'';
+ const old=b.textContent;b.disabled=true;b.textContent='ফটোকার্ড তৈরি হচ্ছে…';
+ try{await window.BDPhotoCard.download({title,category:b.dataset.cardCategory||'সংবাদ',date,images:src?[src]:[],logo:'images/bd-barguna-logo.webp?v=20261118'});}
+ catch(err){alert('ফটোকার্ড তৈরি হয়নি: '+(err.message||err));}
+ finally{b.disabled=false;b.textContent=old;}
 });
 document.addEventListener('click',e=>{const play=e.target.closest('.video-play-btn');if(!play)return;const id=play.dataset.videoId;if(!id)return;const frame=play.closest('.video-frame');const iframe=document.createElement('iframe');iframe.src='https://www.youtube.com/embed/'+encodeURIComponent(id)+'?autoplay=1';iframe.title='ভিডিও নিউজ';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allowFullscreen=true;frame.replaceChildren(iframe);});
 document.addEventListener('click',e=>{const a=e.target.closest('a[data-category]');if(!a)return;e.preventDefault();activeCategory=a.dataset.category||'all';searchQuery='';document.getElementById('q').value='';showNews(allNews,activeCategory);document.getElementById('latest').scrollIntoView({behavior:'smooth',block:'start'});});
