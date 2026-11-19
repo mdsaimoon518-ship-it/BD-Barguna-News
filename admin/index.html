@@ -335,7 +335,7 @@ async function uploadImage(file){
 }
 
 function articleHTML(n){
- const photoUrls=[...(Array.isArray(n.images)?n.images:[]),n.image].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).slice(0,2).map(src=>/^https?:\\/\\//i.test(src)?src:"../"+String(src).replace(/^\\/+/, ""));
+ const photoUrls=[...(Array.isArray(n.images)?n.images:[]),n.image].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).slice(0,2).map(src=>/^https?:\/\//i.test(src)?src:"../"+String(src).replace(/^\/+/, ""));
  const image=n.image?
  `<div class="photo-card">
  <img src="${/^https?:\/\//i.test(n.image)?esc(n.image):"../"+esc(n.image).replace(/^\/+/,"")}" alt="${esc(n.title)}">
