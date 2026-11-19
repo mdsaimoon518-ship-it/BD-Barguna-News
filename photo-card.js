@@ -110,6 +110,31 @@ window.downloadNewsPhotoCard=async function(){
   alert("ফটোকার্ড ডাউনলোড করা যায়নি: "+(error&&error.message?error.message:error));
  }
 };
+document.addEventListener("click",function(event){
+ var button=event.target&&event.target.closest?event.target.closest("button[onclick*=downloadNewsPhotoCard]"):null;
+ if(!button)return;
+ event.preventDefault();event.stopPropagation();if(event.stopImmediatePropagation)event.stopImmediatePropagation();
+ var tab=null;try{tab=window.open("about:blank","_blank");}catch(e){}
+ (async function(){
+  try{
+   if(typeof window.buildNewsPhotoCard!=="function")throw new Error("ফটোকার্ড তৈরির ফাংশন পাওয়া যায়নি।");
+   var canvas=await window.buildNewsPhotoCard();
+   var image=canvas.toDataURL("image/png");
+   if(tab&&!tab.closed){
+    tab.document.open();
+    tab.document.write('<!doctype html><html lang="bn"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ফটোকার্ড সংরক্ষণ</title><body style="margin:0;padding:12px;text-align:center;font-family:Arial;background:#f2f4f7"><h3>BD Barguna News</h3><p>ছবির ওপর চেপে ধরে Save image করুন।</p><img id="photo" style="width:100%;height:auto" alt="ফটোকার্ড"><p><a id="save" style="display:inline-block;padding:14px;background:#087b42;color:white;text-decoration:none">ছবি ডাউনলোড</a></p></body></html>');
+    tab.document.close();
+    tab.document.getElementById("photo").src=image;
+    var a=tab.document.getElementById("save");a.href=image;a.download="BD-Barguna-News-PhotoCard.png";
+   }else{
+    var a=document.createElement("a");a.href=image;a.download="BD-Barguna-News-PhotoCard.png";document.body.appendChild(a);a.click();a.remove();
+   }
+  }catch(error){
+   if(tab&&!tab.closed){try{tab.close();}catch(e){}}
+   alert("ফটোকার্ড তৈরি হয়নি: "+(error&&error.message?error.message:error));
+  }
+ })();
+},true);
 window.BDPhotoCard={
  create,
  download:async data=>{
