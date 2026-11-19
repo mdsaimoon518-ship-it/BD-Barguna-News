@@ -337,7 +337,7 @@ async function uploadImage(file){
  return path;
 }
 
-function articleHTML(n){
+function buildArticleHTML(n){
  if(typeof window.articleHTML!=="function")throw new Error("নতুন সংবাদ টেমপ্লেট লোড হয়নি। পেজ রিফ্রেশ করুন।");
  return window.articleHTML(n);
 }
@@ -449,7 +449,7 @@ $("newsForm").addEventListener("submit",async e=>{
    ?latest.map(x=>x.slug===editingSlug?n:x)
    :[n,...latest];
 
-  await saveFile("articles/"+n.slug+".html",articleHTML(n),"Publish article page");
+  await saveFile("articles/"+n.slug+".html",buildArticleHTML(n),"Publish article page");
   await saveFile(NEWS,JSON.stringify(updated,null,2),old?"Update news":"Publish news");
 
   const verified=await readJSON(NEWS);
