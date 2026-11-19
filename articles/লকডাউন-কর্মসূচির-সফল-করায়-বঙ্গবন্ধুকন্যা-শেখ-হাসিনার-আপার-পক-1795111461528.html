@@ -142,7 +142,6 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  <div class="caption">ছবি - সংগৃহীত</div>
  </div>
 <div id="printAdOutput-middle" class="print-ad-output"></div>
-<section class="photo-card-preview" id="photoCardPreview"><h2>সংবাদের ফটোকার্ড</h2><img id="newsPhotoCardPreview" alt="BD Barguna News ফটোকার্ড প্রিভিউ" loading="lazy"><p class="preview-note">লোগো ও প্রকাশের তারিখসহ শেয়ারযোগ্য ফটোকার্ড</p></section>
 <div class="article">বরগুনা জেলা ছাত্রলীগের বিপ্লবী সাধারণ সম্পাদক তৌশিকুর রহমান ইমরান বলেন হাজারও প্রতিকূলতা মোকাবেলা করে বাংলাদেশ আওয়ামী লীগের পূর্বঘোষিত “দেশ বাঁচাতে মানুষ বাঁচাতে ৮-দফা” দাবি বাস্তবায়নের দাবিতে আজ সারাদেশে “সকাল-সন্ধ্যা লকডাউন” কর্মসূচি সফলভাবে পালন করায় আমার বরগুনাবাসী সহ সারা দেশবাসীর প্রতি কৃতজ্ঞতা জানিয়েছেন বাংলাদেশ আওয়ামী লীগ সভাপতি বঙ্গবন্ধুকন্যা শেখ হাসিনা।
 
 এক শুভেচ্ছা বিবৃতিতে তিনি বলেন, দেশবাসীর অভূতপূর্ব সহযোগিতা ও অংশগ্রহণে “সকাল-সন্ধ্যা লকডাউন” কর্মসূচি সফলভাবে সম্পন্ন হওয়ায় বাংলাদেশ আওয়ামী লীগের পক্ষ থেকে আমি দেশবাসীকে শুভেচ্ছা ও কৃতজ্ঞতা জানাচ্ছি। বিবৃতিতে আরও বলেন, পাতানো নির্বাচনের মাধ্যমে ক্ষমতাসীন সরকার নাৎসি ইউনূসের ধারাবাহিকতায় দেশ এখন ধ্বংসের দ্বারপ্রান্তে উপনীত। দেশের স্বাধীনতা, সার্বভৌমত্ব ও মুক্তিযুদ্ধের চেতনা সমুন্নত ও পুনরুদ্ধারের জন্য “দেশ বাঁচাতে মানুষ বাঁচাতে ৮-দফা” দাবি এখন দেশবাসীর মানুষের প্রাণের দাবিতে পরিণত হয়েছে। এই দাবি বাস্তবায়নের জন্য আজ সারাদেশে “সকাল-সন্ধ্যা লকডাউন” কর্মসূচির ডাক দিয়েছিল বাংলাদেশ আওয়ামী লীগ।
@@ -256,10 +255,12 @@ window.buildNewsPhotoCard=async function(){
 window.downloadNewsPhotoCard=async function(){
  try{
   const canvas=await window.buildNewsPhotoCard();
-  const save=url=>{const a=document.createElement('a');a.href=url;a.download='BD-Barguna-News-PhotoCard.png';a.style.display='none';document.body.appendChild(a);a.click();a.remove();};
-  if(canvas.toBlob){canvas.toBlob(blob=>{if(!blob){save(canvas.toDataURL('image/png'));return;}const url=URL.createObjectURL(blob);save(url);setTimeout(()=>URL.revokeObjectURL(url),10000);},'image/png');}
-  else save(canvas.toDataURL('image/png'));
- }catch(e){alert(e.message||'ফটোকার্ড ডাউনলোড করা যায়নি।');}
+  if(!canvas)throw new Error('ফটোকার্ড তৈরি হয়নি।');
+  const data=canvas.toDataURL('image/png');
+  const a=document.createElement('a');a.href=data;a.download='BD-Barguna-News-PhotoCard.png';
+  a.style.position='fixed';a.style.left='-9999px';document.body.appendChild(a);a.click();
+  setTimeout(()=>a.remove(),1500);
+ }catch(e){alert('ফটোকার্ড ডাউনলোড করা যায়নি: '+(e.message||e));}
 };
 window.printNewsPaper=async function(){
  try{
@@ -271,7 +272,7 @@ window.printNewsPaper=async function(){
  }catch(e){window.print();}
 };
 window.printNewsPhotoCard=async function(){
- try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script>window.downloadNewsPDF=async function(){try{if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){alert("PDF লাইব্রেরি লোড হয়নি। প্রিন্ট অপশন থেকে Save as PDF নির্বাচন করুন।");window.print();return;}const node=document.querySelector(".paper")||document.querySelector("main")||document.body;const canvas=await window.html2canvas(node,{scale:1.5,useCORS:true,backgroundColor:"#ffffff"});const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});const pageW=210,pageH=297;const img=canvas.toDataURL("image/jpeg",0.88);const ratio=Math.min(pageW/canvas.width,pageH/canvas.height);const w=canvas.width*ratio,h=canvas.height*ratio;pdf.addImage(img,"JPEG",(pageW-w)/2,5,w,h);pdf.save("BD-Barguna-News.pdf");}catch(e){alert("PDF তৈরি করা যায়নি: "+(e.message||e));}};</script></body></html>');w.document.close();}
+ try{const canvas=await window.buildNewsPhotoCard(),url=canvas.toDataURL('image/png'),w=window.open('','_blank');if(!w){alert('প্রিন্টের জন্য নতুন উইন্ডো খুলতে অনুমতি দিন।');return;}w.document.write('<!doctype html><html><head><title>BD Barguna News Photo Card</title><style>body{margin:0;display:grid;place-items:center;min-height:100vh}img{width:min(100vw,100vh);height:auto}@media print{img{width:100%;max-height:100vh;object-fit:contain}}</style></head><body><img src="'+url+'" onload="setTimeout(()=>window.print(),300)"><script>window.downloadNewsPDF=async function(){try{if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){alert("PDF লাইব্রেরি লোড হয়নি। প্রিন্ট অপশন থেকে Save as PDF নির্বাচন করুন।");window.print();return;}const node=document.querySelector(".paper")||document.querySelector("main")||document.body;const canvas=await window.html2canvas(node,{scale:1.5,useCORS:true,backgroundColor:"#ffffff"});const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});const pageW=210,pageH=297;const img=canvas.toDataURL("image/jpeg",0.88);const ratio=Math.min(pageW/canvas.width,pageH/canvas.height);const w=canvas.width*ratio,h=canvas.height*ratio;pdf.addImage(img,"JPEG",(pageW-w)/2,5,w,h);pdf.save("BD-Barguna-News.pdf");}catch(e){alert("PDF তৈরি করা যায়নি: "+(e.message||e));}};<\/script></body></html>');w.document.close();}
  catch(e){alert(e.message||'প্রিন্ট করা যায়নি।');}
 };
 window.copyNewsPhotoCard=async function(){
