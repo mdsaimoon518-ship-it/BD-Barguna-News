@@ -93,6 +93,23 @@ async function create(data){
  x.fillStyle='#fff';x.font='23px Arial';x.fillText('mdsaimoon518-ship-it.github.io/BD-Barguna-News',1160,fy+126);
  return c;
 }
+window.downloadNewsPhotoCard=async function(){
+ try{
+  if(typeof window.buildNewsPhotoCard!=="function")throw new Error("এই নিউজের ফটোকার্ড সেটআপ পাওয়া যায়নি।");
+  const canvas=await window.buildNewsPhotoCard();
+  if(!canvas||typeof canvas.toBlob!=="function")throw new Error("ফটোকার্ড তৈরি হয়নি।");
+  const blob=await new Promise(function(resolve,reject){
+   try{canvas.toBlob(function(value){value?resolve(value):reject(new Error("ছবির ফাইল তৈরি করা যায়নি।"));},"image/png");}
+   catch(error){reject(error);}
+  });
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="BD-Barguna-News-PhotoCard.png";a.style.position="fixed";a.style.left="-9999px";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(function(){URL.revokeObjectURL(url);},60000);
+ }catch(error){
+  alert("ফটোকার্ড ডাউনলোড করা যায়নি: "+(error&&error.message?error.message:error));
+ }
+};
 window.BDPhotoCard={
  create,
  download:async data=>{
