@@ -29,25 +29,13 @@ function start(){
   const dw=im.naturalWidth*scale,dh=im.naturalHeight*scale;
   ctx.drawImage(im,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
  }
- const ready=Promise.all([load(imgUrl),load(logoUrl)]).then(([photoImg,logo])=>{
-  const g=ctx.createLinearGradient(0,0,1200,1200);g.addColorStop(0,'#101827');g.addColorStop(1,'#304563');ctx.fillStyle=g;ctx.fillRect(0,0,1200,1200);
-  ctx.fillStyle='#bd1834';ctx.fillRect(0,0,1200,18);
-  if(logo){ctx.fillStyle='#fff';rounded(55,42,100,100,20);const sc=Math.min(82/logo.naturalWidth,82/logo.naturalHeight);ctx.drawImage(logo,105-logo.naturalWidth*sc/2,92-logo.naturalHeight*sc/2,logo.naturalWidth*sc,logo.naturalHeight*sc);}
-  ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText('BD BARGUNA NEWS',180,82);
-  ctx.font='24px Arial';ctx.fillStyle='#dbe4ef';ctx.fillText('সত্যের সন্ধানে, মানুষের পাশে।',180,120);
-  ctx.save();ctx.beginPath();ctx.roundRect(48,160,1104,520,24);ctx.clip();
-  if(photoImg)drawFullImage(photoImg,48,160,1104,520);
-  else{ctx.fillStyle='#24364f';ctx.fillRect(48,160,1104,520);ctx.fillStyle='#fff';ctx.font='bold 54px Arial';ctx.fillText('BD BARGUNA NEWS',90,440);}
-  ctx.restore();
-  ctx.fillStyle='#fff';rounded(48,650,1104,430,24);
-  ctx.fillStyle='#bd1834';rounded(80,690,250,55,14);ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.fillText(category.slice(0,18),102,727);
-  ctx.fillStyle='#64748b';ctx.font='bold 22px Arial';ctx.textAlign='right';ctx.fillText(dateText.slice(0,32),1115,727);ctx.textAlign='left';
-  ctx.fillStyle='#111827';ctx.font='bold 48px Arial';
-  const words=title.split(/\s+/);let lines=[],line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>1020&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);
-  let y=825;lines.slice(0,3).forEach(v=>{ctx.fillText(v,82,y);y+=66;});
-  ctx.fillStyle='#bd1834';ctx.fillRect(82,1005,140,5);ctx.fillStyle='#475569';ctx.font='bold 22px Arial';ctx.fillText('BD BARGUNA NEWS',82,1045);
+ const ready=(async()=>{
+  if(!window.BDPhotoCard){await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='../photo-card.js?v=1';script.onload=resolve;script.onerror=()=>reject(new Error('ফটোকার্ড ডিজাইন লোড হয়নি'));document.head.appendChild(script);});}
+  const photos=Array.from(document.querySelectorAll('.photo-gallery figure.photo-card img,.article-image,figure img')).filter((el,i,all)=>!el.closest('.photo-card-preview')&&all.findIndex(x=>(x.currentSrc||x.src)===(el.currentSrc||el.src))===i).slice(0,3).map(el=>({url:el.currentSrc||el.src,caption:(el.closest('figure')?.querySelector('figcaption,.caption')?.textContent||'').trim()}));
+  const rendered=await window.BDPhotoCard.create({title,category,date:dateText,images:photos,logo:logoUrl});
+  canvas.width=rendered.width;canvas.height=rendered.height;ctx.drawImage(rendered,0,0);
   preview.src=canvas.toDataURL('image/png');
- }).catch(error=>console.warn('BD Barguna photo card:',error));
+ })().catch(error=>console.warn('BD Barguna photo card:',error));
  const style=document.createElement('style');style.textContent='.bd-auto-print-masthead{display:none}@media print{.bd-auto-print-masthead{display:block!important;text-align:center!important;margin:0 0 5mm!important;padding:0 0 3mm!important;border-bottom:3px double #111!important;color:#111!important;break-inside:avoid!important}.bd-auto-print-masthead .line{display:flex;justify-content:space-between;font-size:8pt;border-bottom:1px solid #333;padding-bottom:2mm}.bd-auto-print-masthead .brand{display:flex;align-items:center;justify-content:center;gap:4mm;font-size:25pt;font-weight:900;margin:2mm 0}.bd-auto-print-masthead img{width:15mm;height:15mm;object-fit:contain}.bd-auto-print-masthead .tag{font-size:9pt;font-weight:700}.bd-auto-actions,.bd-auto-card{display:none!important}}';
  document.head.appendChild(style);
  const mast=document.createElement('div');mast.className='bd-auto-print-masthead';
