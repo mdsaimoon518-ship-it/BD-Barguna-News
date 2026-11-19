@@ -113,7 +113,7 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
  .print-rule,.bd-print-masthead .rule{border-top:2px solid #171717!important;border-bottom:1px solid #171717!important}
 }
 @media print{#printAdPanel{display:none!important}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}.print-ad-remove{display:block;margin:6px auto 0;padding:5px 10px;border:0;border-radius:5px;background:#475569;color:#fff;font-size:12px}@media print{.print-ad-remove{display:none!important}}</style>
-<script src="../photo-card.js?v=10"></script>
+<script src="../photo-card.js?v=12"></script>
 </head>
 <body>
 <main class="paper">
@@ -180,7 +180,21 @@ button{padding:11px 18px;border:0;border-radius:6px;color:white;background:#087b
 </main>
 <script>
 document.addEventListener('DOMContentLoaded',function(){const d=document.querySelector('.date:not(#articleViewCount)');const out=document.querySelector('.print-date');if(out)out.textContent=d?d.textContent.replace(/^📅s*প্রকাশিত:s*/,''):'';});
-window.buildNewsPhotoCard=async function(){const loadScript=()=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL('../photo-card.js?v=10',location.href).href;script.onload=()=>window.BDPhotoCard&&typeof window.BDPhotoCard.create==='function'?resolve():reject(new Error('ফটোকার্ড ইঞ্জিন চালু হয়নি।'));script.onerror=()=>reject(new Error('ফটোকার্ড ডিজাইন লোড হয়নি।'));document.head.appendChild(script);});if(!window.BDPhotoCard||typeof window.BDPhotoCard.create!=='function')await loadScript();const imgs=Array.from(document.querySelectorAll('.photo-gallery img,.article-image,figure img,#newsImage')).filter((el,i,all)=>el.complete&&el.naturalWidth>0&&!el.closest('.photo-card-preview')&&all.findIndex(x=>(x.currentSrc||x.src)===(el.currentSrc||el.src))===i).slice(0,2).map(el=>({url:el.currentSrc||el.src}));const d=document.querySelector('meta[property="article:published_time"]')||document.querySelector('.date:not(#articleViewCount)');const raw=d?(d.content||d.getAttribute('datetime')||d.textContent):'';const p=new Date(raw);const date=raw?(Number.isNaN(p.getTime())?String(raw).replace(/^📅\s*প্রকাশিত:\s*/,'').trim():new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(p)):new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(new Date());return window.BDPhotoCard.create({title:document.querySelector('h1')?.textContent||document.title,category:document.querySelector('.category')?.textContent||'সর্বশেষ সংবাদ',date,images:imgs,logo:new URL('../images/bd-barguna-logo.webp?v=20261118',location.href).href});};
+window.buildNewsPhotoCard=async function(){
+ const loadScript=()=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL('../photo-card.js?v=12',location.href).href;script.onload=()=>window.BDPhotoCard&&typeof window.BDPhotoCard.create==='function'?resolve():reject(new Error('ফটোকার্ড ইঞ্জিন চালু হয়নি।'));script.onerror=()=>reject(new Error('ফটোকার্ড ডিজাইন লোড হয়নি।'));document.head.appendChild(script);});
+ if(!window.BDPhotoCard||typeof window.BDPhotoCard.create!=='function')await loadScript();
+ const candidates=Array.from(document.querySelectorAll('.photo-card img,.photo-gallery img,.article-image,figure img,#newsImage,img[src*="/images/news/"]'));
+ const unique=candidates.filter((el,i,all)=>!el.closest('.photo-card-preview')&&!el.classList.contains('channel-logo')&&!el.classList.contains('print-logo')&&!/logo|icon/i.test(el.getAttribute('src')||'')&&all.findIndex(x=>(x.currentSrc||x.src)===(el.currentSrc||el.src))===i).slice(0,2);
+ await Promise.all(unique.map(el=>el.complete&&el.naturalWidth>0?Promise.resolve():new Promise(resolve=>{const done=()=>resolve();el.addEventListener('load',done,{once:true});el.addEventListener('error',done,{once:true});setTimeout(done,7000);})));
+ const imgs=unique.filter(el=>el.naturalWidth>0).map(el=>({url:el.currentSrc||el.src}));
+ if(!imgs.length)throw new Error('এই নিউজের মূল ছবি লোড হয়নি। ছবির লিংক পরীক্ষা করুন।');
+ const d=document.querySelector('meta[property="article:published_time"]')||document.querySelector('.date:not(#articleViewCount)');
+ const raw=d?(d.content||d.getAttribute('datetime')||d.textContent):'';
+ const p=new Date(raw);
+ const date=raw?(Number.isNaN(p.getTime())?String(raw).replace(/^📅\\s*প্রকাশিত:\\s*/,'').trim():new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(p)):new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dhaka'}).format(new Date());
+ return window.BDPhotoCard.create({title:document.querySelector('h1')?.textContent||document.title,category:document.querySelector('.category')?.textContent||'সর্বশেষ সংবাদ',date,images:imgs,logo:new URL('../images/bd-barguna-logo.webp?v=20261118',location.href).href});
+};
+
 window.downloadNewsPhotoCard=async function(){
  var saveTab=null;
  try{
