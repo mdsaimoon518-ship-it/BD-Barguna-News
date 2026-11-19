@@ -356,7 +356,7 @@ function articleHTML(n){
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"><\/script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"><\/script>
 <title>${esc(n.title)} | BD Barguna News</title>
-<script src="../photo-card.js?v=7"></script>
+<script src="../photo-card.js?v=8"></script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;padding:18px 10px;background:#eef1f5;color:#202936;font-family:Arial,sans-serif;line-height:1.9}
@@ -413,29 +413,25 @@ ${image}
 window.buildNewsPhotoCard=async function(){
  if(!window.BDPhotoCard||typeof window.BDPhotoCard.create!=="function"){
   await new Promise(function(resolve,reject){
-   const old=document.querySelector('script[data-bd-photo-card]');
-   if(old){old.addEventListener('load',resolve,{once:true});old.addEventListener('error',function(){reject(new Error('ফটোকার্ড ডিজাইন লোড হয়নি।'));},{once:true});return;}
-   const script=document.createElement('script');script.src=new URL('../photo-card.js?v=7',location.href).href;script.dataset.bdPhotoCard='1';script.onload=resolve;script.onerror=function(){reject(new Error('ফটোকার্ড ডিজাইন লোড হয়নি।'));};document.head.appendChild(script);
+   const script=document.createElement("script");script.src=new URL("../photo-card.js?v=8",location.href).href;
+   script.onload=function(){window.BDPhotoCard&&typeof window.BDPhotoCard.create==="function"?resolve():reject(new Error("ফটোকার্ড ইঞ্জিন চালু হয়নি।"));};
+   script.onerror=function(){reject(new Error("ফটোকার্ড ডিজাইন লোড হয়নি।"));};document.head.appendChild(script);
   });
  }
- if(!window.BDPhotoCard||typeof window.BDPhotoCard.create!=="function")throw new Error('ফটোকার্ড ডিজাইন প্রস্তুত হয়নি। পেজটি রিফ্রেশ করে আবার চেষ্টা করুন।');
- const img=document.querySelector('.photo-card img');
- const rawDate=document.querySelector('.date:not(#articleViewCount)')?.textContent||'';
- const date=rawDate.replace(/^📅\\s*প্রকাশিত:\\s*/,'').trim();
- return window.BDPhotoCard.create({
-  title:document.querySelector('h1')?.textContent||document.title,
-  category:document.querySelector('.category')?.textContent||'সর্বশেষ সংবাদ',
-  date:date,
-  images:img?[{url:img.currentSrc||img.src,caption:document.querySelector('.caption')?.textContent||''}]:[],
-  logo:new URL('../images/bd-barguna-logo.webp?v=20261118',location.href).href
- });
+ const imgs=Array.from(document.querySelectorAll(".photo-gallery img,.photo-card img,.article-image,figure img,#newsImage"))
+  .filter((el,i,all)=>el.complete&&el.naturalWidth>0&&!el.closest(".photo-card-preview")&&all.findIndex(x=>(x.currentSrc||x.src)===(el.currentSrc||el.src))===i)
+  .slice(0,2).map(el=>({url:el.currentSrc||el.src}));
+ const raw=document.querySelector(".date:not(#articleViewCount)")?.textContent||"";
+ const date=raw.replace(/^📅\s*প্রকাশিত:\s*/,"").trim();
+ return window.BDPhotoCard.create({title:document.querySelector("h1")?.textContent||document.title,category:document.querySelector(".category")?.textContent||"সর্বশেষ সংবাদ",date,images:imgs,logo:new URL("../images/bd-barguna-logo.webp?v=20261118",location.href).href});
 };
 window.downloadNewsPhotoCard=async function(){
  try{
   const canvas=await window.buildNewsPhotoCard();
-  const data=canvas.toDataURL('image/png');
-  const a=document.createElement('a');a.href=data;a.download='BD-Barguna-News-PhotoCard.png';document.body.appendChild(a);a.click();a.remove();
- }catch(e){alert('ফটোকার্ড ডাউনলোড করা যায়নি: '+(e.message||e));}
+  if(!canvas)throw new Error("ফটোকার্ড তৈরি হয়নি।");
+  const blob=await new Promise((resolve,reject)=>{try{canvas.toBlob(b=>b?resolve(b):reject(new Error("ছবির ফাইল তৈরি করা যায়নি।")),"image/png");}catch(e){reject(e);}});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="BD-Barguna-News-PhotoCard.png";a.style.display="none";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+ }catch(e){alert("ফটোকার্ড ডাউনলোড করা যায়নি: "+(e.message||e));}
 };
 window.copyArticleLink=async function(){
  const text=location.href;
