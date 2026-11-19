@@ -118,8 +118,22 @@ document.addEventListener("click",function(event){
  var tab=null;try{tab=window.open("about:blank","_blank");}catch(e){}
  (async function(){
   try{
-   if(typeof window.buildNewsPhotoCard!=="function")throw new Error("ফটোকার্ড তৈরির ফাংশন পাওয়া যায়নি।");
-   var canvas=await window.buildNewsPhotoCard();
+   var found=Array.from(document.querySelectorAll(".photo-gallery img,.photo-card img,.article-image,figure img,#newsImage"))
+    .filter(function(el){return !el.closest(".photo-card-preview");})
+    .map(function(el){return el.currentSrc||el.src;})
+    .filter(function(url,index,all){return !!url&&all.indexOf(url)===index;})
+    .slice(0,2);
+   if(!found.length)throw new Error("এই সংবাদে ছবি পাওয়া যায়নি। ছবির URL পরীক্ষা করুন।");
+   var rawDate=document.querySelector(".date:not(#articleViewCount)");
+   var dateText=rawDate?rawDate.textContent.replace(/^📅\\s*প্রকাশিত:\\s*/,"").trim():"";
+   var canvas=await create({
+    title:(document.querySelector("h1")||{}).textContent||document.title,
+    category:(document.querySelector(".category")||{}).textContent||"সর্বশেষ সংবাদ",
+    date:dateText,
+    images:found.map(function(url){return {url:url};}),
+    logo:new URL("../images/bd-barguna-logo.webp?v=20261118",location.href).href
+   });
+   if(!canvas)throw new Error("ছবিসহ ফটোকার্ড তৈরি করা যায়নি।");
    var image=canvas.toDataURL("image/png");
    if(tab&&!tab.closed){
     tab.document.open();
